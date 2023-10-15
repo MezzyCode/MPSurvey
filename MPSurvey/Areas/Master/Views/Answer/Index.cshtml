@@ -29,12 +29,12 @@
 
 <div class="text-sm">
     <div class="pagetitle">
-        <h1>Article</h1>
+        <h1>Daftar Jawaban</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">Home</li>
-                <li class="breadcrumb-item">Master</li>
-                <li class="breadcrumb-item active">Article</li>
+                <li class="breadcrumb-item">Jawaban</li>
+                <li class="breadcrumb-item active">Daftar</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -50,18 +50,19 @@
 
                         <div class="card-body">
 
-                            
+
                             <a asp-action="DownloadExcelDocument" class="btn btn-sm btn-success"> <i class="fa fa-file-excel"></i> Export to Excel</a>
+                            <br />
                             <br />
                             <table id="tblData" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
                                         <th>Nama</th>
-                                        <th>Nomor KK</th>
+                                        <th>NOMOR TELEPON</th>
+                                        <th>NIK</th>
                                         <th>Alamat</th>
                                         <th>Pilihan</th>
-                                        <th>Agama</th>
-                                        <th>Suku</th>
+                                        <th></th>
 
                                         @* <th></th>*@
                                     </tr>
@@ -121,6 +122,61 @@
                     });
                 }
             });
+        };
+
+        function DeleteData(itemid) {
+            swal({
+                title: "Hapus data?",
+                text: "",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes",
+                closeOnConfirm: true
+
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    ShowLoading();
+                    $.ajax({
+
+                        url: '/Master/Answer/Delete',
+                        type: 'POST',
+                        data: { "id": itemid },
+                        success: function (data) {
+                            DisableLoading();
+                            if (data) {
+                                swal
+                                    ({
+                                        title: "Berhasil!",
+                                        text: "Data berhasil dihapus",
+                                        type: "success"
+                                    },
+                                        function (isConfirm) {
+                                            if (isConfirm) {
+                                                location.reload();
+                                            }
+                                        });
+
+                            }
+                            else{
+                                swal
+                                    ({
+                                        title: "Gagal!",
+                                        text: "Data gagal dihapus",
+                                        type: "error"
+                                    },
+                                        function (isConfirm) {
+                                            if (isConfirm) {
+                                                location.reload();
+                                            }
+                                        });
+                            }
+                        }
+
+                    });
+                }
+            });
+
         };
 
 
@@ -191,15 +247,19 @@
 
                     "columns": [
                         { "data": "nama", "name": "Nama" },
-                        { "data": "nama_Kk", "name": "Nama_Kk" },
+                        { "data": "nomor_telp", "name": "nomor_telp" },
+                        { "data": "nik", "name": "NIK" },
                         {
                             data: null, render: function (data, type, row) {
                                 return '<span>' + row.alamat + ' ' + row.rt + '/' + row.rw + ' ' + row.kelurahan + ', ' + row.kecamatan + '</span>'
                             }
                         },
-                        { "data": "c6", "name": "C6"},
-                        { "data": "c9", "name": "C9"},
-                        { "data": "c10", "name": "C10"},
+                        { "data": "c6", "name": "C6" },
+                        {
+                            data: null, render: function (data, type, row) {
+                                return '<a class="btn btn-info btn-sm" href="@Url.Action("Edit", "Answer", new { Area = "Master" })?ID=' + row.id + '">Edit</a>' + '<a class="btn btn-danger btn-sm" href="#" onclick=DeleteData("' + row.id + '")>Hapus</a>';;
+                            },
+                        }
 
                     ]
 
@@ -210,7 +270,7 @@
             @Html.Raw(TempData["notification"])
         }
 
-        });
+                });
     </script>
 
 }

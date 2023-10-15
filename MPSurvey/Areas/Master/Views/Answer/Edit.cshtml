@@ -28,13 +28,13 @@
 </style>
 
 <div class="text-sm">
-    <div class="Isi Data">
+    <div class="Edit Data">
         <h1>Article</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">Home</li>
                 <li class="breadcrumb-item">Jawaban</li>
-                <li class="breadcrumb-item active">Isi Data</li>
+                <li class="breadcrumb-item active">Edit Data</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -43,15 +43,17 @@
     <section class="content">
         <div class="container-fluid">
             <!-- new vendor form -->
-            <form asp-action="Create">
+            <form asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="row center" style="float: none; margin: 0 auto;">
                     <div class="col-md-12">
                         <div class="card card-warning">
                             <div class="card-header">
-                                <h3 class="card-title">ISI DATA</h3>
+                                <h3 class="card-title">EDIT DATA</h3>
                             </div>
                             <div class="card-body">
+
+                                <input asp-for="ID" type="hidden" />
 
                                 <div class="row">
                                     <div class="row">
@@ -370,9 +372,8 @@
 
             var kelurahanList = @Html.Raw(Json.Serialize(Model.ListKelurahan));
 
-            $("#kecamatanSelect").on("change", function () {
+            function setKelurahanList() {
                 var selectedKecamatan = $(this).val();
-                console.log(selectedKecamatan);
 
                 $("#kelurahanSelect").empty();
 
@@ -390,14 +391,21 @@
 
                     }
                 });
+
+            }
+
+            $("#kecamatanSelect").on("change", function () {
+                setKelurahanList();
             });
+
+            setKelurahanList();
 
 
         @if (TempData["notification"] != null)
         {
             @Html.Raw(TempData["notification"])
         }
-                                                                                                });
+                                                                                                                });
 
 
     </script>

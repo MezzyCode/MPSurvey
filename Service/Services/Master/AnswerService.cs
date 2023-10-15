@@ -590,6 +590,27 @@ namespace Service.Services.Master
             return result;
         }
 
+        public async Task<bool> DeleteAsync(string ID)
+        {
+            try
+            {
+                Answer data = await Repo.GetAnswerByIDAsync(ID);
+
+                if (data != null)
+                {
+                    _dbcontext.Answers.Remove(data);
+                    _dbcontext.SaveChanges();
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         public async Task<byte[]> DownloadExcelDocument(JsonAnswer filter, ClaimsPrincipal claims)
         {
             try
@@ -598,38 +619,42 @@ namespace Service.Services.Master
                 {
                     IXLWorksheet worksheet = workbook.Worksheets.Add("Hasil Survey");
                     worksheet.Cell(1, 1).Value = "Nama";
-                    worksheet.Cell(1, 2).Value = "Nama KK";
-                    worksheet.Cell(1, 3).Value = "Alamat";
-                    worksheet.Cell(1, 4).Value = "C1";
-                    worksheet.Cell(1, 5).Value = "C2";
-                    worksheet.Cell(1, 6).Value = "C3A";
-                    worksheet.Cell(1, 7).Value = "C3B";
-                    worksheet.Cell(1, 8).Value = "C4";
-                    worksheet.Cell(1, 9).Value = "C5";
-                    worksheet.Cell(1, 10).Value = "C6";
-                    worksheet.Cell(1, 11).Value = "C7";
-                    worksheet.Cell(1, 12).Value = "C8";
-                    worksheet.Cell(1, 13).Value = "C9";
-                    worksheet.Cell(1, 14).Value = "C10";
+                    worksheet.Cell(1, 2).Value = "NIK";
+                    worksheet.Cell(1, 3).Value = "No. Telp";
+                    worksheet.Cell(1, 4).Value = "Nama KK";
+                    worksheet.Cell(1, 5).Value = "Alamat";
+                    worksheet.Cell(1, 6).Value = "C1";
+                    worksheet.Cell(1, 7).Value = "C2";
+                    worksheet.Cell(1, 8).Value = "C3A";
+                    worksheet.Cell(1, 9).Value = "C3B";
+                    worksheet.Cell(1, 10).Value = "C4";
+                    worksheet.Cell(1, 11).Value = "C5";
+                    worksheet.Cell(1, 12).Value = "C6";
+                    worksheet.Cell(1, 13).Value = "C7";
+                    worksheet.Cell(1, 14).Value = "C8";
+                    worksheet.Cell(1, 15).Value = "C9";
+                    worksheet.Cell(1, 16).Value = "C10";
 
                     List<JsonAnswer> datas = await FindAsync(filter, claims);
 
                     for (int index = 1; index < datas.Count; index++)
                     {
                         worksheet.Cell(index + 1, 1).Value = datas[index - 1].Nama;
-                        worksheet.Cell(index + 1, 2).Value = datas[index - 1].Nama_Kk;
-                        worksheet.Cell(index + 1, 3).Value = $"{datas[index - 1].Alamat}, RT {datas[index - 1].Rt} RW {datas[index - 1].Rw}, {datas[index - 1].Kelurahan} {datas[index - 1].Kecamatan}";
-                        worksheet.Cell(index + 1, 4).Value = datas[index - 1].C1;
-                        worksheet.Cell(index + 1, 5).Value = datas[index - 1].C2;
-                        worksheet.Cell(index + 1, 6).Value = datas[index - 1].C3A;
-                        worksheet.Cell(index + 1, 7).Value = datas[index - 1].C3B;
-                        worksheet.Cell(index + 1, 8).Value = datas[index - 1].C4;
-                        worksheet.Cell(index + 1, 9).Value = datas[index - 1].C5;
-                        worksheet.Cell(index + 1, 10).Value = datas[index - 1].C6;
-                        worksheet.Cell(index + 1, 11).Value = datas[index - 1].C7;
-                        worksheet.Cell(index + 1, 12).Value = datas[index - 1].C8;
-                        worksheet.Cell(index + 1, 13).Value = datas[index - 1].C9;
-                        worksheet.Cell(index + 1, 14).Value = datas[index - 1].C10;
+                        worksheet.Cell(index + 1, 2).Value = datas[index - 1].NIK;
+                        worksheet.Cell(index + 1, 3).Value = datas[index - 1].Nomor_telp;
+                        worksheet.Cell(index + 1, 4).Value = datas[index - 1].Nama_Kk;
+                        worksheet.Cell(index + 1, 5).Value = $"{datas[index - 1].Alamat}, RT {datas[index - 1].Rt} RW {datas[index - 1].Rw}, {datas[index - 1].Kelurahan} {datas[index - 1].Kecamatan}";
+                        worksheet.Cell(index + 1, 6).Value = datas[index - 1].C1;
+                        worksheet.Cell(index + 1, 7).Value = datas[index - 1].C2;
+                        worksheet.Cell(index + 1, 8).Value = datas[index - 1].C3A;
+                        worksheet.Cell(index + 1, 9).Value = datas[index - 1].C3B;
+                        worksheet.Cell(index + 1, 10).Value = datas[index - 1].C4;
+                        worksheet.Cell(index + 1, 11).Value = datas[index - 1].C5;
+                        worksheet.Cell(index + 1, 12).Value = datas[index - 1].C6;
+                        worksheet.Cell(index + 1, 13).Value = datas[index - 1].C7;
+                        worksheet.Cell(index + 1, 14).Value = datas[index - 1].C8;
+                        worksheet.Cell(index + 1, 15).Value = datas[index - 1].C9;
+                        worksheet.Cell(index + 1, 16).Value = datas[index - 1].C10;
                     }
                     using (var stream = new MemoryStream())
                     {

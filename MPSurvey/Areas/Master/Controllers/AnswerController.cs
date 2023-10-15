@@ -147,6 +147,136 @@ namespace MainProject.Areas.Master.Controllers
             return View(data);
         }
 
+        public async Task<IActionResult> Edit(string ID)
+        {
+            var cookiesEmail = GlobalHelpers.GetEmailFromIdentity(User);
+            if (cookiesEmail == null)
+            {
+                return RedirectToAction("LoginForm", "Login", new { area = "" });
+            }
+
+            try
+            {
+                JsonAnswer data = await ServiceAnswer.GetAnswer(ID);
+
+                var TaskKelurahan = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.KELURAHANCODE }, User);
+                var TaskKecamatan = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.KECAMATANCODE }, User);
+                var Task3Choice = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CHOISE3CODE }, User);
+                var Task2Choice = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CHOISE2CODE }, User);
+                var TaskCalon = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CALONCODE }, User);
+                var TaskAgama = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.AGAMACODE }, User);
+                var TaskPendidikan = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.PENDIDIKANCODE }, User);
+                var TaskSuku = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.SUKUCODE }, User);
+
+                List<JsonHelperTable> ListKelurahan = await TaskKelurahan;
+                List<JsonHelperTable> ListKecamatan = await TaskKecamatan;
+                List<JsonHelperTable> List3Choice = await Task3Choice;
+                List<JsonHelperTable> List2Choice = await Task2Choice;
+                List<JsonHelperTable> ListCalon = await TaskCalon;
+                List<JsonHelperTable> ListAgama = await TaskAgama;
+                List<JsonHelperTable> ListPendidikan = await TaskPendidikan;
+                List<JsonHelperTable> ListSuku = await TaskSuku;
+
+                data.ListKelurahan = ListKelurahan.OrderBy(x => x.Value).ToList();
+                data.ListKecamatan = ListKecamatan.OrderBy(x => x.Value).ToList();
+                data.List3Choice = List3Choice.OrderBy(x => x.Description).ToList();
+                data.List2Choice = List2Choice.OrderBy(x => x.Description).ToList();
+                data.ListCalon = ListCalon.OrderBy(x => x.Value).ToList();
+                data.ListAgama = ListAgama.OrderBy(x => x.Description).ToList();
+                data.ListPendidikan = ListPendidikan.OrderBy(x => x.Description).ToList();
+                data.ListSuku = ListSuku.OrderBy(x => x.Value).ToList();
+
+                return View(data);
+            }
+            catch (Exception ex)
+            {
+                Alert(ex.Message, NotificationType.error);
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(JsonAnswer data)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var returnSave = await ServiceAnswer.SaveAsync(data, User);
+
+                    if (returnSave.result)
+                    {
+                        Alert(returnSave.message, NotificationType.success);
+                    }
+                    else
+                    {
+                        Alert(returnSave.message, NotificationType.error);
+                    }
+                    return RedirectToAction(nameof(Create));
+
+                }
+                catch (Exception ex)
+                {
+                    Alert(ex.Message, NotificationType.error);
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+
+            var TaskKelurahan = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.KELURAHANCODE }, User);
+            var TaskKecamatan = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.KECAMATANCODE }, User);
+            var Task3Choice = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CHOISE3CODE }, User);
+            var Task2Choice = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CHOISE2CODE }, User);
+            var TaskCalon = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CALONCODE }, User);
+            var TaskAgama = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.AGAMACODE }, User);
+            var TaskPendidikan = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.PENDIDIKANCODE }, User);
+            var TaskSuku = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.SUKUCODE }, User);
+
+            List<JsonHelperTable> ListKelurahan = await TaskKelurahan;
+            List<JsonHelperTable> ListKecamatan = await TaskKecamatan;
+            List<JsonHelperTable> List3Choice = await Task3Choice;
+            List<JsonHelperTable> List2Choice = await Task2Choice;
+            List<JsonHelperTable> ListCalon = await TaskCalon;
+            List<JsonHelperTable> ListAgama = await TaskAgama;
+            List<JsonHelperTable> ListPendidikan = await TaskPendidikan;
+            List<JsonHelperTable> ListSuku = await TaskSuku;
+
+            data.ListKelurahan = ListKelurahan.OrderBy(x => x.Value).ToList();
+            data.ListKecamatan = ListKecamatan.OrderBy(x => x.Value).ToList();
+            data.List3Choice = List3Choice.OrderBy(x => x.Description).ToList();
+            data.List2Choice = List2Choice.OrderBy(x => x.Description).ToList();
+            data.ListCalon = ListCalon.OrderBy(x => x.Value).ToList();
+            data.ListAgama = ListAgama.OrderBy(x => x.Description).ToList();
+            data.ListPendidikan = ListPendidikan.OrderBy(x => x.Description).ToList();
+            data.ListSuku = ListSuku.OrderBy(x => x.Value).ToList();
+
+            return View(data);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(string ID)
+        {
+            try
+            {
+                bool result = await ServiceAnswer.DeleteAsync(ID);
+
+                //if (result)
+                //{
+                //    Alert("Berhasil menghapus data!", NotificationType.success);
+                //}
+                //else
+                //{
+                //    Alert("Gagal menghapus data!", NotificationType.error);
+                //}
+                return Json(result);
+            }
+            catch (Exception ex)
+            {
+                Alert(ex.Message, NotificationType.error);
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> MainChart()
         {
