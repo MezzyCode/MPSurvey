@@ -58,40 +58,19 @@
         </div><!-- /.container-fluid -->
     </section>
 
-    <section class="content">
-        <div class="container-fluid">
-            <!-- new vendor form -->
-            <div class="row center">
-
-                <div class="col-md-6">
-                    <div class="card card-info">
-                        <div id="religionChartWrapper" class="card-body">
-                            <canvas id="religionChart" style="width:100%;"></canvas>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="card card-info">
-
-                        <div id="c1CountWrapper" class="card-body">
-                            <h3><b>Total orang mengetahui Masinton Pasaribu S.H.</b></h3>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <h4><i class="fa fa-check"></i> : <b id="c1YesCount"></b></h4>
-                                </div>
-                                <div class="col-md-6">
-                                    <h4><i class="fa fa-close"></i> : <b id="c1NoCount"></b></h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+    <section class="container row">
+        <article class="col-sm-6 card">
+            <canvas id="religionChart"></canvas>
+        </article>
+        <article class="col-sm-6 card">
+            <h3>Total orang yang mengetahui Masinton Pasaribu S.H.</h3>
+            <div>
+                <ul>
+                    <li>Yes: <span id="c1YesCount"/></li>
+                    <li>No: <span id="c1NoCount"/></li>
+                </ul>
             </div>
-            <!-- new vendor form -->
-
-        </div><!-- /.container-fluid -->
+        </article>
     </section>
 
 </div>
@@ -193,13 +172,13 @@
                     },
                     options: {
                         // Chart options
-                        responsive: false,
+                        responsive: true,
                         maintainAspectRatio: true,
-                        plugins: {
-                            legend: {
-                                display: false,
-                            },
-                        },
+                        //plugins: {
+                        //    legend: {
+                        //        display: false,
+                        //    },
+                        //},
                         //scales: {
                         //    y: {
                         //        suggestedMax: (Math.max(...yValues) * 1.5),
@@ -281,19 +260,19 @@
             
             repeatFetch();
 
-            function setTargetHeight() {
-                $("#c1CountWrapper").height($("#religionChartWrapper").height());
-            }
+            //function setTargetHeight() {
+            //    $("#c1CountWrapper").height($("#religionChartWrapper").height());
+            //}
 
-            $("#btnRefreshChart").on("click", function () {
-                showChart();
-                showReligionChart();
-                showC1Count();
-            })
+            //$("#btnRefreshChart").on("click", function () {
+            //    showChart();
+            //    showReligionChart();
+            //    showC1Count();
+            //})
 
-            $(window).on("resize", setTargetHeight());
+            //$(window).on("resize", setTargetHeight());
 
-            setTargetHeight();
+            //setTargetHeight();
 
             @if (TempData["notification"] != null)
             {
