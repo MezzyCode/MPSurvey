@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <title>Mango Middleware</title>
+    <partial name="AdminLTE/_Styles" />
+    @RenderSection("myScripts", false)
+    @RenderSection("myStyle", false)
+</head>
+<body>
+    <main id="main" class="main">
+        <section class="section">
+
+        </section>
+    </main>
+    <div class="content">
+        <div class="container-fluid">
+            @RenderBody()
+        </div>
+    </div>
+    <partial name="AdminLTE/_Scripts" />
+</body>
+</html>

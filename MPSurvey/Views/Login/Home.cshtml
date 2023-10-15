@@ -1,0 +1,307 @@
+@model Model.JsonModels.Master.JsonUser
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+
+<div>
+
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    @*<h1 class="m-0 text-dark">Welcome to TMS Application</h1>*@
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <section class="content">
+        <div class="container-fluid">
+            <!-- new vendor form -->
+            <div class="row center" >
+                <div class="col-md-12">
+                    <div class="card card-info">
+                         
+                        <div class="card-body">
+                            <h1 class="m-0 text-dark"><img src="~/img/hands.png" />&nbsp;Welcome!</h1>
+                            <br/>
+                            <h4>Welcome to Masinton Pasaribu Survey</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- new vendor form -->
+
+        </div><!-- /.container-fluid -->
+    </section>
+
+
+    <section class="content">
+        <div class="container-fluid">
+            <!-- new vendor form -->
+            <div class="row center">
+                <div class="col-md-12">
+                    <div class="card card-info">
+
+                        <button id="btnRefreshChart" class="btn btn-sm btn-secondary left mt-3 ms-4" style="width:8%">Refresh</button>
+
+                        <div class="card-body">
+                            <canvas id="mainChart" style="width:100%;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- new vendor form -->
+
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <!-- new vendor form -->
+            <div class="row center">
+
+                <div class="col-md-6">
+                    <div class="card card-info">
+                        <div id="religionChartWrapper" class="card-body">
+                            <canvas id="religionChart" style="width:100%;"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card card-info">
+
+                        <div id="c1CountWrapper" class="card-body">
+                            <h3><b>Total orang mengetahui Masinton Pasaribu S.H.</b></h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h4><i class="fa fa-check"></i> : <b id="c1YesCount"></b></h4>
+                                </div>
+                                <div class="col-md-6">
+                                    <h4><i class="fa fa-close"></i> : <b id="c1NoCount"></b></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- new vendor form -->
+
+        </div><!-- /.container-fluid -->
+    </section>
+
+</div>
+
+
+
+@section myScripts{
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            $("form").submit(function () {
+
+                ShowLoading();
+
+            });
+
+
+            const colorPalette1 = [
+                'rgba(255, 99, 132, 0.5)',
+                'rgba(54, 162, 235, 0.5)',
+                'rgba(255, 206, 86, 0.5)',
+                'rgba(75, 192, 192, 0.5)',
+                'rgba(153, 102, 255, 0.5)',
+                'rgba(255, 159, 64, 0.5)',
+                'rgba(200, 200, 200, 0.5)',
+                'rgba(100, 100, 100, 0.5)',
+                'rgba(0, 128, 0, 0.5)',
+                'rgba(128, 0, 0, 0.5)'
+            ];
+
+            function showChart() {
+                var xValues = [];
+                var yValues = [];
+
+                $.ajax({
+                    url: "/Master/Answer/MainChart",
+                    method: "POST",
+                    data: {},
+                    async: false,
+                    success: function (data) {
+                        $.each(data, function (index, item) {
+                            xValues.push(item.label);
+                            yValues.push(item.count);
+                        });
+                    }
+                });
+
+                createMainChart(xValues, yValues);
+            }
+
+            function showReligionChart() {
+                var labels = [];
+                var datasets = [];
+
+                $.ajax({
+                    url: "/Master/Answer/ReligionChart",
+                    method: "POST",
+                    data: {},
+                    async: false,
+                    success: function (data) {
+                        $.each(data, function (index, item) {
+
+                            var tempdataset = {
+                                data: [],
+                                label: item.xLabel, // contain calon name
+                                backgroundColor: colorPalette1[index],
+                            }
+
+                            $.each(item.charts, function (index, item) {
+                                // check whether the labels array already contain the religion
+                                if (!labels.includes(item.label)) {
+                                    labels.push(item.label);
+                                }
+                                tempdataset.data.push(item.count); // contain each agama vote for current calon
+                            });
+
+                            datasets.push(tempdataset);
+                        });
+                    }
+                });
+
+                createReligionChart(labels, datasets);
+            }
+
+            function createReligionChart(labels, datasets){
+
+                const existingChart = Chart.getChart("religionChart"); // Get the previous Chart instance
+                if (existingChart) {
+                    existingChart.destroy(); // Destroy the previous Chart
+                }
+
+                const religionChart = new Chart("religionChart", {
+                    type: "bar",
+                    data : {
+                        labels: labels,
+                        datasets: datasets,
+                    },
+                    options: {
+                        // Chart options
+                        responsive: false,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: {
+                                display: false,
+                            },
+                        },
+                        //scales: {
+                        //    y: {
+                        //        suggestedMax: (Math.max(...yValues) * 1.5),
+                        //    }
+                        //}
+                    }
+                });
+            }
+
+            function createMainChart(xValues, yValues) {
+
+                const existingChart = Chart.getChart("mainChart"); // Get the previous Chart instance
+                if (existingChart) {
+                    existingChart.destroy(); // Destroy the previous Chart
+                }
+
+                const datasets = xValues.map((label, index) => ({
+                        label: label,
+                        data: [yValues[index]],
+                        backgroundColor: colorPalette1[index],
+                }));
+
+                const myChart = new Chart("mainChart", {
+                    type: "bar",
+                    data: {
+                        labels: ["Suara"],
+                        datasets: datasets,
+                        //datasets: [{
+                        //    data: yValues, // Use the yValues array for the dataset
+                        //    // Other dataset configuration options
+                        //    backgroundColor: colors,
+                        //}]
+                    },
+                    options: {
+                        // Chart options
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        height: "auto",
+                        scales: {
+                            x: {
+                                display: false,
+                            },
+                            y: {
+                                suggestedMax: (Math.max(...yValues) * 1.5),
+                            }
+                        }
+                    },
+                });
+            } 
+
+            function showC1Count() {
+                $.ajax({
+                    url: "/Master/Answer/C1Count",
+                    method: "POST",
+                    data: {},
+                    async: false,
+                    success: function (data) {
+                        $.each(data, function (index, item) {
+                            if (item.label == "YA"){
+                                $("#c1YesCount").text(item.count);
+                            }
+                            else {
+                                $("#c1NoCount").text(item.count);
+                            }
+                        });
+                    }
+                });
+            }
+
+            function repeatFetch() {
+                showChart();
+                showReligionChart();
+                showC1Count();
+
+                setTimeout(function () {
+                    repeatFetch();
+                }, 60000);
+            }
+            
+            repeatFetch();
+
+            function setTargetHeight() {
+                $("#c1CountWrapper").height($("#religionChartWrapper").height());
+            }
+
+            $("#btnRefreshChart").on("click", function () {
+                showChart();
+                showReligionChart();
+                showC1Count();
+            })
+
+            $(window).on("resize", setTargetHeight());
+
+            setTargetHeight();
+
+            @if (TempData["notification"] != null)
+            {
+                @Html.Raw(TempData["notification"])
+            }
+
+        });
+
+    </script>
+
+}

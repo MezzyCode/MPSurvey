@@ -1,0 +1,217 @@
+﻿@using Model.JsonModels.Master
+@model Model.JsonModels.Master.IndexAnswerVM
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+<style>
+    #tblData th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #f39c12;
+        color: white;
+    }
+
+    #tblData th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+    }
+
+    #btn-filter {
+        float: right;
+        margin-left: 12px;
+        width: 50px;
+    }
+</style>
+
+<div class="text-sm">
+    <div class="pagetitle">
+        <h1>Article</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">Home</li>
+                <li class="breadcrumb-item">Master</li>
+                <li class="breadcrumb-item active">Article</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    <!-- /.content-header -->
+    <!-- Main content -->
+    <section class="section">
+        <div class="">
+            <!-- new District form -->
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+
+                        <div class="card-body">
+
+                            
+                            <a asp-action="DownloadExcelDocument" class="btn btn-sm btn-success"> <i class="fa fa-file-excel"></i> Export to Excel</a>
+                            <br />
+                            <table id="tblData" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Nama</th>
+                                        <th>Nomor KK</th>
+                                        <th>Alamat</th>
+                                        <th>Pilihan</th>
+                                        <th>Agama</th>
+                                        <th>Suku</th>
+
+                                        @* <th></th>*@
+                                    </tr>
+                                </thead>
+
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- new District form -->
+
+        </div>
+    </section>
+</div>
+
+@section myScripts{
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <script>
+
+
+        function FilterData() {
+            $('#tblData').DataTable().ajax.reload(null, false)
+        }
+
+
+        function DeleteData(itemid) {
+            swal({
+                title: "Are sure want to delete data?",
+                text: "",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes",
+                closeOnConfirm: false
+
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    $.ajax({
+
+                        url: '/Master/Answer/DeleteData',
+                        type: 'POST',
+                        data: { "id": itemid },
+                        success: function (data) {
+                            swal
+                                ({
+                                    title: "Deleted!",
+                                    text: "Succes Delete data",
+                                    type: "success"
+                                },
+                                    function () {
+                                        location.reload();
+                                    });
+                        }
+
+                    });
+                }
+            });
+        };
+
+
+        $(document).ready(function () {
+
+        @if (TempData["notification"] != null)
+        {
+            @Html.Raw(TempData["notification"])
+        }
+
+
+                $('#tblData').on("processing.dt", function (e, settings, processing) {
+                    if (processing) {
+                        ShowLoading();
+                    } else {
+                        DisableLoading();
+                    }
+                }).DataTable({
+                    "processing": false, // for show progress bar
+                    "serverSide": true, // for process server side
+                    "filter": true,
+                    "pageLength": 10,
+                    "responsive": false,
+                    "autoWidth": false,
+
+                    "lengthMenu": [10, 50, 100, 500, 1000],
+                    orderCellsTop: true,
+                    fixedHeader: {
+                        header: true,
+                        footer: true
+                    },
+                    dom: 'lfrtip',
+                    initComplete: function () {
+
+                        // Apply the search
+                        this.api()
+                            .columns()
+                            .every(function () {
+                                var that = this;
+
+                                $('input', this.footer()).on('keyup', function (e) {
+
+
+                                    if (e.keyCode === 13) {
+
+
+                                        if (that.search() !== this.value) {
+                                            that.search(this.value).draw();
+                                        }
+
+                                    }
+
+
+                                });
+                            });
+                    },
+
+                    "ajax": {
+                        "url": "@Url.Action("LoadData", "Answer", new { area ="Master" })",
+                        "type": "POST",
+                        "datatype": "json",
+                        "data": function (d) {
+
+                        },
+                    },
+                    "searching": false,
+
+
+                    "columns": [
+                        { "data": "nama", "name": "Nama" },
+                        { "data": "nama_Kk", "name": "Nama_Kk" },
+                        {
+                            data: null, render: function (data, type, row) {
+                                return '<span>' + row.alamat + ' ' + row.rt + '/' + row.rw + ' ' + row.kelurahan + ', ' + row.kecamatan + '</span>'
+                            }
+                        },
+                        { "data": "c6", "name": "C6"},
+                        { "data": "c9", "name": "C9"},
+                        { "data": "c10", "name": "C10"},
+
+                    ]
+
+                });
+
+        @if (TempData["notification"] != null)
+        {
+            @Html.Raw(TempData["notification"])
+        }
+
+        });
+    </script>
+
+}
+

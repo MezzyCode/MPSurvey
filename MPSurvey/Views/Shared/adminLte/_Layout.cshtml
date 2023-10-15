@@ -1,0 +1,58 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <title>MP Survey</title>
+    <partial name="AdminLTE/_Styles" />
+    @RenderSection("myScripts", false)
+    @RenderSection("myStyle", false)
+</head>
+@*<body class="hold-transition sidebar-mini">*@
+<body>
+    <partial name="AdminLTE/_TopNavigation" />
+    <partial name="AdminLTE/_MainNavigation" />
+
+    <main id="main" class="main">
+        <section class="section dashboard">
+            <div class="row">
+                @RenderBody()
+            </div>
+        </section>
+    @*<div class="wrapper">
+        
+        <div class="content-wrapper">
+
+            <div class="content">
+                <div class="container-fluid">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+        <aside class="control-sidebar control-sidebar-dark">
+            <div class="p-3">
+                <h5>Title</h5>
+                <p>Sidebar content</p>
+            </div>
+        </aside>
+        
+    </div>*@
+    
+    <partial name="AdminLTE/_Scripts" />
+
+
+    @*<script>
+        $(document).ready(function () {
+            $('a').click(function () {
+                ShowLoading();
+            });
+        });
+    </script>*@
+    </main>
+    <partial name="AdminLTE/_Footer" />
+</body>
+
+</html>

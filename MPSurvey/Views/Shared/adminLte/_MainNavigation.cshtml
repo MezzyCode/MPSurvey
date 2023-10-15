@@ -1,0 +1,39 @@
+﻿<!-- Main Sidebar Container -->
+@using Model.JsonModels.Master;
+@using Microsoft.AspNetCore.Http
+@using System.Text.Json
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+        <li class="nav-item">
+            <a class="nav-link " asp-area="" asp-controller="Login" asp-action="Home">
+                <i class="bi bi-grid"></i>
+                <span>Dashboard</span>
+            </a>
+        </li><!-- End Dashboard Nav -->
+        
+        <li class="nav-heading">
+            <a asp-area="Master" asp-controller="Answer" asp-action="Index" class="nav-link">
+                <i class="bi bi-circle"></i><span>Daftar Jawaban</span>
+            </a>
+        </li>
+
+        <li class="nav-heading">
+            <a asp-area="Master" asp-controller="Answer" asp-action="Create" class="nav-link">
+                <i class="bi bi-circle"></i><span>Isi Data</span>
+            </a>
+        </li>
+
+        <!-- End Icons Nav -->
+
+
+        <li class="nav-heading">&nbsp;</li>
+        <li class="nav-item">
+            <a asp-area="" asp-controller="Login" asp-action="Logout" class="nav-link">
+                <i class="bi bi-box-arrow-in-right"></i><span>Logout</span>
+            </a>
+        </li>
+    </ul>
+
+</aside>

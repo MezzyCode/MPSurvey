@@ -1,0 +1,131 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+<div class="">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">New Vendor Registration</h1>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- new vendor form -->
+            <div class="row center" style="float: none; margin: 0 auto;">
+                <div class="col-md-12">
+                    <div class="card card-warning">
+                        <div class="card-header">
+                            <h3 class="card-title">Appendix 1A - Required Information</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Company</label>
+                                        <select class="form-control">
+                                            <option>0110 - Mitra Adiperkasa</option>
+                                            <option>0120 - MAP Active</option>
+                                            <option>0130 - PT. Sari Coffee Indonesia</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Purchasing Organization</label>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Vendor Group</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox">
+                                            <label class="form-check-label">GRP - Direct Vendor</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox">
+                                            <label class="form-check-label">GRP - Consignment Vendor</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox">
+                                            <label class="form-check-label">GRP - Fixed Asset</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox">
+                                            <label class="form-check-label">GRP - Non MD</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Vendor Type</label>
+                                        <select class="form-control" onchange="onVendorTypeChange(this)">
+                                            <option value="Perorangan">Perorangan</option>
+                                            <option value="Perusahaan">Perusahaan</option>
+                                            <option value="Pemerintah">Pemerintah</option>
+                                            <option value="Overseas">Overseas</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Vendor Entity Name</label> (Name needs to be exactly match the KTP/SIUP)
+                                        <input type="text" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Brand/Type of Goods</label>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>Statement Letter</label>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="customFile11">
+                                        <label class="custom-file-label" for="customFile11">Choose file</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Registration Completed By</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="radioCompleteBy" onchange="tickRadioMapRequestor()">
+                                            <label class="form-check-label">MAP Requestor</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="radioCompleteBy" onchange="tickRadioVendor()">
+                                            <label class="form-check-label">Vendor</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-info float-right">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- new vendor form -->
+
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
