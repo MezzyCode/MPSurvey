@@ -58,6 +58,60 @@
         </div><!-- /.container-fluid -->
     </section>
 
+
+    <section class="content">
+        <div class="container-fluid">
+            <!-- new vendor form -->
+            <div class="row center">
+                <div class="col-md-6">
+                    <div class="card card-info">
+                        <div class="card-body text-center">
+                            <b>Apakah Ibu/Bapak tahu (pernah dengar, baca, lihat) Masinton Pasribu sebagai Anggota DPR DKI II (Jaksel, Jakpus, dan Luar Negeri)?</b>
+                            <canvas id="c3AChart" style="width:100%;"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card card-info">
+                        <div class="card-body text-center">
+                            <b>Apakah Ibu/Bapak tahu (pernah dengar, baca, lihat) Masinton Pasribu sebagai Aktivis gerakan tahun 1998?</b>
+                            <canvas id="c3BChart" style="width:100%;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- new vendor form -->
+
+        </div><!-- /.container-fluid -->
+    </section>
+
+
+    <section class="content">
+        <div class="container-fluid">
+            <!-- new vendor form -->
+            <div class="row center">
+                <div class="col-md-6">
+                    <div class="card card-info">
+                        <div class="card-body text-center">
+                            <b>Apakah Ibu/Bapak tahu bahwa Masinton Pasribu diinginkan kembali oleh masyarakat untuk menjadi anggota DPR RI Dapil DKI II (Kota Jakarta Selatan, Jakarta Pusat, dan Luar Negeri)?</b>
+                            <canvas id="c4Chart" style="width:100%;"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card card-info">
+                        <div class="card-body text-center">
+                            <b>Bersediakah Ibu/Bapak mengkampanyekan Masinton Pasaribu sebagai Calon Wakil Rakyat 2024 nanti?</b>
+                            <canvas id="c7Chart" style="width:100%;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- new vendor form -->
+
+        </div><!-- /.container-fluid -->
+    </section>
+@*
     <section class="container row">
         <article class="col-sm-6 card">
             <canvas id="religionChart"></canvas>
@@ -71,7 +125,7 @@
                 </ul>
             </div>
         </article>
-    </section>
+    </section>*@
 
 </div>
 
@@ -157,6 +211,106 @@
                 createReligionChart(labels, datasets);
             }
 
+            function showC3AChart() {
+                var datasets = [];
+
+                $.ajax({
+                    url: "/Master/Answer/C3AChart",
+                    method: "POST",
+                    data: {},
+                    async: false,
+                    success: function (data) {
+                        $.each(data, function (index, item) {
+
+                            var tempdataset = {
+                                data: [item.count],
+                                label: item.label, // contain calon name
+                                backgroundColor: colorPalette1[index],
+                            }
+
+                            datasets.push(tempdataset);
+                        });
+                    }
+                });
+
+                createCChart(datasets, "c3AChart");
+            }
+
+            function showC3BChart() {
+                var datasets = [];
+
+                $.ajax({
+                    url: "/Master/Answer/C3BChart",
+                    method: "POST",
+                    data: {},
+                    async: false,
+                    success: function (data) {
+                        $.each(data, function (index, item) {
+
+                            var tempdataset = {
+                                data: [item.count],
+                                label: item.label, // contain calon name
+                                backgroundColor: colorPalette1[index],
+                            }
+
+                            datasets.push(tempdataset);
+                        });
+                    }
+                });
+
+                createCChart(datasets, "c3BChart");
+            }
+
+            function showC4Chart(){
+                var datasets = [];
+
+                $.ajax({
+                    url: "/Master/Answer/C4Chart",
+                    method: "POST",
+                    data: {},
+                    async: false,
+                    success: function (data) {
+                        $.each(data, function (index, item) {
+
+                            var tempdataset = {
+                                data: [item.count],
+                                label: item.label, // contain calon name
+                                backgroundColor: colorPalette1[index],
+                            }
+
+                            datasets.push(tempdataset);
+                        });
+                    }
+                });
+
+                createCChart(datasets, "c4Chart");
+            }
+
+            function showC7Chart() {
+                var datasets = [];
+
+                $.ajax({
+                    url: "/Master/Answer/C7Chart",
+                    method: "POST",
+                    data: {},
+                    async: false,
+                    success: function (data) {
+                        $.each(data, function (index, item) {
+
+                            var tempdataset = {
+                                data: [item.count],
+                                label: item.label, // contain calon name
+                                backgroundColor: colorPalette1[index],
+                            }
+
+                            datasets.push(tempdataset);
+                        });
+                    }
+                })
+
+                createCChart(datasets, "c7Chart");
+            }
+
             function createReligionChart(labels, datasets){
 
                 const existingChart = Chart.getChart("religionChart"); // Get the previous Chart instance
@@ -204,7 +358,7 @@
                 const myChart = new Chart("mainChart", {
                     type: "bar",
                     data: {
-                        labels: ["Suara"],
+                        labels: [""],
                         datasets: datasets,
                         //datasets: [{
                         //    data: yValues, // Use the yValues array for the dataset
@@ -222,7 +376,7 @@
                                 display: false,
                             },
                             y: {
-                                suggestedMax: (Math.max(...yValues) * 1.5),
+                                suggestedMax: (Math.max(...yValues) * 1.25),
                             }
                         }
                     },
@@ -248,27 +402,68 @@
                 });
             }
 
+            function createCChart(datasets, chartId) {
+
+                const existingChart = Chart.getChart(chartId); // Get the previous Chart instance
+                if (existingChart) {
+                    existingChart.destroy(); // Destroy the previous Chart
+                }
+
+                const maxDataValue = datasets.reduce((max, obj) => {
+                    const maxInDataArray = Math.max(...obj.data);
+                    return Math.max(max, maxInDataArray);
+                }, -Infinity);
+
+                const myChart = new Chart(chartId, {
+                    type: "bar",
+                    data: {
+                        labels: [""],
+                        datasets: datasets,
+                    },
+                    options: {
+                        // Chart options
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        height: "auto",
+                        scales: {
+                            x: {
+                                display: false,
+                            },
+                            y: {
+                                suggestedMax: maxDataValue * 1.25,
+                            }
+                        }
+                    }
+                });
+            }
+
             function repeatFetch() {
                 showChart();
-                showReligionChart();
+                showC3AChart();
+                showC3BChart();
+                showC4Chart();
+                showC7Chart();
                 showC1Count();
 
                 setTimeout(function () {
                     repeatFetch();
                 }, 60000);
             }
-            
+
             repeatFetch();
+
+            $("#btnRefreshChart").on("click", function () {
+                showChart();
+                showC3AChart();
+                showC3BChart();
+                showC4Chart();
+                showC7Chart();
+                showC1Count();
+            })
 
             //function setTargetHeight() {
             //    $("#c1CountWrapper").height($("#religionChartWrapper").height());
             //}
-
-            //$("#btnRefreshChart").on("click", function () {
-            //    showChart();
-            //    showReligionChart();
-            //    showC1Count();
-            //})
 
             //$(window).on("resize", setTargetHeight());
 

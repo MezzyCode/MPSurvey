@@ -145,6 +145,63 @@ namespace Service.Services.Master
             }
         }
 
+        public async Task<List<JsonChartLabel>> FindC3Async(JsonAnswer filter, ClaimsPrincipal claims)
+        {
+            try
+            {
+                String ClientID = GlobalHelpers.GetClaimValueByType(EnumClaims.ClientID.ToString(), claims);
+                filter.ClientID = ClientID;
+                Expression<Func<Answer, bool>> filterExp = c => true;
+                if (!String.IsNullOrEmpty(filter.Kelurahan)) filterExp = filterExp.And(x => x.Kelurahan == filter.Kelurahan);
+                if (!String.IsNullOrEmpty(filter.Kecamatan)) filterExp = filterExp.And(x => x.Kecamatan == filter.Kecamatan);
+                if (!String.IsNullOrEmpty(filter.C6)) filterExp = filterExp.And(x => x.C6 == filter.C6);
+                filterExp = filterExp.And(x => x.ClientID == filter.ClientID);
+
+                List<JsonAnswer> answerList = _mapper.Map<IEnumerable<Answer>, List<JsonAnswer>>(await Repo.QueryAnswersAsync(filterExp, filter.Take.GetValueOrDefault(), filter.Skip.GetValueOrDefault()));
+
+                //List<JsonHelperTable> listAgamaHelper = await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.AGAMACODE }, claims);
+                List<string> listChoice = (await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CHOISE3CODE }, claims)).OrderBy(x => x.Description).Select(x => x.Value).ToList();
+
+                List<JsonChart> groupedChart = new List<JsonChart>();
+
+                var groupedC3A = answerList.GroupBy(x => x.C3A).Select(x => new JsonChart
+                {
+                    Label = x.Key,
+                    Count = x.Count()
+                }).ToList();
+
+                var groupedC3B = answerList.GroupBy(x => x.C3B).Select(x => new JsonChart
+                {
+                    Label = x.Key,
+                    Count = x.Count()
+                }).ToList();
+
+                groupedChart.AddRange(groupedC3A);
+                groupedChart.AddRange(groupedC3B);
+
+                List<JsonChartLabel> listChartLabel = new List<JsonChartLabel>();
+
+                foreach (var choice in listChoice)
+                {
+                    JsonChartLabel newChartLabel = new JsonChartLabel();
+                    newChartLabel.XLabel = choice;  // YA, TIDAK, TT/TJ
+
+                    var groupedbyChoice = groupedChart.Where(x => x.Label == choice).ToList();  // 
+
+                    newChartLabel.Charts.AddRange(groupedbyChoice);
+
+                    listChartLabel.Add(newChartLabel);
+                }
+
+                return listChartLabel;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         public async Task<List<JsonChart>> FindC1Async(JsonAnswer filter, ClaimsPrincipal claims)
         {
             try
@@ -168,6 +225,187 @@ namespace Service.Services.Master
                 List<JsonChart> listChart = new List<JsonChart>();
 
                 List<string> list2Choice = (await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CHOISE2CODE }, claims)).Select(x => x.Value).ToList();
+
+                foreach (var choice in list2Choice)
+                {
+                    JsonChart newChart = new JsonChart();
+                    newChart.Label = choice.ToString();
+                    newChart.Count = 0;
+
+                    var cekList = grouped.FirstOrDefault(x => x.Label == choice);
+                    if (cekList != null) newChart.Count = cekList.Count;
+
+                    listChart.Add(newChart);
+                }
+
+                return listChart;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public async Task<List<JsonChart>> FindC3AAsync(JsonAnswer filter, ClaimsPrincipal claims)
+        {
+            try
+            {
+                String ClientID = GlobalHelpers.GetClaimValueByType(EnumClaims.ClientID.ToString(), claims);
+                filter.ClientID = ClientID;
+                Expression<Func<Answer, bool>> filterExp = c => true;
+                if (!String.IsNullOrEmpty(filter.Kelurahan)) filterExp = filterExp.And(x => x.Kelurahan == filter.Kelurahan);
+                if (!String.IsNullOrEmpty(filter.Kecamatan)) filterExp = filterExp.And(x => x.Kecamatan == filter.Kecamatan);
+                if (!String.IsNullOrEmpty(filter.C6)) filterExp = filterExp.And(x => x.C6 == filter.C6);
+                filterExp = filterExp.And(x => x.ClientID == filter.ClientID);
+
+                List<JsonAnswer> answerList = _mapper.Map<IEnumerable<Answer>, List<JsonAnswer>>(await Repo.QueryAnswersAsync(filterExp, filter.Take.GetValueOrDefault(), filter.Skip.GetValueOrDefault()));
+
+                var grouped = answerList.GroupBy(x => x.C3A).Select(x => new JsonChart
+                {
+                    Label = x.Key,
+                    Count = x.Count()
+                }).ToList();
+
+                List<JsonChart> listChart = new List<JsonChart>();
+
+                List<string> list3Choice = (await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CHOISE3CODE }, claims)).OrderBy(x => x.Description).Select(x => x.Value).ToList();
+
+                foreach (var choice in list3Choice)
+                {
+                    JsonChart newChart = new JsonChart();
+                    newChart.Label = choice.ToString();
+                    newChart.Count = 0;
+
+                    var cekList = grouped.FirstOrDefault(x => x.Label == choice);
+                    if (cekList != null) newChart.Count = cekList.Count;
+
+                    listChart.Add(newChart);
+                }
+
+                return listChart;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public async Task<List<JsonChart>> FindC3BAsync(JsonAnswer filter, ClaimsPrincipal claims)
+        {
+            try
+            {
+                String ClientID = GlobalHelpers.GetClaimValueByType(EnumClaims.ClientID.ToString(), claims);
+                filter.ClientID = ClientID;
+                Expression<Func<Answer, bool>> filterExp = c => true;
+                if (!String.IsNullOrEmpty(filter.Kelurahan)) filterExp = filterExp.And(x => x.Kelurahan == filter.Kelurahan);
+                if (!String.IsNullOrEmpty(filter.Kecamatan)) filterExp = filterExp.And(x => x.Kecamatan == filter.Kecamatan);
+                if (!String.IsNullOrEmpty(filter.C6)) filterExp = filterExp.And(x => x.C6 == filter.C6);
+                filterExp = filterExp.And(x => x.ClientID == filter.ClientID);
+
+                List<JsonAnswer> answerList = _mapper.Map<IEnumerable<Answer>, List<JsonAnswer>>(await Repo.QueryAnswersAsync(filterExp, filter.Take.GetValueOrDefault(), filter.Skip.GetValueOrDefault()));
+
+                var grouped = answerList.GroupBy(x => x.C3B).Select(x => new JsonChart
+                {
+                    Label = x.Key,
+                    Count = x.Count()
+                }).ToList();
+
+                List<JsonChart> listChart = new List<JsonChart>();
+
+                List<string> list3Choice = (await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CHOISE3CODE }, claims)).OrderBy(x => x.Description).Select(x => x.Value).ToList();
+
+                foreach (var choice in list3Choice)
+                {
+                    JsonChart newChart = new JsonChart();
+                    newChart.Label = choice.ToString();
+                    newChart.Count = 0;
+
+                    var cekList = grouped.FirstOrDefault(x => x.Label == choice);
+                    if (cekList != null) newChart.Count = cekList.Count;
+
+                    listChart.Add(newChart);
+                }
+
+                return listChart;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+
+        public async Task<List<JsonChart>> FindC4Async(JsonAnswer filter, ClaimsPrincipal claims)
+        {
+            try
+            {
+                String ClientID = GlobalHelpers.GetClaimValueByType(EnumClaims.ClientID.ToString(), claims);
+                filter.ClientID = ClientID;
+                Expression<Func<Answer, bool>> filterExp = c => true;
+                if (!String.IsNullOrEmpty(filter.Kelurahan)) filterExp = filterExp.And(x => x.Kelurahan == filter.Kelurahan);
+                if (!String.IsNullOrEmpty(filter.Kecamatan)) filterExp = filterExp.And(x => x.Kecamatan == filter.Kecamatan);
+                if (!String.IsNullOrEmpty(filter.C6)) filterExp = filterExp.And(x => x.C6 == filter.C6);
+                filterExp = filterExp.And(x => x.ClientID == filter.ClientID);
+
+                List<JsonAnswer> answerList = _mapper.Map<IEnumerable<Answer>, List<JsonAnswer>>(await Repo.QueryAnswersAsync(filterExp, filter.Take.GetValueOrDefault(), filter.Skip.GetValueOrDefault()));
+
+                var grouped = answerList.GroupBy(x => x.C4).Select(x => new JsonChart
+                {
+                    Label = x.Key,
+                    Count = x.Count()
+                }).ToList();
+
+                List<JsonChart> listChart = new List<JsonChart>();
+
+                List<string> list2Choice = (await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CHOISE2CODE }, claims)).OrderBy(x => x.Description).Select(x => x.Value).ToList();
+
+                foreach (var choice in list2Choice)
+                {
+                    JsonChart newChart = new JsonChart();
+                    newChart.Label = choice.ToString();
+                    newChart.Count = 0;
+
+                    var cekList = grouped.FirstOrDefault(x => x.Label == choice);
+                    if (cekList != null) newChart.Count = cekList.Count;
+
+                    listChart.Add(newChart);
+                }
+
+                return listChart;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public async Task<List<JsonChart>> FindC7Async(JsonAnswer filter, ClaimsPrincipal claims)
+        {
+            try
+            {
+                String ClientID = GlobalHelpers.GetClaimValueByType(EnumClaims.ClientID.ToString(), claims);
+                filter.ClientID = ClientID;
+                Expression<Func<Answer, bool>> filterExp = c => true;
+                if (!String.IsNullOrEmpty(filter.Kelurahan)) filterExp = filterExp.And(x => x.Kelurahan == filter.Kelurahan);
+                if (!String.IsNullOrEmpty(filter.Kecamatan)) filterExp = filterExp.And(x => x.Kecamatan == filter.Kecamatan);
+                if (!String.IsNullOrEmpty(filter.C6)) filterExp = filterExp.And(x => x.C6 == filter.C6);
+                filterExp = filterExp.And(x => x.ClientID == filter.ClientID);
+
+                List<JsonAnswer> answerList = _mapper.Map<IEnumerable<Answer>, List<JsonAnswer>>(await Repo.QueryAnswersAsync(filterExp, filter.Take.GetValueOrDefault(), filter.Skip.GetValueOrDefault()));
+
+                var grouped = answerList.GroupBy(x => x.C7).Select(x => new JsonChart
+                {
+                    Label = x.Key,
+                    Count = x.Count()
+                }).ToList();
+
+                List<JsonChart> listChart = new List<JsonChart>();
+
+                List<string> list2Choice = (await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CHOISE2CODE }, claims)).OrderBy(x => x.Description).Select(x => x.Value).ToList();
 
                 foreach (var choice in list2Choice)
                 {
@@ -259,16 +497,16 @@ namespace Service.Services.Master
                 String ClientID = GlobalHelpers.GetClaimValueByType(EnumClaims.ClientID.ToString(), claims);
 
                 string Error = "";
-                if (String.IsNullOrEmpty(Save.ID))
-                {
-                    if (await Repo.IsUniqueKeyCodeExist(Save.Nama, Save.Nama_Kk))
-                    {
-                        Error = $"{Save.Nama} dengan KK : {Save.Nama_Kk} sudah pernah diinput";
+                //if (String.IsNullOrEmpty(Save.ID))
+                //{
+                //    if (await Repo.IsUniqueKeyCodeExist(Save.Nama, Save.Nama_Kk))
+                //    {
+                //        Error = $"{Save.Nama} dengan KK : {Save.Nama_Kk} sudah pernah diinput";
 
-                        result = new JsonReturn(false);
-                        result.message = Error;
-                    }
-                }
+                //        result = new JsonReturn(false);
+                //        result.message = Error;
+                //    }
+                //}
 
                 if (String.IsNullOrEmpty(Error))
                 {
@@ -284,6 +522,8 @@ namespace Service.Services.Master
                         NewData.Rw = Save.Rw;
                         NewData.Kelurahan = Save.Kelurahan;
                         NewData.Kecamatan = Save.Kecamatan;
+                        NewData.NIK = Save.NIK;
+                        NewData.Nomor_telp = Save.Nomor_telp;
                         NewData.C1 = Save.C1;
                         NewData.C2 = Save.C2;
                         NewData.C3A = Save.C3A;
@@ -319,6 +559,8 @@ namespace Service.Services.Master
                         NewData.Rw = Save.Rw;
                         NewData.Kelurahan = Save.Kelurahan;
                         NewData.Kecamatan = Save.Kecamatan;
+                        NewData.NIK = Save.NIK;
+                        NewData.Nomor_telp = Save.Nomor_telp;
                         NewData.C1 = Save.C1;
                         NewData.C2 = Save.C2;
                         NewData.C3A = Save.C3A;

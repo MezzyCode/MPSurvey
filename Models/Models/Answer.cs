@@ -20,6 +20,10 @@ namespace Model.Models
 
         public string? Kecamatan { get; set; }
 
+        public string? NIK { get; set; }
+
+        public string? Nomor_telp { get; set; }
+
         public string? C1 { get; set; }
 
         public string? C2 { get; set; }

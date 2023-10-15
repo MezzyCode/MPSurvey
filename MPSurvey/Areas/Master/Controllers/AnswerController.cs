@@ -195,6 +195,86 @@ namespace MainProject.Areas.Master.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> C3Chart()
+        {
+            try
+            {
+                List<JsonChartLabel> chartData = await ServiceAnswer.FindC3Async(new JsonAnswer(), User);
+
+                return Json(chartData);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> C3AChart()
+        {
+            try
+            {
+                List<JsonChart> data = await ServiceAnswer.FindC3AAsync(new JsonAnswer(), User);
+
+                return Json(data);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> C3BChart()
+        {
+            try
+            {
+                List<JsonChart> data = await ServiceAnswer.FindC3BAsync(new JsonAnswer(), User);
+
+                return Json(data);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> C4Chart()
+        {
+            try
+            {
+                List<JsonChart> data = await ServiceAnswer.FindC4Async(new JsonAnswer(), User);
+
+                return Json(data);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> C7Chart()
+        {
+            try
+            {
+                List<JsonChart> data = await ServiceAnswer.FindC7Async(new JsonAnswer(), User);
+
+                return Json(data);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         public async Task<IActionResult> LoadData()
         {
             try

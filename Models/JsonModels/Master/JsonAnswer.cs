@@ -3,6 +3,8 @@ using Model.JsonModels.Setting;
 using Model.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +20,8 @@ namespace Model.JsonModels.Master
     {
         public string Nama { get; set; }
 
-        public string Nama_Kk { get; set; }
+        [DisplayName("Nomor KK")]
+        public string? Nama_Kk { get; set; }
 
         public string Alamat { get; set; }
 
@@ -29,6 +32,10 @@ namespace Model.JsonModels.Master
         public string Kelurahan { get; set; }
 
         public string Kecamatan { get; set; }
+
+        public string? NIK { get; set; }
+        [DisplayName("Nomor Telepon")]
+        public string? Nomor_telp { get; set; }
 
         public string C1 { get; set; }
 
