@@ -23,6 +23,8 @@ namespace Model.JsonModels.Master
         [DisplayName("Nomor KK")]
         public string? Nama_Kk { get; set; }
 
+        public int? Usia { get; set; }
+
         public string Alamat { get; set; }
 
         public string Rt { get; set; }

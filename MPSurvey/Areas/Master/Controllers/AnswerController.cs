@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using DAL.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Model.InfrastructurClass;
 using Model.JsonModels.Master;
 using Model.JsonModels.Setting;
 using Model.Models;
+using Service.Helpers;
 using Service.Services.Master;
 using Service.Services.Setting;
 using ConstantVariableKey = Model.InfrastructurClass.ConstantVariable;

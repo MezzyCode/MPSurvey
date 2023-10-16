@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace Database.JsonModels
+namespace Model.JsonModels
 {
     public class JsonReturn
     {

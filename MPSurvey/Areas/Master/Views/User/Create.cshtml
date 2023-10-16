@@ -1,0 +1,126 @@
+﻿@model Model.JsonModels.Master.JsonUser
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+
+<div class="text-sm">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">User</h1>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- new vendor form -->
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row center" style="float: none; margin: 0 auto;">
+                    <div class="col-md-12">
+                        <div class="card card-warning">
+                            <div class="card-header">
+                                <h3 class="card-title">Create</h3>
+                            </div>
+                            <div class="card-body">
+
+                                <div class="row">
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <label asp-for="Name" class="control-label"></label>
+                                                <input type="text" asp-for="Name" class="form-control" />
+                                                <span asp-validation-for="Name" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <label asp-for="Username" class="control-label"></label>
+                                                <input type="text" asp-for="Username" class="form-control" />
+                                                <span asp-validation-for="Username" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <label asp-for="Email" class="control-label"></label>
+                                                <input type="email" asp-for="Email" id="notAdEmail" class="form-control" />
+                                                
+                                                <span asp-validation-for="Email" class="text-danger"></span>
+                                                <span asp-validation-for="EmailApproval" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div id="passwordAD" class="form-group">
+                                            <div class="row">
+                                                <label asp-for="Password" class="control-label"></label>
+                                                <input type="password" asp-for="Password" class="form-control" />
+                                                <span asp-validation-for="Password" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div id="passwordAD" class="form-group">
+                                            <div class="row">
+                                                <label asp-for="PasswordConfirm" class="control-label"></label>
+                                                <input type="password" asp-for="PasswordConfirm" class="form-control" />
+                                                <span asp-validation-for="PasswordConfirm" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="card-footer">
+
+
+
+                                <input type="submit" value="Submit" class="btn btn-success" />
+                                &nbsp;
+                                <a asp-action="Index" class="btn btn-danger">Cancel</a>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <!-- new vendor form -->
+
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+
+@section myScripts{
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $("form").submit(function () {
+
+                ShowLoading();
+
+            });
+
+
+        @if (TempData["notification"] != null)
+        {
+            @Html.Raw(TempData["notification"])
+        }
+        });
+
+
+    </script>
+
+}

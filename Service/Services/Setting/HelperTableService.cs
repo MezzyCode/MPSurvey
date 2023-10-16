@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using DAL.Helpers;
 using Database.JsonModels.Setting;
 using Database.JsonModels;
 using Model.Models;
@@ -11,9 +10,10 @@ using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using static DAL.Helpers.GlobalHelpers;
 using Service.Helpers;
 using Model.JsonModels.Setting;
+using Model.JsonModels;
+using static Service.Helpers.GlobalHelpers;
 
 namespace Service.Services.Setting
 {

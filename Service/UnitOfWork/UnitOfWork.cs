@@ -1,7 +1,7 @@
-﻿using DAL.Helpers;
-using Database.Context;
+﻿using Database.Context;
 using Microsoft.EntityFrameworkCore;
 using Model.Models;
+using Service.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;

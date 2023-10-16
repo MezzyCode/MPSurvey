@@ -1,4 +1,5 @@
-﻿using Model.InfrastructurClass;
+﻿using Microsoft.AspNetCore.Http;
+using Model.InfrastructurClass;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,6 +10,13 @@ using System.Threading.Tasks;
 
 namespace Model.JsonModels.Master
 {
+    public class IndexUserVM
+    {
+        public List<JsonUser> listIndex { get; set; }
+        public IFormFile Upload { get; set; }
+        public string UrlFileLog { get; set; }
+    }
+
     public class JsonUser
     {
         [Required(ErrorMessage = "Username is Required")]

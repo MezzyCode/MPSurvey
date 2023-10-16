@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using ClosedXML.Excel;
-using DAL.Helpers;
 using Database.JsonModels;
+using Model.JsonModels;
 using Model.JsonModels.Master;
 using Model.JsonModels.Setting;
 using Model.Models;
@@ -16,8 +16,8 @@ using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using static DAL.Helpers.GlobalHelpers;
 using static Database.Context.HelperFunction;
+using static Service.Helpers.GlobalHelpers;
 using ConstantVariableKey = Model.InfrastructurClass.ConstantVariable;
 
 namespace Service.Services.Master
@@ -516,6 +516,7 @@ namespace Service.Services.Master
                     {
                         NewData.ID = Guid.NewGuid().ToString();
                         NewData.Nama = Save.Nama;
+                        NewData.Usia = Save.Usia;
                         NewData.Nama_kk = Save.Nama_Kk;
                         NewData.Alamat = Save.Alamat;
                         NewData.Rt = Save.Rt;
@@ -554,6 +555,7 @@ namespace Service.Services.Master
 
                         NewData.Nama = Save.Nama;
                         NewData.Nama_kk = Save.Nama_Kk;
+                        NewData.Usia = Save.Usia;
                         NewData.Alamat = Save.Alamat;
                         NewData.Rt = Save.Rt;
                         NewData.Rw = Save.Rw;
@@ -619,42 +621,44 @@ namespace Service.Services.Master
                 {
                     IXLWorksheet worksheet = workbook.Worksheets.Add("Hasil Survey");
                     worksheet.Cell(1, 1).Value = "Nama";
-                    worksheet.Cell(1, 2).Value = "NIK";
-                    worksheet.Cell(1, 3).Value = "No. Telp";
-                    worksheet.Cell(1, 4).Value = "Nama KK";
-                    worksheet.Cell(1, 5).Value = "Alamat";
-                    worksheet.Cell(1, 6).Value = "C1";
-                    worksheet.Cell(1, 7).Value = "C2";
-                    worksheet.Cell(1, 8).Value = "C3A";
-                    worksheet.Cell(1, 9).Value = "C3B";
-                    worksheet.Cell(1, 10).Value = "C4";
-                    worksheet.Cell(1, 11).Value = "C5";
+                    worksheet.Cell(1, 2).Value = "Usia";
+                    worksheet.Cell(1, 3).Value = "NIK";
+                    worksheet.Cell(1, 4).Value = "No. Telp";
+                    worksheet.Cell(1, 5).Value = "Nama KK";
+                    worksheet.Cell(1, 6).Value = "Alamat";
+                    worksheet.Cell(1, 7).Value = "C1";
+                    worksheet.Cell(1, 8).Value = "C2";
+                    worksheet.Cell(1, 9).Value = "C3A";
+                    worksheet.Cell(1, 10).Value = "C3B";
+                    worksheet.Cell(1, 11).Value = "C4";
+                    worksheet.Cell(1, 12).Value = "C5";
                     worksheet.Cell(1, 12).Value = "C6";
-                    worksheet.Cell(1, 13).Value = "C7";
-                    worksheet.Cell(1, 14).Value = "C8";
-                    worksheet.Cell(1, 15).Value = "C9";
-                    worksheet.Cell(1, 16).Value = "C10";
+                    worksheet.Cell(1, 14).Value = "C7";
+                    worksheet.Cell(1, 15).Value = "C8";
+                    worksheet.Cell(1, 16).Value = "C9";
+                    worksheet.Cell(1, 17).Value = "C10";
 
                     List<JsonAnswer> datas = await FindAsync(filter, claims);
 
                     for (int index = 1; index < datas.Count; index++)
                     {
                         worksheet.Cell(index + 1, 1).Value = datas[index - 1].Nama;
-                        worksheet.Cell(index + 1, 2).Value = datas[index - 1].NIK;
-                        worksheet.Cell(index + 1, 3).Value = datas[index - 1].Nomor_telp;
-                        worksheet.Cell(index + 1, 4).Value = datas[index - 1].Nama_Kk;
-                        worksheet.Cell(index + 1, 5).Value = $"{datas[index - 1].Alamat}, RT {datas[index - 1].Rt} RW {datas[index - 1].Rw}, {datas[index - 1].Kelurahan} {datas[index - 1].Kecamatan}";
-                        worksheet.Cell(index + 1, 6).Value = datas[index - 1].C1;
-                        worksheet.Cell(index + 1, 7).Value = datas[index - 1].C2;
-                        worksheet.Cell(index + 1, 8).Value = datas[index - 1].C3A;
-                        worksheet.Cell(index + 1, 9).Value = datas[index - 1].C3B;
-                        worksheet.Cell(index + 1, 10).Value = datas[index - 1].C4;
-                        worksheet.Cell(index + 1, 11).Value = datas[index - 1].C5;
-                        worksheet.Cell(index + 1, 12).Value = datas[index - 1].C6;
-                        worksheet.Cell(index + 1, 13).Value = datas[index - 1].C7;
-                        worksheet.Cell(index + 1, 14).Value = datas[index - 1].C8;
-                        worksheet.Cell(index + 1, 15).Value = datas[index - 1].C9;
-                        worksheet.Cell(index + 1, 16).Value = datas[index - 1].C10;
+                        worksheet.Cell(index + 1, 2).Value = datas[index - 1].Usia;
+                        worksheet.Cell(index + 1, 3).Value = datas[index - 1].NIK;
+                        worksheet.Cell(index + 1, 4).Value = datas[index - 1].Nomor_telp;
+                        worksheet.Cell(index + 1, 5).Value = datas[index - 1].Nama_Kk;
+                        worksheet.Cell(index + 1, 6).Value = $"{datas[index - 1].Alamat}, RT {datas[index - 1].Rt} RW {datas[index - 1].Rw}, {datas[index - 1].Kelurahan} {datas[index - 1].Kecamatan}";
+                        worksheet.Cell(index + 1, 7).Value = datas[index - 1].C1;
+                        worksheet.Cell(index + 1, 8).Value = datas[index - 1].C2;
+                        worksheet.Cell(index + 1, 9).Value = datas[index - 1].C3A;
+                        worksheet.Cell(index + 1, 10).Value = datas[index - 1].C3B;
+                        worksheet.Cell(index + 1, 11).Value = datas[index - 1].C4;
+                        worksheet.Cell(index + 1, 12).Value = datas[index - 1].C5;
+                        worksheet.Cell(index + 1, 13).Value = datas[index - 1].C6;
+                        worksheet.Cell(index + 1, 14).Value = datas[index - 1].C7;
+                        worksheet.Cell(index + 1, 15).Value = datas[index - 1].C8;
+                        worksheet.Cell(index + 1, 16).Value = datas[index - 1].C9;
+                        worksheet.Cell(index + 1, 17).Value = datas[index - 1].C10;
                     }
                     using (var stream = new MemoryStream())
                     {

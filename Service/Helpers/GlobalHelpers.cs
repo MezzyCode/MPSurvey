@@ -24,7 +24,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Helpers
+namespace Service.Helpers
 {
     public static class ConstantVariable
     {

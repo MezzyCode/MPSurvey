@@ -29,7 +29,7 @@
 
 <div class="text-sm">
     <div class="Isi Data">
-        <h1>Article</h1>
+        <h1>Isi Data</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">Home</li>
@@ -67,8 +67,18 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label asp-for="NIK" class="control-label font-weight-bold"></label>
-                                                <input type="text" asp-for="NIK" class="form-control" />
+                                                <input type="number" asp-for="NIK" class="form-control" />
                                                 <span asp-validation-for="NIK" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="Usia" class="control-label font-weight-bold"></label>
+                                                <input type="number" asp-for="Usia" class="form-control" />
+                                                <span asp-validation-for="Usia" class="text-danger"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -78,7 +88,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label asp-for="Nomor_telp" class="control-label font-weight-bold"></label>
-                                                <input type="text" asp-for="Nomor_telp" class="form-control" />
+                                                <input type="number" asp-for="Nomor_telp" class="form-control" />
                                                 <span asp-validation-for="Nomor_telp" class="text-danger"></span>
                                             </div>
                                         </div>
@@ -86,7 +96,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label asp-for="Nama_Kk" class="control-label font-weight-bold"></label>
-                                                <input type="text" asp-for="Nama_Kk" class="form-control" />
+                                                <input type="number" asp-for="Nama_Kk" class="form-control" />
                                                 <span asp-validation-for="Nama_Kk" class="text-danger"></span>
                                             </div>
                                         </div>
@@ -134,7 +144,7 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label asp-for="Kelurahan" class="control-label font-weight-bold"></label>
-                                                <select asp-for="Kelurahan" id="kelurahanSelect" class="form-control">
+                                                <select asp-for="Kelurahan" asp-items="new SelectList(Model.ListKelurahan, nameof(JsonHelperTable.Name), nameof(JsonHelperTable.Name))" id="kelurahanSelect" class="form-control">
                                                     <option value="">-- Select --</option>
                                                 </select>
                                                 <span asp-validation-for="Kelurahan" class="text-danger"></span>
@@ -156,7 +166,7 @@
                                             @foreach (var option in Model.List2Choice)
                                             {
                                                 <div class="form-check">
-                                                    <input name="C1" class="form-check-input" type="radio" value="@option.Value" id="@($"C1option{option.Value}")" />
+                                                    <input asp-for="C1" class="form-check-input" type="radio" value="@option.Value" id="@($"C1option{option.Value}")" />
                                                     <label class="form-check-label" for="@($"C1option{option.Value}")">@option.Value</label>
                                                 </div>
                                             }
@@ -370,7 +380,7 @@
 
             var kelurahanList = @Html.Raw(Json.Serialize(Model.ListKelurahan));
 
-            $("#kecamatanSelect").on("change", function () {
+            $("#kecamatanSelect").on("click", function () {
                 var selectedKecamatan = $(this).val();
                 console.log(selectedKecamatan);
 
@@ -391,6 +401,7 @@
                     }
                 });
             });
+
 
 
         @if (TempData["notification"] != null)

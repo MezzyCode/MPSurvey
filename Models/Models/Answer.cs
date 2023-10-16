@@ -10,6 +10,7 @@ namespace Model.Models
 
         public string? Nama_kk { get; set; }
 
+        public int? Usia { get; set; }
         public string? Alamat { get; set; }
 
         public string? Rt { get; set; }

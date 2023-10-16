@@ -14,9 +14,10 @@ using Model.Models;
 using Service.Services.Master;
 using Model.JsonModels.Master;
 using Database.JsonModels;
-using DAL.Helpers;
 using Service.Services.Setting;
-using static DAL.Helpers.GlobalHelpers;
+using Model.JsonModels;
+using Service.Helpers;
+using static Service.Helpers.GlobalHelpers;
 
 namespace MainProject.Controllers
 {
@@ -194,7 +195,7 @@ namespace MainProject.Controllers
 
 
             //cek email exist gak
-            var user = ServiceUser.GetUserAsync(email);
+            var user = await ServiceUser.GetUserAsync(email);
             if (user == null)
             {
                 res = new JsonReturn(false);
