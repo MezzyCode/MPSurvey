@@ -13,187 +13,93 @@
     .col-chart {
         flex: 1;
     }
-
-    .refresh-button {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        z-index: 1000;
-    }
 </style>
 
-<button id="btnRefreshChart" class="refresh-button btn btn-primary btn-sm m-3" type="button" style="max-width: 500px;">
-    Refresh Chart
-</button>
-
-</section>
-<section class="card card-info p-3">
-    <h2 class="text-center">Welcome to Masinton Pasaribu Survey Dashboard</h2>
-</section>
-
-
-    <section class="content">
-        <div class="container-fluid">
-            <!-- new vendor form -->
-            <div class="row center">
-                <div class="col-md-12">
-                    <div class="card card-info">
-
-                        <div class="row left mt-3 ms-4 align-items-center">
-                            <label class="control-label">Kelurahan</label>
-                            <div class="col-md-3">
-                                @Html.DropDownList("Select Kelurahan", new SelectList(ViewBag.listKelurahan, "Name", "Name"),"Semua", new { @id="filterKelurahan", @class="form-control" })
-                            </div>
-                            <div class="col-md-1">
-                                <button id="btnRefreshChart" class="btn btn-sm btn-secondary">Refresh</button>
-                            </div>
-                        </div>
-
-                        <div class="card-body">
-                            <canvas id="mainChart" style="width:100%;"></canvas>
-                        </div>
-
-                    </div>
-                </div>
+<section class="card col-12">
+    <h2 class="card-title text-center">Welcome to Masinton Pasaribu Kanvasser Dashboard</h2>
+    <div>
+        <div class="card-body row gap-3 align-items-end justify-content-center">
+            <div class="col-sm-12 col-lg-8">
+                <label class="control-label" for="filterKelurahan">Filter Berdasarkan Kelurahan</label>
+                @Html.DropDownList("Select Kelurahan", new SelectList(ViewBag.listKelurahan, "Name", "Name"), "Semua",
+                         new
+                         {
+                             @id = "filterKelurahan",
+                             @class = "form-control"
+                         })
             </div>
-            <!-- new vendor form -->
-
-        </div><!-- /.container-fluid -->
-    </section>
-
-
-<section class="content">
-    <div class="container-fluid">
-        <!-- new vendor form -->
-        <div class="row center">
-            <div class="col-md-6">
-                <div class="card card-info">
-                    <div class="card-body text-center">
-                        <b>Apakah Ibu/Bapak tahu (pernah dengar, baca, lihat) Masinton Pasribu sebagai Anggota DPR
-                            DKI II (Jaksel, Jakpus, dan Luar Negeri)?</b>
-                        <canvas id="c3AChart" style="width:100%;"></canvas>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card card-info">
-                    <div class="card-body text-center">
-                        <b>Apakah Ibu/Bapak tahu (pernah dengar, baca, lihat) Masinton Pasribu sebagai Aktivis
-                            gerakan tahun 1998?</b>
-                        <canvas id="c3BChart" style="width:100%;"></canvas>
-                    </div>
-                </div>
-            </div>
+            <button class="col-sm-12 col-lg-4 btn btn-primary btn-sm" id="btnRefreshChart" type="button"
+                style="max-width: 250px;">
+                Refresh Chart
+            </button>
         </div>
-        <!-- new vendor form -->
-
-    </div><!-- /.container-fluid -->
+    </div>
 </section>
 
 
-<section class="content">
-    <div class="container-fluid">
-        <!-- new vendor form -->
-        <div class="row center">
-            <div class="col-md-6">
-                <div class="card card-info">
-                    <div class="card-body text-center">
-                        <b>Apakah Ibu/Bapak tahu bahwa Masinton Pasribu diinginkan kembali oleh masyarakat untuk
-                            menjadi anggota DPR RI Dapil DKI II (Kota Jakarta Selatan, Jakarta Pusat, dan Luar
-                            Negeri)?</b>
-                        <canvas id="c4Chart" style="width:100%;"></canvas>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card card-info">
-                    <div class="card-body text-center">
-                        <b>Bersediakah Ibu/Bapak mengkampanyekan Masinton Pasaribu sebagai Calon Wakil Rakyat 2024
-                            nanti?</b>
-                        <canvas id="c7Chart" style="width:100%;"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- new vendor form -->
-
-    </div><!-- /.container-fluid -->
+<section class="card col-12">
+    <h2 class="card-title text-center">Responden Menjawab, Siapakah Calon Wakil Rakyat yang pantas dari PDIP Perjuangan DAPIL DKI II</h2>
+    <canvas id="mainChart" class="card-body"></canvas>
 </section>
 
-
-    <section class="content">
-        <div class="container-fluid">
-            <!-- new vendor form -->
-            <div class="row center">
-
-                <div class="col-md-6">
-                    <div class="card card-info">
-                        <div class="card-body text-center">
-                            <b>Usia Responden</b>
-                            <canvas id="ageChart" style="width:100%;"></canvas>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="card card-info">
-                        <div class="card-body text-center">
-                            <b>Agama Responden</b>
-                            <canvas id="religionChart" style="width:100%;"></canvas>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <!-- new vendor form -->
-
-        </div><!-- /.container-fluid -->
-    </section>
-
-
-    <section class="content">
-        <div class="container-fluid">
-            <!-- new vendor form -->
-            <div class="row center">
-
-                <div class="col-md-6">
-                    <div class="card card-info">
-                        <div class="card-body text-center">
-                            <b>Pendidikan Responden</b>
-                            <canvas id="academicChart" style="width:100%;"></canvas>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="card card-info">
-                        <div class="card-body text-center">
-                            <b>Suku Responden</b>
-                            <canvas id="tribeChart" style="width:100%;"></canvas>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <!-- new vendor form -->
-
-    </div><!-- /.container-fluid -->
+<section class="col-md-6 p-1">
+    <div class="card">
+        <h2 class="card-title text-center">Apakah Responden tahu Masinton Pasribu sebagai Anggota DPR DKI II</h2>
+        <canvas id="c3AChart" class="card-body"></canvas>
+    </div>
 </section>
-@*
-<section class="container row">
-<article class="col-sm-6 card">
-<canvas id="religionChart"></canvas>
-</article>
-<article class="col-sm-6 card">
-<h3>Total orang yang mengetahui Masinton Pasaribu S.H.</h3>
-<div>
-<ul>
-<li>Yes: <span id="c1YesCount"/></li>
-<li>No: <span id="c1NoCount"/></li>
-</ul>
-</div>
-</article>
-</section>*@
+
+<section class="col-md-6 p-1">
+    <div class="card">
+        <h2 class="card-title text-center">Apakah Responden tahu Masinton Pasribu sebagai Aktivis gerakan tahun 1998
+        </h2>
+        <canvas id="c3BChart" class="card-body"></canvas>
+    </div>
+</section>
+
+<section class="col-md-6 p-1">
+    <div class="card">
+        <h2 class="card-title text-center">Apakah Responden tahu bahwa Masinton Pasribu diinginkan kembali oleh
+            masyarakat untuk menjadi anggota DPR RI Dapil DKI II?
+        </h2>
+        <canvas id="c4Chart" class="card-body"></canvas>
+    </div>
+</section>
+
+<section class="col-md-6 p-1">
+    <div class="card">
+        <h2 class="card-title text-center">Bersediakah Responden Mengkampanyekan Masinton Pasribu sebagai Calon Wakil Rakyat 2024 nanti ?</h2>
+        <canvas id="c7Chart" class="card-body"></canvas>
+    </div>
+</section>
+
+<section class="col-md-6 p-1">
+    <div class="card">
+        <h2 class="card-title text-center">Usia Responden</h2>
+        <canvas id="ageChart" class="card-body"></canvas>
+    </div>
+</section>
+
+<section class="col-md-6 p-1">
+    <div class="card">
+        <h2 class="card-title text-center">Agama Responden</h2>
+        <canvas id="religionChart" class="card-body"></canvas>
+    </div>
+</section>
+
+<section class="col-md-6 p-1">
+    <div class="card">
+        <h2 class="card-title text-center">Pendidikan Responden</h2>
+        <canvas id="academicChart" class="card-body"></canvas>
+    </div>
+</section>
+
+<section class="col-md-6 p-1">
+    <div class="card">
+        <h2 class="card-title text-center">Suku Responden</h2>
+        <canvas id="tribeChart" class="card-body"></canvas>
+    </div>
+</section>
 
 
 
@@ -685,7 +591,7 @@
             @Html.Raw(TempData["notification"])
         }
 
-                                                                            });
+                                                                                    });
 
     </script>
 
