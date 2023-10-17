@@ -293,11 +293,13 @@ namespace MainProject.Areas.Master.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> MainChart()
+        public async Task<IActionResult> MainChart(string? Kelurahan)
         {
             try
             {
-                List <JsonChart> chartData = await ServiceAnswer.FindChartAsync(new JsonAnswer(), User);
+                JsonAnswer filter = new JsonAnswer();
+                filter.Kelurahan = Kelurahan;
+                List <JsonChart> chartData = await ServiceAnswer.FindChartAsync(filter, User);
 
                 return Json(chartData);
             }
@@ -309,11 +311,13 @@ namespace MainProject.Areas.Master.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ReligionChart()
+        public async Task<IActionResult> ReligionChart(string? Kelurahan)
         {
             try
             {
-                List<JsonChartLabel> chartData = await ServiceAnswer.FindChartReligionAsync(new JsonAnswer(), User);
+                JsonAnswer filter = new JsonAnswer();
+                filter.Kelurahan = Kelurahan;
+                List<JsonChart> chartData = await ServiceAnswer.FindReligionAsync(filter, User);
 
                 return Json(chartData);
             }
@@ -325,11 +329,13 @@ namespace MainProject.Areas.Master.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> C1Count()
+        public async Task<IActionResult> C1Count(string? Kelurahan)
         {
             try
             {
-                List<JsonChart> data = await ServiceAnswer.FindC1Async(new JsonAnswer(), User);
+                JsonAnswer filter = new JsonAnswer();
+                filter.Kelurahan = Kelurahan;
+                List<JsonChart> data = await ServiceAnswer.FindC1Async(filter, User);
 
                 return Json(data);
             }
@@ -341,11 +347,13 @@ namespace MainProject.Areas.Master.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> C3Chart()
+        public async Task<IActionResult> C3Chart(string? Kelurahan)
         {
             try
             {
-                List<JsonChartLabel> chartData = await ServiceAnswer.FindC3Async(new JsonAnswer(), User);
+                JsonAnswer filter = new JsonAnswer();
+                filter.Kelurahan = Kelurahan;
+                List<JsonChartLabel> chartData = await ServiceAnswer.FindC3Async(filter, User);
 
                 return Json(chartData);
             }
@@ -357,11 +365,13 @@ namespace MainProject.Areas.Master.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> C3AChart()
+        public async Task<IActionResult> C3AChart(string? Kelurahan)
         {
             try
             {
-                List<JsonChart> data = await ServiceAnswer.FindC3AAsync(new JsonAnswer(), User);
+                JsonAnswer filter = new JsonAnswer();
+                filter.Kelurahan = Kelurahan;
+                List<JsonChart> data = await ServiceAnswer.FindC3AAsync(filter, User);
 
                 return Json(data);
             }
@@ -373,11 +383,13 @@ namespace MainProject.Areas.Master.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> C3BChart()
+        public async Task<IActionResult> C3BChart(string? Kelurahan)
         {
             try
             {
-                List<JsonChart> data = await ServiceAnswer.FindC3BAsync(new JsonAnswer(), User);
+                JsonAnswer filter = new JsonAnswer();
+                filter.Kelurahan = Kelurahan;
+                List<JsonChart> data = await ServiceAnswer.FindC3BAsync(filter, User);
 
                 return Json(data);
             }
@@ -389,11 +401,13 @@ namespace MainProject.Areas.Master.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> C4Chart()
+        public async Task<IActionResult> C4Chart(string? Kelurahan)
         {
             try
             {
-                List<JsonChart> data = await ServiceAnswer.FindC4Async(new JsonAnswer(), User);
+                JsonAnswer filter = new JsonAnswer();
+                filter.Kelurahan = Kelurahan;
+                List<JsonChart> data = await ServiceAnswer.FindC4Async(filter, User);
 
                 return Json(data);
             }
@@ -405,11 +419,13 @@ namespace MainProject.Areas.Master.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> C7Chart()
+        public async Task<IActionResult> C7Chart(string? Kelurahan)
         {
             try
             {
-                List<JsonChart> data = await ServiceAnswer.FindC7Async(new JsonAnswer(), User);
+                JsonAnswer filter = new JsonAnswer();
+                filter.Kelurahan = Kelurahan;
+                List<JsonChart> data = await ServiceAnswer.FindC7Async(filter, User);
 
                 return Json(data);
             }
@@ -421,11 +437,49 @@ namespace MainProject.Areas.Master.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AgeChart()
+        public async Task<IActionResult> AgeChart(string? Kelurahan)
         {
             try
             {
-                List<JsonChart> data = await ServiceAnswer.FindAgeAsync(new JsonAnswer(), User);
+                JsonAnswer filter = new JsonAnswer();
+                filter.Kelurahan = Kelurahan;
+                List<JsonChart> data = await ServiceAnswer.FindAgeAsync(filter, User);
+
+                return Json(data);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> TribeChart(string? Kelurahan)
+        {
+            try
+            {
+                JsonAnswer filter = new JsonAnswer();
+                filter.Kelurahan = Kelurahan;
+                List<JsonChart> data = await ServiceAnswer.FindTribeAsync(filter, User);
+
+                return Json(data);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AcademicChart(string? Kelurahan)
+        {
+            try
+            {
+                JsonAnswer filter = new JsonAnswer();
+                filter.Kelurahan = Kelurahan;
+                List<JsonChart> data = await ServiceAnswer.FindAcademicAsync(filter, User);
 
                 return Json(data);
             }

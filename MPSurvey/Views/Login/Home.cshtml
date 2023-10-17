@@ -32,14 +32,34 @@
 </section>
 
 
-<section class="card card-info p-3">
-    <h2 class="text-center">Menurut Responden, Siapakah Calon Wakil Rakyat yang pantas dari Partai Demokrasi
-        Indonesia Perjuangan
-        Dapil DKI II ?</h2>
-    <div class="card-body">
-        <canvas id="mainChart" style="width:100%;"></canvas>
-    </div>
-</section>
+    <section class="content">
+        <div class="container-fluid">
+            <!-- new vendor form -->
+            <div class="row center">
+                <div class="col-md-12">
+                    <div class="card card-info">
+
+                        <div class="row left mt-3 ms-4 align-items-center">
+                            <label class="control-label">Kelurahan</label>
+                            <div class="col-md-3">
+                                @Html.DropDownList("Select Kelurahan", new SelectList(ViewBag.listKelurahan, "Name", "Name"),"Semua", new { @id="filterKelurahan", @class="form-control" })
+                            </div>
+                            <div class="col-md-1">
+                                <button id="btnRefreshChart" class="btn btn-sm btn-secondary">Refresh</button>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <canvas id="mainChart" style="width:100%;"></canvas>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- new vendor form -->
+
+        </div><!-- /.container-fluid -->
+    </section>
 
 
 <section class="content">
@@ -101,20 +121,61 @@
 </section>
 
 
-<section class="content">
-    <div class="container-fluid">
-        <!-- new vendor form -->
-        <div class="row center">
-            <div class="col-md-6 offset-md-3">
-                <div class="card card-info">
-                    <div class="card-body text-center">
-                        <b>Usia Responden</b>
-                        <canvas id="ageChart" style="width:100%;"></canvas>
+    <section class="content">
+        <div class="container-fluid">
+            <!-- new vendor form -->
+            <div class="row center">
+
+                <div class="col-md-6">
+                    <div class="card card-info">
+                        <div class="card-body text-center">
+                            <b>Usia Responden</b>
+                            <canvas id="ageChart" style="width:100%;"></canvas>
+                        </div>
                     </div>
                 </div>
+
+                <div class="col-md-6">
+                    <div class="card card-info">
+                        <div class="card-body text-center">
+                            <b>Agama Responden</b>
+                            <canvas id="religionChart" style="width:100%;"></canvas>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-        </div>
-        <!-- new vendor form -->
+            <!-- new vendor form -->
+
+        </div><!-- /.container-fluid -->
+    </section>
+
+
+    <section class="content">
+        <div class="container-fluid">
+            <!-- new vendor form -->
+            <div class="row center">
+
+                <div class="col-md-6">
+                    <div class="card card-info">
+                        <div class="card-body text-center">
+                            <b>Pendidikan Responden</b>
+                            <canvas id="academicChart" style="width:100%;"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card card-info">
+                        <div class="card-body text-center">
+                            <b>Suku Responden</b>
+                            <canvas id="tribeChart" style="width:100%;"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- new vendor form -->
 
     </div><!-- /.container-fluid -->
 </section>
@@ -150,26 +211,54 @@
 
 
             const colorPalette1 = [
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(255, 206, 86, 0.5)',
-                'rgba(75, 192, 192, 0.5)',
-                'rgba(153, 102, 255, 0.5)',
-                'rgba(255, 159, 64, 0.5)',
-                'rgba(200, 200, 200, 0.5)',
-                'rgba(100, 100, 100, 0.5)',
-                'rgba(0, 128, 0, 0.5)',
-                'rgba(128, 0, 0, 0.5)',
-                'rgba(255, 0, 0, 0.5)',
-                'rgba(0, 255, 0, 0.5)',
                 'rgba(0, 0, 255, 0.5)',
-                'rgba(255, 255, 0, 0.5)',
-                'rgba(0, 255, 255, 0.5)',
+                'rgba(255, 0, 0, 0.5)',
+                'rgba(0, 128, 0, 0.5)',
+                'rgba(128, 128, 0, 0.5)',
+                'rgba(0, 0, 128, 0.5)',
+                'rgba(128, 0, 128, 0.5)',
+                'rgba(0, 128, 128, 0.5)',
                 'rgba(255, 0, 255, 0.5)',
                 'rgba(128, 128, 128, 0.5)',
                 'rgba(192, 192, 192, 0.5)',
-                'rgba(128, 0, 0, 0.5)',
-                'rgba(0, 128, 0, 0.5)'
+                'rgba(255, 255, 0, 0.5)',
+                'rgba(0, 255, 255, 0.5)',
+                'rgba(255, 128, 0, 0.5)',
+                'rgba(0, 255, 128, 0.5)',
+                'rgba(128, 0, 255, 0.5)',
+                'rgba(255, 128, 128, 0.5)',
+                'rgba(128, 255, 128, 0.5)',
+                'rgba(128, 128, 255, 0.5)',
+                'rgba(192, 0, 0, 0.5)',
+                'rgba(0, 192, 0, 0.5)',
+                'rgba(192, 192, 0, 0.5)',
+                'rgba(0, 0, 192, 0.5)',
+                'rgba(192, 0, 192, 0.5)',
+                'rgba(0, 192, 192, 0.5)',
+                'rgba(192, 192, 192, 0.5)',
+                'rgba(64, 0, 0, 0.5)',
+                'rgba(0, 64, 0, 0.5)',
+                'rgba(64, 64, 0, 0.5)',
+                'rgba(0, 0, 64, 0.5)',
+                'rgba(64, 0, 64, 0.5)',
+                'rgba(0, 64, 64, 0.5)',
+                'rgba(64, 64, 64, 0.5)',
+                'rgba(128, 0, 64, 0.5)',
+                'rgba(0, 128, 64, 0.5)',
+                'rgba(128, 128, 64, 0.5)',
+                'rgba(0, 0, 64, 0.5)',
+                'rgba(128, 0, 128, 0.5)',
+                'rgba(0, 128, 128, 0.5)',
+                'rgba(192, 0, 64, 0.5)',
+                'rgba(64, 128, 0, 0.5)',
+                'rgba(192, 192, 64, 0.5)',
+                'rgba(64, 0, 128, 0.5)',
+                'rgba(192, 0, 192, 0.5)',
+                'rgba(64, 192, 192, 0.5)',
+                'rgba(192, 192, 192, 0.5)',
+                'rgba(64, 64, 192, 0.5)',
+                'rgba(192, 64, 64, 0.5)',
+                'rgba(64, 192, 64, 0.5)'
             ];
 
             async function showChart() {
@@ -179,7 +268,9 @@
                 var data = await $.ajax({
                     url: "/Master/Answer/MainChart",
                     method: "POST",
-                    data: {}
+                    data: {
+                        Kelurahan: $('#filterKelurahan').val()
+                    }
                 });
 
                 $.each(data, function (index, item) {
@@ -190,39 +281,39 @@
                 createMainChart(xValues, yValues);
             }
 
-            function showReligionChart() {
-                var labels = [];
-                var datasets = [];
+            //function showReligionChart() {
+            //    var labels = [];
+            //    var datasets = [];
 
-                $.ajax({
-                    url: "/Master/Answer/ReligionChart",
-                    method: "POST",
-                    data: {},
-                    async: false,
-                    success: function (data) {
-                        $.each(data, function (index, item) {
+            //    $.ajax({
+            //        url: "/Master/Answer/ReligionChart",
+            //        method: "POST",
+            //        data: {},
+            //        async: false,
+            //        success: function (data) {
+            //            $.each(data, function (index, item) {
 
-                            var tempdataset = {
-                                data: [],
-                                label: item.xLabel, // contain calon name
-                                backgroundColor: colorPalette1[index],
-                            }
+            //                var tempdataset = {
+            //                    data: [],
+            //                    label: item.xLabel, // contain calon name
+            //                    backgroundColor: colorPalette1[index],
+            //                }
 
-                            $.each(item.charts, function (index, item) {
-                                // check whether the labels array already contain the religion
-                                if (!labels.includes(item.label)) {
-                                    labels.push(item.label);
-                                }
-                                tempdataset.data.push(item.count); // contain each agama vote for current calon
-                            });
+            //                $.each(item.charts, function (index, item) {
+            //                    // check whether the labels array already contain the religion
+            //                    if (!labels.includes(item.label)) {
+            //                        labels.push(item.label);
+            //                    }
+            //                    tempdataset.data.push(item.count); // contain each agama vote for current calon
+            //                });
 
-                            datasets.push(tempdataset);
-                        });
-                    }
-                });
+            //                datasets.push(tempdataset);
+            //            });
+            //        }
+            //    });
 
-                createReligionChart(labels, datasets);
-            }
+            //    createReligionChart(labels, datasets);
+            //}
 
             async function showC3AChart() {
                 var datasets = [];
@@ -230,7 +321,9 @@
                 var data = await $.ajax({
                     url: "/Master/Answer/C3AChart",
                     method: "POST",
-                    data: {}
+                    data: {
+                        Kelurahan: $('#filterKelurahan').val()
+                    }
                 });
 
                 $.each(data, function (index, item) {
@@ -253,7 +346,9 @@
                 var data = await $.ajax({
                     url: "/Master/Answer/C3BChart",
                     method: "POST",
-                    data: {}
+                    data: {
+                        Kelurahan: $('#filterKelurahan').val()
+                    }
                 });
 
                 $.each(data, function (index, item) {
@@ -276,7 +371,9 @@
                 var data = await $.ajax({
                     url: "/Master/Answer/C4Chart",
                     method: "POST",
-                    data: {}
+                    data: {
+                        Kelurahan: $('#filterKelurahan').val()
+                    }
                 });
 
 
@@ -300,7 +397,9 @@
                 var data = await $.ajax({
                     url: "/Master/Answer/C7Chart",
                     method: "POST",
-                    data: {}
+                    data: {
+                        Kelurahan: $('#filterKelurahan').val()
+                    }
                 });
 
 
@@ -324,7 +423,9 @@
                 var data = await $.ajax({
                     url: "/Master/Answer/AgeChart",
                     method: "POST",
-                    data: {}
+                    data: {
+                        Kelurahan: $('#filterKelurahan').val()
+                    }
                 });
 
                 $.each(data, function (index, item) {
@@ -341,36 +442,111 @@
                 createCChart(datasets, "ageChart");
             }
 
-            function createReligionChart(labels, datasets) {
+            async function showReligionChart() {
+                var datasets = [];
 
-                const existingChart = Chart.getChart("religionChart"); // Get the previous Chart instance
-                if (existingChart) {
-                    existingChart.destroy(); // Destroy the previous Chart
-                }
-
-                const religionChart = new Chart("religionChart", {
-                    type: "bar",
+                var data = await $.ajax({
+                    url: "/Master/Answer/ReligionChart",
+                    method: "POST",
                     data: {
-                        labels: labels,
-                        datasets: datasets,
-                    },
-                    options: {
-                        // Chart options
-                        responsive: true,
-                        maintainAspectRatio: true,
-                        //plugins: {
-                        //    legend: {
-                        //        display: false,
-                        //    },
-                        //},
-                        //scales: {
-                        //    y: {
-                        //        suggestedMax: (Math.max(...yValues) * 1.5),
-                        //    }
-                        //}
+                        Kelurahan: $('#filterKelurahan').val()
                     }
                 });
+
+                $.each(data, function (index, item) {
+
+                    var tempdataset = {
+                        data: [item.count],
+                        label: item.label, // contain calon name
+                        backgroundColor: colorPalette1[index],
+                    }
+
+                    datasets.push(tempdataset);
+                });
+
+                createCChart(datasets, "religionChart");
             }
+
+            async function showAcademicChart() {
+                var datasets = [];
+
+                var data = await $.ajax({
+                    url: "/Master/Answer/AcademicChart",
+                    method: "POST",
+                    data: {
+                        Kelurahan: $('#filterKelurahan').val()
+                    }
+                });
+
+                $.each(data, function (index, item) {
+
+                    var tempdataset = {
+                        data: [item.count],
+                        label: item.label, // contain calon name
+                        backgroundColor: colorPalette1[index],
+                    }
+
+                    datasets.push(tempdataset);
+                });
+
+                createCChart(datasets, "academicChart");
+            }
+
+            async function showTribeChart() {
+                var datasets = [];
+
+                var data = await $.ajax({
+                    url: "/Master/Answer/TribeChart",
+                    method: "POST",
+                    data: {
+                        Kelurahan: $('#filterKelurahan').val()
+                    }
+                });
+
+                $.each(data, function (index, item) {
+
+                    var tempdataset = {
+                        data: [item.count],
+                        label: item.label, // contain calon name
+                        backgroundColor: colorPalette1[index],
+                    }
+
+                    datasets.push(tempdataset);
+                });
+
+                createCChart(datasets, "tribeChart");
+            }
+
+            //function createReligionChart(labels, datasets) {
+
+            //    const existingChart = Chart.getChart("religionChart"); // Get the previous Chart instance
+            //    if (existingChart) {
+            //        existingChart.destroy(); // Destroy the previous Chart
+            //    }
+
+            //    const religionChart = new Chart("religionChart", {
+            //        type: "bar",
+            //        data: {
+            //            labels: labels,
+            //            datasets: datasets,
+            //        },
+            //        options: {
+            //            // Chart options
+            //            responsive: true,
+            //            maintainAspectRatio: true,
+            //            //plugins: {
+            //            //    legend: {
+            //            //        display: false,
+            //            //    },
+            //            //},
+            //            //scales: {
+            //            //    y: {
+            //            //        suggestedMax: (Math.max(...yValues) * 1.5),
+            //            //    }
+            //            //}
+            //        }
+            //    });
+            //}
 
             function createMainChart(xValues, yValues) {
 
@@ -463,13 +639,16 @@
             }
 
             async function repeatFetch() {
-                await showChart();
-                await showC3AChart();
-                await showC3BChart();
-                await showC4Chart();
-                await showC7Chart();
-                await showC1Count();
-                await showAgeChart();
+                showChart();
+                showC3AChart();
+                showC3BChart();
+                showC4Chart();
+                showC7Chart();
+                showC1Count();
+                showAgeChart();
+                showReligionChart();
+                showAcademicChart();
+                showTribeChart();
 
                 setTimeout(function () {
                     repeatFetch();
@@ -481,13 +660,16 @@
             })();
 
             $("#btnRefreshChart").on("click", async function () {
-                await showChart();
-                await showC3AChart();
-                await showC3BChart();
-                await showC4Chart();
-                await showC7Chart();
-                await showC1Count();
-                await showAgeChart();
+                showChart();
+                showC3AChart();
+                showC3BChart();
+                showC4Chart();
+                showC7Chart();
+                showC1Count();
+                showAgeChart();
+                showReligionChart();
+                showAcademicChart();
+                showTribeChart();
             })
 
             //function setTargetHeight() {
