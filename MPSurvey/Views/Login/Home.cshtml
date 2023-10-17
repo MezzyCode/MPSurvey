@@ -13,154 +13,130 @@
     .col-chart {
         flex: 1;
     }
+
+    .refresh-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
 </style>
 
+<button id="btnRefreshChart" class="refresh-button btn btn-primary btn-sm m-3" type="button" style="max-width: 500px;">
+    Refresh Chart
+</button>
 
+</section>
+<section class="card card-info p-3">
+    <h2 class="text-center">Welcome to Masinton Pasaribu Survey Dashboard</h2>
+</section>
+
+
+<section class="card card-info p-3">
+    <h2 class="text-center">Menurut Responden, Siapakah Calon Wakil Rakyat yang pantas dari Partai Demokrasi
+        Indonesia Perjuangan
+        Dapil DKI II ?</h2>
+    <div class="card-body">
+        <canvas id="mainChart" style="width:100%;"></canvas>
+    </div>
+</section>
+
+
+<section class="content">
+    <div class="container-fluid">
+        <!-- new vendor form -->
+        <div class="row center">
+            <div class="col-md-6">
+                <div class="card card-info">
+                    <div class="card-body text-center">
+                        <b>Apakah Ibu/Bapak tahu (pernah dengar, baca, lihat) Masinton Pasribu sebagai Anggota DPR
+                            DKI II (Jaksel, Jakpus, dan Luar Negeri)?</b>
+                        <canvas id="c3AChart" style="width:100%;"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card card-info">
+                    <div class="card-body text-center">
+                        <b>Apakah Ibu/Bapak tahu (pernah dengar, baca, lihat) Masinton Pasribu sebagai Aktivis
+                            gerakan tahun 1998?</b>
+                        <canvas id="c3BChart" style="width:100%;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- new vendor form -->
+
+    </div><!-- /.container-fluid -->
+</section>
+
+
+<section class="content">
+    <div class="container-fluid">
+        <!-- new vendor form -->
+        <div class="row center">
+            <div class="col-md-6">
+                <div class="card card-info">
+                    <div class="card-body text-center">
+                        <b>Apakah Ibu/Bapak tahu bahwa Masinton Pasribu diinginkan kembali oleh masyarakat untuk
+                            menjadi anggota DPR RI Dapil DKI II (Kota Jakarta Selatan, Jakarta Pusat, dan Luar
+                            Negeri)?</b>
+                        <canvas id="c4Chart" style="width:100%;"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card card-info">
+                    <div class="card-body text-center">
+                        <b>Bersediakah Ibu/Bapak mengkampanyekan Masinton Pasaribu sebagai Calon Wakil Rakyat 2024
+                            nanti?</b>
+                        <canvas id="c7Chart" style="width:100%;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- new vendor form -->
+
+    </div><!-- /.container-fluid -->
+</section>
+
+
+<section class="content">
+    <div class="container-fluid">
+        <!-- new vendor form -->
+        <div class="row center">
+            <div class="col-md-6 offset-md-3">
+                <div class="card card-info">
+                    <div class="card-body text-center">
+                        <b>Usia Responden</b>
+                        <canvas id="ageChart" style="width:100%;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- new vendor form -->
+
+    </div><!-- /.container-fluid -->
+</section>
+@*
+<section class="container row">
+<article class="col-sm-6 card">
+<canvas id="religionChart"></canvas>
+</article>
+<article class="col-sm-6 card">
+<h3>Total orang yang mengetahui Masinton Pasaribu S.H.</h3>
 <div>
-
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-12">
-                    @*<h1 class="m-0 text-dark">Welcome to TMS Application</h1>*@
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
-    </div>
-    <section class="content">
-        <div class="container-fluid">
-            <!-- new vendor form -->
-            <div class="row center">
-                <div class="col-md-12">
-                    <div class="card card-info">
-
-                        <div class="card-body">
-                            <h1 class="m-0 text-dark"><img src="~/img/hands.png" />&nbsp;Welcome!</h1>
-                            <br />
-                            <h4>Welcome to Masinton Pasaribu Survey</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- new vendor form -->
-
-        </div><!-- /.container-fluid -->
-    </section>
-
-
-    <section class="content">
-        <div class="container-fluid">
-            <!-- new vendor form -->
-            <div class="row center">
-                <div class="col-md-12">
-                    <div class="card card-info">
-
-                        <button id="btnRefreshChart" class="btn btn-sm btn-secondary left mt-3 ms-4" style="width:8%">Refresh</button>
-
-                        <div class="card-body">
-                            <canvas id="mainChart" style="width:100%;"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- new vendor form -->
-
-        </div><!-- /.container-fluid -->
-    </section>
-
-
-    <section class="content">
-        <div class="container-fluid">
-            <!-- new vendor form -->
-            <div class="row center">
-                <div class="col-md-6">
-                    <div class="card card-info">
-                        <div class="card-body text-center">
-                            <b>Apakah Ibu/Bapak tahu (pernah dengar, baca, lihat) Masinton Pasribu sebagai Anggota DPR DKI II (Jaksel, Jakpus, dan Luar Negeri)?</b>
-                            <canvas id="c3AChart" style="width:100%;"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card card-info">
-                        <div class="card-body text-center">
-                            <b>Apakah Ibu/Bapak tahu (pernah dengar, baca, lihat) Masinton Pasribu sebagai Aktivis gerakan tahun 1998?</b>
-                            <canvas id="c3BChart" style="width:100%;"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- new vendor form -->
-
-        </div><!-- /.container-fluid -->
-    </section>
-
-
-    <section class="content">
-        <div class="container-fluid">
-            <!-- new vendor form -->
-            <div class="row center">
-                <div class="col-md-6">
-                    <div class="card card-info">
-                        <div class="card-body text-center">
-                            <b>Apakah Ibu/Bapak tahu bahwa Masinton Pasribu diinginkan kembali oleh masyarakat untuk menjadi anggota DPR RI Dapil DKI II (Kota Jakarta Selatan, Jakarta Pusat, dan Luar Negeri)?</b>
-                            <canvas id="c4Chart" style="width:100%;"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card card-info">
-                        <div class="card-body text-center">
-                            <b>Bersediakah Ibu/Bapak mengkampanyekan Masinton Pasaribu sebagai Calon Wakil Rakyat 2024 nanti?</b>
-                            <canvas id="c7Chart" style="width:100%;"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- new vendor form -->
-
-        </div><!-- /.container-fluid -->
-    </section>
-
-
-    <section class="content">
-        <div class="container-fluid">
-            <!-- new vendor form -->
-            <div class="row center">
-                <div class="col-md-6 offset-md-3">
-                    <div class="card card-info">
-                        <div class="card-body text-center">
-                            <b>Usia Responden</b>
-                            <canvas id="ageChart" style="width:100%;"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- new vendor form -->
-
-        </div><!-- /.container-fluid -->
-    </section>
-    @*
-    <section class="container row">
-    <article class="col-sm-6 card">
-    <canvas id="religionChart"></canvas>
-    </article>
-    <article class="col-sm-6 card">
-    <h3>Total orang yang mengetahui Masinton Pasaribu S.H.</h3>
-    <div>
-    <ul>
-    <li>Yes: <span id="c1YesCount"/></li>
-    <li>No: <span id="c1NoCount"/></li>
-    </ul>
-    </div>
-    </article>
-    </section>*@
-
+<ul>
+<li>Yes: <span id="c1YesCount"/></li>
+<li>No: <span id="c1NoCount"/></li>
+</ul>
 </div>
+</article>
+</section>*@
 
 
 
-@section myScripts{
+@section myScripts {
     <script src="~/plugins/jquery/jquery.min.js"></script>
     <script>
 
@@ -414,11 +390,6 @@
                     data: {
                         labels: [""],
                         datasets: datasets,
-                        //datasets: [{
-                        //    data: yValues, // Use the yValues array for the dataset
-                        //    // Other dataset configuration options
-                        //    backgroundColor: colors,
-                        //}]
                     },
                     options: {
                         // Chart options
@@ -532,7 +503,7 @@
             @Html.Raw(TempData["notification"])
         }
 
-                });
+                                                                            });
 
     </script>
 
