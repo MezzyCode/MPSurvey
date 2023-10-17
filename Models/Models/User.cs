@@ -13,6 +13,8 @@ public partial class User : IdentityUser
 
     public string? Name { get; set; }
 
+    public string Role { get; set; } = null!;
+
 
     public string ClientID { get; set; } = null!;
 

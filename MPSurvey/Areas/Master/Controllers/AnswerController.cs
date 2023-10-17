@@ -7,6 +7,7 @@ using Model.Models;
 using Service.Helpers;
 using Service.Services.Master;
 using Service.Services.Setting;
+using static Service.Helpers.GlobalHelpers;
 using ConstantVariableKey = Model.InfrastructurClass.ConstantVariable;
 
 namespace MainProject.Areas.Master.Controllers
@@ -47,6 +48,16 @@ namespace MainProject.Areas.Master.Controllers
             if (cookiesEmail == null)
             {
                 return RedirectToAction("LoginForm", "Login", new { area = "" });
+            }
+
+            var cookiesRole = GlobalHelpers.GetClaimValueByType(EnumClaims.RolesCode.ToString(), User);
+            if (cookiesRole == null)
+            {
+                return RedirectToAction("LoginForm", "Login", new { area = "" });
+            }
+            else if (cookiesRole != "Staff")
+            {
+                return RedirectToAction("Home", "Login", new { area = "" });
             }
 
             try
@@ -143,6 +154,8 @@ namespace MainProject.Areas.Master.Controllers
             data.ListAgama = ListAgama.OrderBy(x => x.Description).ToList();
             data.ListPendidikan = ListPendidikan.OrderBy(x => x.Description).ToList();
             data.ListSuku = ListSuku.OrderBy(x => x.Value).ToList();
+
+            Alert("Mohon isi semua kolom yang diperlukan!", NotificationType.error);
 
             return View(data);
         }
@@ -249,6 +262,8 @@ namespace MainProject.Areas.Master.Controllers
             data.ListAgama = ListAgama.OrderBy(x => x.Description).ToList();
             data.ListPendidikan = ListPendidikan.OrderBy(x => x.Description).ToList();
             data.ListSuku = ListSuku.OrderBy(x => x.Value).ToList();
+
+            Alert("Mohon isi semua kolom!", NotificationType.error);
 
             return View(data);
         }

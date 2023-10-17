@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Linq.Dynamic.Core;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -438,7 +439,13 @@ namespace Service.Services.Master
                 int maxAge = listAnswer.Max(x => x.Usia).GetValueOrDefault();
                 int minAge = listAnswer.Min(x => x.Usia).GetValueOrDefault();
 
-                var ageGroup = Enumerable.Range(minAge - (minAge % 5), maxAge - (maxAge % 5) + 5).Where(age => age <= maxAge);
+                int minAgeRound = minAge - (minAge % 5);
+                int maxAgeRound = maxAge - (maxAge % 5) + 5;
+
+                var ageGroup = Enumerable
+                    .Range(minAgeRound, maxAgeRound)
+                    .Where(age => age % 5 == 0 && age >= minAgeRound && age < maxAgeRound)
+                    .ToList();
 
                 var groupedData = ageGroup.Select(rangeStart =>
                 {
@@ -473,6 +480,7 @@ namespace Service.Services.Master
 
                 answerList = _mapper.Map<IEnumerable<Answer>, List<JsonAnswer>>(await Repo.QueryAnswersAsync(filterExp, filter.Take.GetValueOrDefault(), filter.Skip.GetValueOrDefault()));
 
+                answerList = answerList.AsQueryable().OrderBy(filter.OrderBy + " " + filter.OrderByDirection).ToList();
                 return answerList;
             }
             catch (Exception ex)

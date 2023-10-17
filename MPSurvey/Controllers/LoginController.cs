@@ -77,11 +77,12 @@ namespace MainProject.Controllers
             {
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, user.Email),
-                    new Claim(EnumClaims.Username.ToString(), user.Email),
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(EnumClaims.Username.ToString(), user.Username),
                     //new Claim(EnumClaims.UserRoleID.ToString(), user.UserRoleID),
                     new Claim(EnumClaims.Email.ToString(), user.Email),
                     new Claim(EnumClaims.ClientID.ToString(), user.ClientID),
+                    new Claim(EnumClaims.RolesCode.ToString(), user.Role)
 
                 };
 

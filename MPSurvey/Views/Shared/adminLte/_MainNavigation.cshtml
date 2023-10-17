@@ -13,17 +13,20 @@
             </a>
         </li><!-- End Dashboard Nav -->
         
-        <li class="nav-heading">
-            <a asp-area="Master" asp-controller="Answer" asp-action="Index" class="nav-link">
-                <i class="bi bi-circle"></i><span>Daftar Jawaban</span>
-            </a>
-        </li>
+        @if (User.Claims.FirstOrDefault(x => x.Type == "RolesCode").Value == "Staff")
+        {
+            <li class="nav-item">
+                <a asp-area="Master" asp-controller="Answer" asp-action="Index" class="nav-link">
+                    <i class="bi bi-circle"></i><span>Daftar Jawaban</span>
+                </a>
+            </li>
 
-        <li class="nav-heading">
-            <a asp-area="Master" asp-controller="Answer" asp-action="Create" class="nav-link">
-                <i class="bi bi-circle"></i><span>Isi Data</span>
-            </a>
-        </li>
+            <li class="nav-item">
+                <a asp-area="Master" asp-controller="Answer" asp-action="Create" class="nav-link">
+                    <i class="bi bi-circle"></i><span>Isi Data</span>
+                </a>
+            </li>
+        }
 
         <!-- End Icons Nav -->
 

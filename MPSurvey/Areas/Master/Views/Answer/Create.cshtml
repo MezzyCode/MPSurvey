@@ -7,6 +7,7 @@
 
 <style>
     /* Define custom styles for the ordered list */
+
     .custom-ol {
         counter-reset: custom-counter;
         list-style-type: none;
@@ -58,7 +59,7 @@
 
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label asp-for="Nama" class="control-label font-weight-bold"></label>
+                                                <label asp-for="Nama" class="control-label font-weight-bold"></label><span class="text-danger">*</span>
                                                 <input type="text" asp-for="Nama" class="form-control" />
                                                 <span asp-validation-for="Nama" class="text-danger"></span>
                                             </div>
@@ -88,7 +89,7 @@
 
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label asp-for="Alamat" class="control-label font-weight-bold"></label>
+                                                <label asp-for="Alamat" class="control-label font-weight-bold"></label><span class="text-danger">*</span>
                                                 <input type="text" asp-for="Alamat" class="form-control" />
                                                 <span asp-validation-for="Alamat" class="text-danger"></span>
                                             </div>
@@ -140,7 +141,7 @@
                                 <br />
 
                                 <div class="row">
-                                    <div class="col-md-1"><b>C1</b></div>
+                                    <div class="col-md-1"><b>C1</b><span class="text-danger">*</span></div>
                                     <div class="col-md-11">
                                         <div class="form-group">
                                             <label asp-for="C1" class="control-label">Apakah Ibu/Bapak tahun (pernah dengar, baca, lihat) Masinton Pasribu, SH?</label>
@@ -178,7 +179,7 @@
                                 <br />
 
                                 <div class="row">
-                                    <div class="col-md-1"><b>C3</b></div>
+                                    <div class="col-md-1"><b>C3</b><span class="text-danger">*</span></div>
                                     <div class="col-md-11">
                                         <div class="form-group">
                                             <label class="control-label">Apakah Ibu/Bapak tahu (pernah dengar, baca, lihat) Masinton Pasribu sebagai?</label>
@@ -186,7 +187,7 @@
                                             <div class="row">
 
                                                 <div class="col-md-6">
-                                                    <label for="C3A" class="control-label"><b>A.</b> Anggota DPR DKI II (Jaksel, Jakpus, dan Luar Negeri)</label>
+                                                    <label for="C3A" class="control-label"><b>A.</b><span class="text-danger">*</span> Anggota DPR DKI II (Jaksel, Jakpus, dan Luar Negeri)</label>
                                                     @foreach (var option in Model.List3Choice)
                                                     {
                                                         <div class="form-check">
@@ -198,7 +199,7 @@
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <label for="C3A" class="control-label"><b>B.</b> Aktivis gerakan tahun 1998</label>
+                                                    <label for="C3A" class="control-label"><b>B.</b><span class="text-danger">*</span> Aktivis gerakan tahun 1998</label>
                                                     @foreach (var option in Model.List3Choice)
                                                     {
                                                         <div class="form-check">
@@ -217,7 +218,7 @@
                                 <br />
 
                                 <div class="row">
-                                    <div class="col-md-1"><b>C4</b></div>
+                                    <div class="col-md-1"><b>C4</b><span class="text-danger">*</span></div>
                                     <div class="col-md-11">
                                         <div class="form-group">
                                             <label asp-for="C4" class="control-label">Apakah Ibu/Bapak tahu bahwa <b>Masinton Pasribu</b> diinginkan kembali oleh masyarakat untuk menjadi anggota DPR RI Dapil DKI II (Kota Jakarta Selatan, Jakarta Pusat, dan Luar Negeri)?</label>
@@ -249,7 +250,7 @@
                                 <br />
 
                                 <div class="row">
-                                    <div class="col-md-1"><b>C6</b></div>
+                                    <div class="col-md-1"><b>C6</b><span class="text-danger">*</span></div>
                                     <div class="col-md-11">
                                         <div class="form-group">
                                             <label asp-for="C6" class="control-label">Menurut Ibu/Bapak Siapakah Calon Wakil Rakyat yang pantas dari Partai Demokrasi Indonesia Perjuangan Dapil DKI II  (Kota Jakarta Selatan, Jakarta Pusat, dan Luar Negeri)?</label>
@@ -273,7 +274,7 @@
                                 <br />
 
                                 <div class="row">
-                                    <div class="col-md-1"><b>C7</b></div>
+                                    <div class="col-md-1"><b>C7</b><span class="text-danger">*</span></div>
                                     <div class="col-md-11">
                                         <div class="form-group">
                                             <label asp-for="C7" class="control-label">Bersediakah Ibu/Bapak mengkampanyekan Masinton Pasaribu sebagai Calon Wakil Rakyat 2024 nanti?</label>

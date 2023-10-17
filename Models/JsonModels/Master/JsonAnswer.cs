@@ -18,6 +18,13 @@ namespace Model.JsonModels.Master
 
     public class JsonAnswer
     {
+        public JsonAnswer()
+        {
+            // Set default values in the constructor
+            OrderBy = ConstantVariable.OrderByDefault;
+            OrderByDirection = ConstantVariable.OrderByDirectionDefault;
+        }
+
         [Required(ErrorMessage = "Mohon isi nama Responden")]
         public string Nama { get; set; }
 
@@ -64,13 +71,10 @@ namespace Model.JsonModels.Master
         [Required(ErrorMessage = "Mohon pilih salah satu")]
         public string C7 { get; set; }
 
-        [Required(ErrorMessage = "Mohon pilih salah satu")]
-        public string C8 { get; set; }
+        public string? C8 { get; set; }
 
-        [Required(ErrorMessage = "Mohon pilih salah satu")]
-        public string C9 { get; set; }
+        public string? C9 { get; set; }
 
-        [Required(ErrorMessage = "Mohon pilih salah satu")]
         public string? C10 { get; set; }
 
         public string? ID { get; set; }
@@ -86,7 +90,7 @@ namespace Model.JsonModels.Master
         public int? Skip { get; set; }
 
         private string? _OrderBy;
-        public string? OrderBy
+        public string OrderBy
         {
             get
             {
@@ -94,19 +98,11 @@ namespace Model.JsonModels.Master
             }
             set
             {
-                _OrderBy = value;
-                if (!String.IsNullOrEmpty(_OrderBy))
-                {
-                    _OrderBy = value;
-                }
-                else
-                {
-                    _OrderBy = ConstantVariable.OrderByDefault;
-                }
+                _OrderBy = !string.IsNullOrEmpty(value) ? value : ConstantVariable.OrderByDefault;
             }
         }
         private string? _OrderByDirection;
-        public string? OrderByDirection
+        public string OrderByDirection
         {
             get
             {
@@ -114,15 +110,7 @@ namespace Model.JsonModels.Master
             }
             set
             {
-                _OrderByDirection = value;
-                if (!String.IsNullOrEmpty(_OrderBy))
-                {
-                    _OrderByDirection = value;
-                }
-                else
-                {
-                    _OrderByDirection = ConstantVariable.OrderByDirectionDefault;
-                }
+                _OrderByDirection = !string.IsNullOrEmpty(value) ? value : ConstantVariable.OrderByDirectionDefault;
             }
         }
         public string? Query { get; set; }

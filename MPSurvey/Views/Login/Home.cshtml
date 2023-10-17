@@ -30,13 +30,13 @@
     <section class="content">
         <div class="container-fluid">
             <!-- new vendor form -->
-            <div class="row center" >
+            <div class="row center">
                 <div class="col-md-12">
                     <div class="card card-info">
-                         
+
                         <div class="card-body">
                             <h1 class="m-0 text-dark"><img src="~/img/hands.png" />&nbsp;Welcome!</h1>
-                            <br/>
+                            <br />
                             <h4>Welcome to Masinton Pasaribu Survey</h4>
                         </div>
                     </div>
@@ -140,20 +140,20 @@
 
         </div><!-- /.container-fluid -->
     </section>
-@*
+    @*
     <section class="container row">
-        <article class="col-sm-6 card">
-            <canvas id="religionChart"></canvas>
-        </article>
-        <article class="col-sm-6 card">
-            <h3>Total orang yang mengetahui Masinton Pasaribu S.H.</h3>
-            <div>
-                <ul>
-                    <li>Yes: <span id="c1YesCount"/></li>
-                    <li>No: <span id="c1NoCount"/></li>
-                </ul>
-            </div>
-        </article>
+    <article class="col-sm-6 card">
+    <canvas id="religionChart"></canvas>
+    </article>
+    <article class="col-sm-6 card">
+    <h3>Total orang yang mengetahui Masinton Pasaribu S.H.</h3>
+    <div>
+    <ul>
+    <li>Yes: <span id="c1YesCount"/></li>
+    <li>No: <span id="c1NoCount"/></li>
+    </ul>
+    </div>
+    </article>
     </section>*@
 
 </div>
@@ -183,7 +183,17 @@
                 'rgba(200, 200, 200, 0.5)',
                 'rgba(100, 100, 100, 0.5)',
                 'rgba(0, 128, 0, 0.5)',
-                'rgba(128, 0, 0, 0.5)'
+                'rgba(128, 0, 0, 0.5)',
+                'rgba(255, 0, 0, 0.5)',
+                'rgba(0, 255, 0, 0.5)',
+                'rgba(0, 0, 255, 0.5)',
+                'rgba(255, 255, 0, 0.5)',
+                'rgba(0, 255, 255, 0.5)',
+                'rgba(255, 0, 255, 0.5)',
+                'rgba(128, 128, 128, 0.5)',
+                'rgba(192, 192, 192, 0.5)',
+                'rgba(128, 0, 0, 0.5)',
+                'rgba(0, 128, 0, 0.5)'
             ];
 
             async function showChart() {
@@ -284,7 +294,7 @@
                 createCChart(datasets, "c3BChart");
             }
 
-            async function showC4Chart(){
+            async function showC4Chart() {
                 var datasets = [];
 
                 var data = await $.ajax({
@@ -335,7 +345,7 @@
             async function showAgeChart() {
                 var datasets = [];
 
-                var data =await $.ajax({
+                var data = await $.ajax({
                     url: "/Master/Answer/AgeChart",
                     method: "POST",
                     data: {}
@@ -355,7 +365,7 @@
                 createCChart(datasets, "ageChart");
             }
 
-            function createReligionChart(labels, datasets){
+            function createReligionChart(labels, datasets) {
 
                 const existingChart = Chart.getChart("religionChart"); // Get the previous Chart instance
                 if (existingChart) {
@@ -364,7 +374,7 @@
 
                 const religionChart = new Chart("religionChart", {
                     type: "bar",
-                    data : {
+                    data: {
                         labels: labels,
                         datasets: datasets,
                     },
@@ -394,9 +404,9 @@
                 }
 
                 const datasets = xValues.map((label, index) => ({
-                        label: label,
-                        data: [yValues[index]],
-                        backgroundColor: colorPalette1[index],
+                    label: label,
+                    data: [yValues[index]],
+                    backgroundColor: colorPalette1[index],
                 }));
 
                 const myChart = new Chart("mainChart", {
@@ -425,7 +435,7 @@
                         }
                     },
                 });
-            } 
+            }
 
             function showC1Count() {
                 $.ajax({
@@ -435,7 +445,7 @@
                     async: false,
                     success: function (data) {
                         $.each(data, function (index, item) {
-                            if (item.label == "YA"){
+                            if (item.label == "YA") {
                                 $("#c1YesCount").text(item.count);
                             }
                             else {
@@ -517,12 +527,12 @@
 
             //setTargetHeight();
 
-            @if (TempData["notification"] != null)
-            {
-                @Html.Raw(TempData["notification"])
-            }
+        @if (TempData["notification"] != null)
+        {
+            @Html.Raw(TempData["notification"])
+        }
 
-        });
+                });
 
     </script>
 
