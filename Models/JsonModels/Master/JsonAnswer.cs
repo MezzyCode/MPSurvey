@@ -18,6 +18,7 @@ namespace Model.JsonModels.Master
 
     public class JsonAnswer
     {
+        [Required(ErrorMessage = "Mohon isi nama Responden")]
         public string Nama { get; set; }
 
         [DisplayName("Nomor KK")]
@@ -25,40 +26,51 @@ namespace Model.JsonModels.Master
 
         public int? Usia { get; set; }
 
+        [Required(ErrorMessage = "Mohon isi alamat Responden")]
         public string Alamat { get; set; }
 
-        public string Rt { get; set; }
+        public string? Rt { get; set; }
 
-        public string Rw { get; set; }
+        public string? Rw { get; set; }
 
-        public string Kelurahan { get; set; }
+        public string? Kelurahan { get; set; }
 
-        public string Kecamatan { get; set; }
+        public string? Kecamatan { get; set; }
 
         public string? NIK { get; set; }
         [DisplayName("Nomor Telepon")]
         public string? Nomor_telp { get; set; }
 
+        [Required(ErrorMessage = "Mohon pilih salah satu")]
         public string C1 { get; set; }
 
         public string? C2 { get; set; }
 
+        [Required(ErrorMessage = "Mohon pilih salah satu")]
         public string C3A { get; set; }
 
+        [Required(ErrorMessage = "Mohon pilih salah satu")]
         public string C3B { get; set; }
 
         public string C4 { get; set; }
 
         public string? C5 { get; set; }
-
+        [Required(ErrorMessage = "Mohon pilih salah satu")]
         public string C6 { get; set; }
 
+        [RequiredIfOtherSelected("C6", "Mohon isi Nama Calon")]
+        public string? C6Other { get; set; }
+
+        [Required(ErrorMessage = "Mohon pilih salah satu")]
         public string C7 { get; set; }
 
+        [Required(ErrorMessage = "Mohon pilih salah satu")]
         public string C8 { get; set; }
 
+        [Required(ErrorMessage = "Mohon pilih salah satu")]
         public string C9 { get; set; }
 
+        [Required(ErrorMessage = "Mohon pilih salah satu")]
         public string? C10 { get; set; }
 
         public string? ID { get; set; }
@@ -123,5 +135,33 @@ namespace Model.JsonModels.Master
         public List<JsonHelperTable> ListAgama { get; set; } = new List<JsonHelperTable>();
         public List<JsonHelperTable> ListPendidikan { get; set; } = new List<JsonHelperTable>();
         public List<JsonHelperTable> ListSuku { get; set; } = new List<JsonHelperTable>();
+    }
+
+    [AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
+    public sealed class RequiredIfOtherSelectedAttribute : ValidationAttribute
+    {
+        private readonly string otherPropertyName;
+
+        public RequiredIfOtherSelectedAttribute(string otherPropertyName, string errorMessage)
+        {
+            this.otherPropertyName = otherPropertyName;
+            this.ErrorMessage = errorMessage;
+        }
+
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            var otherPropertyInfo = validationContext.ObjectType.GetProperty(otherPropertyName);
+            var otherValue = otherPropertyInfo.GetValue(validationContext.ObjectInstance);
+
+            if (otherValue != null && otherValue.ToString() == "Other")
+            {
+                if (value == null || string.IsNullOrWhiteSpace(value.ToString()))
+                {
+                    return new ValidationResult(ErrorMessage);
+                }
+            }
+
+            return ValidationResult.Success;
+        }
     }
 }

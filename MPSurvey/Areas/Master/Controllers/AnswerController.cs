@@ -405,6 +405,22 @@ namespace MainProject.Areas.Master.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AgeChart()
+        {
+            try
+            {
+                List<JsonChart> data = await ServiceAnswer.FindAgeAsync(new JsonAnswer(), User);
+
+                return Json(data);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         public async Task<IActionResult> LoadData()
         {
             try

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ClosedXML.Excel;
-using Database.JsonModels;
+using Service.Helpers;
+using Model.JsonModels;
 using Model.JsonModels;
 using Model.JsonModels.Master;
 using Model.JsonModels.Setting;
@@ -17,8 +18,8 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using static Database.Context.HelperFunction;
-using static Service.Helpers.GlobalHelpers;
 using ConstantVariableKey = Model.InfrastructurClass.ConstantVariable;
+using static Service.Helpers.GlobalHelpers;
 
 namespace Service.Services.Master
 {
@@ -29,7 +30,7 @@ namespace Service.Services.Master
         private readonly ApplicationDbContext _dbcontext;
         private UnitOfWork.UnitOfWork UnitOfWork;
         private readonly IMapper _mapper;
-        HelperTableService ServiceHelper; 
+        HelperTableService ServiceHelper;
 
         public AnswerService(ApplicationDbContext dbcontext, IMapper mapper)
         {
@@ -64,7 +65,7 @@ namespace Service.Services.Master
 
                 List<JsonChart> listChart = new List<JsonChart>();
 
-                foreach(var calon in listCalon)
+                foreach (var calon in listCalon)
                 {
                     JsonChart newChart = new JsonChart();
                     newChart.Label = calon;
@@ -428,6 +429,34 @@ namespace Service.Services.Master
             }
         }
 
+        public async Task<List<JsonChart>> FindAgeAsync(JsonAnswer filter, ClaimsPrincipal claims)
+        {
+            try
+            {
+                List<JsonAnswer> listAnswer = await FindAsync(filter, claims);
+
+                int maxAge = listAnswer.Max(x => x.Usia).GetValueOrDefault();
+                int minAge = listAnswer.Min(x => x.Usia).GetValueOrDefault();
+
+                var ageGroup = Enumerable.Range(minAge - (minAge % 5), maxAge - (maxAge % 5) + 5).Where(age => age <= maxAge);
+
+                var groupedData = ageGroup.Select(rangeStart =>
+                {
+                    var rangeEnd = rangeStart + 4;
+                    var label = $"{rangeStart} - {rangeEnd}";
+                    var groupData = listAnswer.Where(x => x.Usia >= rangeStart && x.Usia <= rangeEnd).ToList();
+                    return new JsonChart { Label = label, Count = groupData.Count };
+                }).ToList();
+
+                return groupedData;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         public async Task<List<JsonAnswer>> FindAsync(JsonAnswer filter, ClaimsPrincipal claims)
         {
             List<JsonAnswer> answerList = new List<JsonAnswer>();
@@ -531,7 +560,8 @@ namespace Service.Services.Master
                         NewData.C3B = Save.C3B;
                         NewData.C4 = Save.C4;
                         NewData.C5 = Save.C5;
-                        NewData.C6 = Save.C6;
+                        if (Save.C6 != "Other") NewData.C6 = Save.C6;
+                        else if (!string.IsNullOrEmpty(Save.C6Other)) NewData.C6 = Save.C6Other.ToUpper();
                         NewData.C7 = Save.C7;
                         NewData.C8 = Save.C8;
                         NewData.C9 = Save.C9;
@@ -539,8 +569,6 @@ namespace Service.Services.Master
 
                         NewData.ModelState = ObjectState.Added;
 
-                        UnitOfWork.InsertOrUpdate(claims, NewData);
-                        UnitOfWork.Commit();
                     }
                     if (!String.IsNullOrEmpty(Save.ID))
                     {
@@ -569,7 +597,8 @@ namespace Service.Services.Master
                         NewData.C3B = Save.C3B;
                         NewData.C4 = Save.C4;
                         NewData.C5 = Save.C5;
-                        NewData.C6 = Save.C6;
+                        if (Save.C6 != "Other") NewData.C6 = Save.C6;
+                        else if (!string.IsNullOrEmpty(Save.C6Other)) NewData.C6 = Save.C6Other.ToUpper();
                         NewData.C7 = Save.C7;
                         NewData.C8 = Save.C8;
                         NewData.C9 = Save.C9;
@@ -577,9 +606,27 @@ namespace Service.Services.Master
 
                         NewData.ModelState = ObjectState.Modified;
 
-                        UnitOfWork.InsertOrUpdate(claims, NewData);
-                        UnitOfWork.Commit();
                     }
+
+
+                    if (Save.C6 == "Other" && !string.IsNullOrEmpty(Save.C6Other))
+                    {
+                        HelperTable newHelper = new HelperTable();
+
+                        newHelper.Code = "CALON";
+                        newHelper.Name = Save.C6Other.ToUpper();
+                        newHelper.Value = Save.C6Other.ToUpper();
+                        newHelper.Description = Save.C6Other;
+
+                        newHelper.ID = newHelper.Code + newHelper.Value;
+                        newHelper.ModelState = ObjectState.Added;
+
+                        UnitOfWork.InsertOrUpdate(claims, newHelper);
+                    }
+
+                    UnitOfWork.InsertOrUpdate(claims, NewData);
+                    UnitOfWork.Commit();
+
                     result = new JsonReturn(true);
                     result.message = "Berhasil diinput";
                 }

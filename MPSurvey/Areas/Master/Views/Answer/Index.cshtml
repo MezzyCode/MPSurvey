@@ -200,7 +200,7 @@
                     "serverSide": true, // for process server side
                     "filter": true,
                     "pageLength": 10,
-                    "responsive": false,
+                    "responsive": true,
                     "autoWidth": false,
 
                     "lengthMenu": [10, 50, 100, 500, 1000],
@@ -259,7 +259,7 @@
                         { "data": "c6", "name": "C6" },
                         {
                             data: null, render: function (data, type, row) {
-                                return '<a class="btn btn-info btn-sm" href="@Url.Action("Edit", "Answer", new { Area = "Master" })?ID=' + row.id + '">Edit</a>' + '<a class="btn btn-danger btn-sm" href="#" onclick=DeleteData("' + row.id + '")>Hapus</a>';;
+                                return '<a class="btn btn-info btn-sm" href="@Url.Action("Edit", "Answer", new { Area = "Master" })?ID=' + row.id + '">Edit</a>' + '&nbsp' + '<a class="btn btn-danger btn-sm" href="#" onclick=DeleteData("' + row.id + '")>Hapus</a>';;
                             },
                         }
 

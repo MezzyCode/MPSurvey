@@ -66,11 +66,12 @@
 
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label asp-for="NIK" class="control-label font-weight-bold"></label>
-                                                <input type="number" asp-for="NIK" class="form-control" />
-                                                <span asp-validation-for="NIK" class="text-danger"></span>
+                                                <label asp-for="Nomor_telp" class="control-label font-weight-bold"></label>
+                                                <input type="number" asp-for="Nomor_telp" class="form-control" />
+                                                <span asp-validation-for="Nomor_telp" class="text-danger"></span>
                                             </div>
                                         </div>
+
                                     </div>
 
                                     <div class="row">
@@ -81,26 +82,6 @@
                                                 <span asp-validation-for="Usia" class="text-danger"></span>
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <div class="row">
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label asp-for="Nomor_telp" class="control-label font-weight-bold"></label>
-                                                <input type="number" asp-for="Nomor_telp" class="form-control" />
-                                                <span asp-validation-for="Nomor_telp" class="text-danger"></span>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label asp-for="Nama_Kk" class="control-label font-weight-bold"></label>
-                                                <input type="number" asp-for="Nama_Kk" class="form-control" />
-                                                <span asp-validation-for="Nama_Kk" class="text-danger"></span>
-                                            </div>
-                                        </div>
-
                                     </div>
 
                                     <div class="row">
@@ -279,7 +260,12 @@
                                                     <label class="form-check-label" for="@($"C6option{option.Value}")">@option.Value</label>
                                                 </div>
                                             }
+                                            <div class="form-check">
+                                                <input asp-for="C6" class="form-check-input" type="radio" value="Other" id="@($"C6optionOther")" />
+                                                <label class="form-check-label" for="@($"C6optionOther")"><input asp-for="C6Other" type="text" class="form-control"/></label>
+                                            </div>
                                             <span asp-validation-for="C6" class="text-danger"></span>
+                                            <span asp-validation-for="C6Other" class="text-danger"></span>
                                         </div>
                                     </div>
                                 </div>
