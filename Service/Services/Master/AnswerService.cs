@@ -46,15 +46,7 @@ namespace Service.Services.Master
         {
             try
             {
-                String ClientID = GlobalHelpers.GetClaimValueByType(EnumClaims.ClientID.ToString(), claims);
-                filter.ClientID = ClientID;
-                Expression<Func<Answer, bool>> filterExp = c => true;
-                if (!String.IsNullOrEmpty(filter.Kelurahan)) filterExp = filterExp.And(x => x.Kelurahan == filter.Kelurahan);
-                if (!String.IsNullOrEmpty(filter.Kecamatan)) filterExp = filterExp.And(x => x.Kecamatan == filter.Kecamatan);
-                if (!String.IsNullOrEmpty(filter.C6)) filterExp = filterExp.And(x => x.C6 == filter.C6);
-                filterExp = filterExp.And(x => x.ClientID == filter.ClientID);
-
-                List<JsonAnswer> answerList = _mapper.Map<IEnumerable<Answer>, List<JsonAnswer>>(await Repo.QueryAnswersAsync(filterExp, filter.Take.GetValueOrDefault(), filter.Skip.GetValueOrDefault()));
+                List<JsonAnswer> answerList = await FindAsync(filter, claims);
 
                 List<string> listCalon = (await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CALONCODE }, claims)).OrderBy(x => x.Description).Select(x => x.Value).ToList();
 
@@ -88,78 +80,62 @@ namespace Service.Services.Master
             }
         }
 
-        public async Task<List<JsonChartLabel>> FindChartReligionAsync(JsonAnswer filter, ClaimsPrincipal claims)
-        {
-            try
-            {
-                String ClientID = GlobalHelpers.GetClaimValueByType(EnumClaims.ClientID.ToString(), claims);
-                filter.ClientID = ClientID;
-                Expression<Func<Answer, bool>> filterExp = c => true;
-                if (!String.IsNullOrEmpty(filter.Kelurahan)) filterExp = filterExp.And(x => x.Kelurahan == filter.Kelurahan);
-                if (!String.IsNullOrEmpty(filter.Kecamatan)) filterExp = filterExp.And(x => x.Kecamatan == filter.Kecamatan);
-                if (!String.IsNullOrEmpty(filter.C6)) filterExp = filterExp.And(x => x.C6 == filter.C6);
-                filterExp = filterExp.And(x => x.ClientID == filter.ClientID);
+        //public async Task<List<JsonChartLabel>> FindChartReligionAsync(JsonAnswer filter, ClaimsPrincipal claims)
+        //{
+        //    try
+        //    {
+        //        List<JsonAnswer> answerList = await FindAsync(filter, claims);
 
-                List<JsonAnswer> answerList = _mapper.Map<IEnumerable<Answer>, List<JsonAnswer>>(await Repo.QueryAnswersAsync(filterExp, filter.Take.GetValueOrDefault(), filter.Skip.GetValueOrDefault()));
+        //        //List<JsonHelperTable> listAgamaHelper = await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.AGAMACODE }, claims);
+        //        List<string> listCalon = (await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CALONCODE }, claims)).OrderBy(x => x.Description).Select(x => x.Value).ToList();
 
-                //List<JsonHelperTable> listAgamaHelper = await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.AGAMACODE }, claims);
-                List<string> listCalon = (await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CALONCODE }, claims)).OrderBy(x => x.Description).Select(x => x.Value).ToList();
+        //        List<string> listAgama = (await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.AGAMACODE }, claims)).OrderBy(x => x.Description).Select(x => x.Value).ToList();
 
-                List<string> listAgama = (await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.AGAMACODE }, claims)).OrderBy(x => x.Description).Select(x => x.Value).ToList();
+        //        var grouped = answerList.GroupBy(x => new { x.C6, x.C8 }).Select(x => new
+        //        {
+        //            Religion = x.Key.C8,
+        //            Label = x.Key.C6,
+        //            Count = x.Count()
+        //        }).ToList();
 
-                var grouped = answerList.GroupBy(x => new { x.C6, x.C8 }).Select(x => new
-                {
-                    Religion = x.Key.C8,
-                    Label = x.Key.C6,
-                    Count = x.Count()
-                }).ToList();
+        //        List<JsonChartLabel> listChartLabel = new List<JsonChartLabel>();
 
-                List<JsonChartLabel> listChartLabel = new List<JsonChartLabel>();
+        //        foreach (var calon in listCalon)
+        //        {
+        //            JsonChartLabel newChartLabel = new JsonChartLabel();
+        //            newChartLabel.XLabel = calon;
 
-                foreach (var calon in listCalon)
-                {
-                    JsonChartLabel newChartLabel = new JsonChartLabel();
-                    newChartLabel.XLabel = calon;
+        //            var groupedbyCalon = grouped.Where(x => x.Label == calon).OrderBy(x => x.Religion).ToList();
 
-                    var groupedbyCalon = grouped.Where(x => x.Label == calon).OrderBy(x => x.Religion).ToList();
+        //            foreach (var agama in listAgama)
+        //            {
+        //                JsonChart newChart = new JsonChart();
+        //                newChart.Label = agama;
+        //                newChart.Count = 0;
 
-                    foreach (var agama in listAgama)
-                    {
-                        JsonChart newChart = new JsonChart();
-                        newChart.Label = agama;
-                        newChart.Count = 0;
+        //                var calonAgama = groupedbyCalon.FirstOrDefault(x => x.Religion == agama);
+        //                if (calonAgama != null) newChart.Count = calonAgama.Count;
 
-                        var calonAgama = groupedbyCalon.FirstOrDefault(x => x.Religion == agama);
-                        if (calonAgama != null) newChart.Count = calonAgama.Count;
+        //                newChartLabel.Charts.Add(newChart);
+        //            }
 
-                        newChartLabel.Charts.Add(newChart);
-                    }
+        //            listChartLabel.Add(newChartLabel);
+        //        }
 
-                    listChartLabel.Add(newChartLabel);
-                }
+        //        return listChartLabel.OrderBy(x => x.XLabel).ToList();
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                return listChartLabel.OrderBy(x => x.XLabel).ToList();
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
+        //        throw ex;
+        //    }
+        //}
 
         public async Task<List<JsonChartLabel>> FindC3Async(JsonAnswer filter, ClaimsPrincipal claims)
         {
             try
             {
-                String ClientID = GlobalHelpers.GetClaimValueByType(EnumClaims.ClientID.ToString(), claims);
-                filter.ClientID = ClientID;
-                Expression<Func<Answer, bool>> filterExp = c => true;
-                if (!String.IsNullOrEmpty(filter.Kelurahan)) filterExp = filterExp.And(x => x.Kelurahan == filter.Kelurahan);
-                if (!String.IsNullOrEmpty(filter.Kecamatan)) filterExp = filterExp.And(x => x.Kecamatan == filter.Kecamatan);
-                if (!String.IsNullOrEmpty(filter.C6)) filterExp = filterExp.And(x => x.C6 == filter.C6);
-                filterExp = filterExp.And(x => x.ClientID == filter.ClientID);
-
-                List<JsonAnswer> answerList = _mapper.Map<IEnumerable<Answer>, List<JsonAnswer>>(await Repo.QueryAnswersAsync(filterExp, filter.Take.GetValueOrDefault(), filter.Skip.GetValueOrDefault()));
+                List<JsonAnswer> answerList = await FindAsync(filter, claims);
 
                 //List<JsonHelperTable> listAgamaHelper = await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.AGAMACODE }, claims);
                 List<string> listChoice = (await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CHOISE3CODE }, claims)).OrderBy(x => x.Description).Select(x => x.Value).ToList();
@@ -208,15 +184,7 @@ namespace Service.Services.Master
         {
             try
             {
-                String ClientID = GlobalHelpers.GetClaimValueByType(EnumClaims.ClientID.ToString(), claims);
-                filter.ClientID = ClientID;
-                Expression<Func<Answer, bool>> filterExp = c => true;
-                if (!String.IsNullOrEmpty(filter.Kelurahan)) filterExp = filterExp.And(x => x.Kelurahan == filter.Kelurahan);
-                if (!String.IsNullOrEmpty(filter.Kecamatan)) filterExp = filterExp.And(x => x.Kecamatan == filter.Kecamatan);
-                if (!String.IsNullOrEmpty(filter.C6)) filterExp = filterExp.And(x => x.C6 == filter.C6);
-                filterExp = filterExp.And(x => x.ClientID == filter.ClientID);
-
-                List<JsonAnswer> answerList = _mapper.Map<IEnumerable<Answer>, List<JsonAnswer>>(await Repo.QueryAnswersAsync(filterExp, filter.Take.GetValueOrDefault(), filter.Skip.GetValueOrDefault()));
+                List<JsonAnswer> answerList = await FindAsync(filter, claims);
 
                 var grouped = answerList.GroupBy(x => x.C1).Select(x => new JsonChart
                 {
@@ -253,15 +221,7 @@ namespace Service.Services.Master
         {
             try
             {
-                String ClientID = GlobalHelpers.GetClaimValueByType(EnumClaims.ClientID.ToString(), claims);
-                filter.ClientID = ClientID;
-                Expression<Func<Answer, bool>> filterExp = c => true;
-                if (!String.IsNullOrEmpty(filter.Kelurahan)) filterExp = filterExp.And(x => x.Kelurahan == filter.Kelurahan);
-                if (!String.IsNullOrEmpty(filter.Kecamatan)) filterExp = filterExp.And(x => x.Kecamatan == filter.Kecamatan);
-                if (!String.IsNullOrEmpty(filter.C6)) filterExp = filterExp.And(x => x.C6 == filter.C6);
-                filterExp = filterExp.And(x => x.ClientID == filter.ClientID);
-
-                List<JsonAnswer> answerList = _mapper.Map<IEnumerable<Answer>, List<JsonAnswer>>(await Repo.QueryAnswersAsync(filterExp, filter.Take.GetValueOrDefault(), filter.Skip.GetValueOrDefault()));
+                List<JsonAnswer> answerList = await FindAsync(filter, claims);
 
                 var grouped = answerList.GroupBy(x => x.C3A).Select(x => new JsonChart
                 {
@@ -298,15 +258,7 @@ namespace Service.Services.Master
         {
             try
             {
-                String ClientID = GlobalHelpers.GetClaimValueByType(EnumClaims.ClientID.ToString(), claims);
-                filter.ClientID = ClientID;
-                Expression<Func<Answer, bool>> filterExp = c => true;
-                if (!String.IsNullOrEmpty(filter.Kelurahan)) filterExp = filterExp.And(x => x.Kelurahan == filter.Kelurahan);
-                if (!String.IsNullOrEmpty(filter.Kecamatan)) filterExp = filterExp.And(x => x.Kecamatan == filter.Kecamatan);
-                if (!String.IsNullOrEmpty(filter.C6)) filterExp = filterExp.And(x => x.C6 == filter.C6);
-                filterExp = filterExp.And(x => x.ClientID == filter.ClientID);
-
-                List<JsonAnswer> answerList = _mapper.Map<IEnumerable<Answer>, List<JsonAnswer>>(await Repo.QueryAnswersAsync(filterExp, filter.Take.GetValueOrDefault(), filter.Skip.GetValueOrDefault()));
+                List<JsonAnswer> answerList = await FindAsync(filter, claims);
 
                 var grouped = answerList.GroupBy(x => x.C3B).Select(x => new JsonChart
                 {
@@ -344,15 +296,7 @@ namespace Service.Services.Master
         {
             try
             {
-                String ClientID = GlobalHelpers.GetClaimValueByType(EnumClaims.ClientID.ToString(), claims);
-                filter.ClientID = ClientID;
-                Expression<Func<Answer, bool>> filterExp = c => true;
-                if (!String.IsNullOrEmpty(filter.Kelurahan)) filterExp = filterExp.And(x => x.Kelurahan == filter.Kelurahan);
-                if (!String.IsNullOrEmpty(filter.Kecamatan)) filterExp = filterExp.And(x => x.Kecamatan == filter.Kecamatan);
-                if (!String.IsNullOrEmpty(filter.C6)) filterExp = filterExp.And(x => x.C6 == filter.C6);
-                filterExp = filterExp.And(x => x.ClientID == filter.ClientID);
-
-                List<JsonAnswer> answerList = _mapper.Map<IEnumerable<Answer>, List<JsonAnswer>>(await Repo.QueryAnswersAsync(filterExp, filter.Take.GetValueOrDefault(), filter.Skip.GetValueOrDefault()));
+                List<JsonAnswer> answerList = await FindAsync(filter, claims);
 
                 var grouped = answerList.GroupBy(x => x.C4).Select(x => new JsonChart
                 {
@@ -389,15 +333,7 @@ namespace Service.Services.Master
         {
             try
             {
-                String ClientID = GlobalHelpers.GetClaimValueByType(EnumClaims.ClientID.ToString(), claims);
-                filter.ClientID = ClientID;
-                Expression<Func<Answer, bool>> filterExp = c => true;
-                if (!String.IsNullOrEmpty(filter.Kelurahan)) filterExp = filterExp.And(x => x.Kelurahan == filter.Kelurahan);
-                if (!String.IsNullOrEmpty(filter.Kecamatan)) filterExp = filterExp.And(x => x.Kecamatan == filter.Kecamatan);
-                if (!String.IsNullOrEmpty(filter.C6)) filterExp = filterExp.And(x => x.C6 == filter.C6);
-                filterExp = filterExp.And(x => x.ClientID == filter.ClientID);
-
-                List<JsonAnswer> answerList = _mapper.Map<IEnumerable<Answer>, List<JsonAnswer>>(await Repo.QueryAnswersAsync(filterExp, filter.Take.GetValueOrDefault(), filter.Skip.GetValueOrDefault()));
+                List<JsonAnswer> answerList = await FindAsync(filter, claims);
 
                 var grouped = answerList.GroupBy(x => x.C7).Select(x => new JsonChart
                 {
@@ -464,6 +400,119 @@ namespace Service.Services.Master
             }
         }
 
+        public async Task<List<JsonChart>> FindReligionAsync(JsonAnswer filter, ClaimsPrincipal claims)
+        {
+            try
+            {
+                List<JsonAnswer> answerList = await FindAsync(filter, claims);
+
+                var grouped = answerList.GroupBy(x => x.C8).Select(x => new JsonChart
+                {
+                    Label = x.Key,
+                    Count = x.Count()
+                }).ToList();
+
+                List<JsonChart> listChart = new List<JsonChart>();
+
+                List<string> listAgama = (await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.AGAMACODE }, claims)).OrderBy(x => x.Description).Select(x => x.Value).ToList();
+
+                foreach (var choice in listAgama)
+                {
+                    JsonChart newChart = new JsonChart();
+                    newChart.Label = choice.ToString();
+                    newChart.Count = 0;
+
+                    var cekList = grouped.FirstOrDefault(x => x.Label == choice);
+                    if (cekList != null) newChart.Count = cekList.Count;
+
+                    listChart.Add(newChart);
+                }
+
+                return listChart;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public async Task<List<JsonChart>> FindTribeAsync(JsonAnswer filter, ClaimsPrincipal claims)
+        {
+            try
+            {
+                List<JsonAnswer> answerList = await FindAsync(filter, claims);
+
+                var grouped = answerList.GroupBy(x => x.C10).Select(x => new JsonChart
+                {
+                    Label = x.Key,
+                    Count = x.Count()
+                }).ToList();
+
+                List<JsonChart> listChart = new List<JsonChart>();
+
+                List<string> listSuku = (await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.SUKUCODE }, claims)).Select(x => x.Value).ToList();
+
+                foreach (var choice in listSuku)
+                {
+                    JsonChart newChart = new JsonChart();
+                    newChart.Label = choice.ToString();
+                    newChart.Count = 0;
+
+                    var cekList = grouped.FirstOrDefault(x => x.Label == choice);
+                    if (cekList != null) newChart.Count = cekList.Count;
+
+                    listChart.Add(newChart);
+                }
+
+                listChart.RemoveAll(x => x.Count < 1);
+
+                return listChart;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public async Task<List<JsonChart>> FindAcademicAsync(JsonAnswer filter, ClaimsPrincipal claims)
+        {
+            try
+            {
+                List<JsonAnswer> answerList = await FindAsync(filter, claims);
+
+                var grouped = answerList.GroupBy(x => x.C9).Select(x => new JsonChart
+                {
+                    Label = x.Key,
+                    Count = x.Count()
+                }).ToList();
+
+                List<JsonChart> listChart = new List<JsonChart>();
+
+                List<string> listPendidikan = (await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.PENDIDIKANCODE }, claims)).OrderBy(x => x.Description).Select(x => x.Value).ToList();
+
+                foreach (var choice in listPendidikan)
+                {
+                    JsonChart newChart = new JsonChart();
+                    newChart.Label = choice.ToString();
+                    newChart.Count = 0;
+
+                    var cekList = grouped.FirstOrDefault(x => x.Label == choice);
+                    if (cekList != null) newChart.Count = cekList.Count;
+
+                    listChart.Add(newChart);
+                }
+
+                return listChart;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         public async Task<List<JsonAnswer>> FindAsync(JsonAnswer filter, ClaimsPrincipal claims)
         {
             List<JsonAnswer> answerList = new List<JsonAnswer>();
@@ -478,7 +527,7 @@ namespace Service.Services.Master
                 if (!String.IsNullOrEmpty(filter.C6)) filterExp = filterExp.And(x => x.C6 == filter.C6);
                 filterExp = filterExp.And(x => x.ClientID == filter.ClientID);
 
-                answerList = _mapper.Map<IEnumerable<Answer>, List<JsonAnswer>>(await Repo.QueryAnswersAsync(filterExp, filter.Take.GetValueOrDefault(), filter.Skip.GetValueOrDefault()));
+                answerList = _mapper.Map<IEnumerable<Answer>, List<JsonAnswer>>(await Repo.QueryAnswersAsync(filterExp, filter.OrderBy, filter.OrderByDirection, filter.Take.GetValueOrDefault(), filter.Skip.GetValueOrDefault()));
 
                 answerList = answerList.AsQueryable().OrderBy(filter.OrderBy + " " + filter.OrderByDirection).ToList();
                 return answerList;

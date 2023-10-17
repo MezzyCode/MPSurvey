@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Linq.Dynamic.Core;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,13 +21,13 @@ namespace Repository.Repository.Master
             _q_QueryData = _dbcontext.Answers;
         }
 
-        public async Task<List<Answer>> QueryAnswersAsync(Expression<Func<Answer, bool>> expression, int take = 0, int skip = 0)
+        public async Task<List<Answer>> QueryAnswersAsync(Expression<Func<Answer, bool>> expression, string orderby, string orderdir, int take = 0, int skip = 0)
         {
             try
             {
                 if (take > 0)
                 {
-                    return _q_QueryData.Where(x => x.RowStatus == 0).Where(expression).Skip(skip).Take(take).ToList();
+                    return  _q_QueryData.Where(x => x.RowStatus == 0).Where(expression).OrderBy(orderby + " " + orderdir).Skip(skip).Take(take).ToList();
                 }
                 else
                 {

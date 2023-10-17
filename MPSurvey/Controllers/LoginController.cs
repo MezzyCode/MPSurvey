@@ -18,6 +18,8 @@ using Service.Services.Setting;
 using Model.JsonModels;
 using Service.Helpers;
 using static Service.Helpers.GlobalHelpers;
+using ConstantVariableKey = Model.InfrastructurClass.ConstantVariable;
+using Model.JsonModels.Setting;
 
 namespace MainProject.Controllers
 {
@@ -66,7 +68,9 @@ namespace MainProject.Controllers
                 return RedirectToAction("LoginForm", "Login", new { area = "" });
             }
 
+            List<JsonHelperTable> ListKelurahan = await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.KELURAHANCODE }, User);
 
+            ViewBag.listKelurahan = ListKelurahan;
 
             return View();
         }
