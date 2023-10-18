@@ -6,13 +6,6 @@
 }
 
 <style>
-    #tblData th {
-        padding-top: 12px;
-        padding-bottom: 12px;
-        text-align: left;
-        background-color: #f39c12;
-        color: white;
-    }
 
     #tblData th {
         padding-top: 12px;
@@ -20,11 +13,6 @@
         text-align: left;
     }
 
-    #btn-filter {
-        float: right;
-        margin-left: 12px;
-        width: 50px;
-    }
 </style>
 
 <div class="text-sm">
@@ -50,8 +38,35 @@
 
                         <div class="card-body">
 
-
-                            <a asp-action="DownloadExcelDocument" class="btn btn-sm btn-success"> <i class="fa fa-file-excel"></i> Export to Excel</a>
+                            <div id="filterBody">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <input type="search" id="filterNama" class="form-control" placeholder="Cari Nama" />
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.DropDownList("Kelurahan", new SelectList(ViewBag.listKelurahan, "Name", "Name"), "Cari dari Kelurahan", new
+                                        {
+                                        @id="filterKelurahan",
+                                        @class="form-control"
+                                        })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.DropDownList("Calon", new SelectList(ViewBag.listCalon, "Name", "Name"), "Cari dari Calon Pilihan", new
+                                        {
+                                        @id="filterCalon",
+                                        @class="form-control"
+                                        })
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <button id="btn-filter" class="btn btn-sm btn-primary" type="button" onclick="FilterData()">Cari</button>
+                                        &nbsp;
+                                        <a asp-action="DownloadExcelDocument" class="btn btn-sm btn-success"> <i class="fa fa-file-excel"></i> Export to Excel</a>
+                                    </div>
+                                </div>
+                            </div>
                             <br />
                             <br />
                             <table id="tblData" class="table table-bordered table-striped">
@@ -158,7 +173,7 @@
                                         });
 
                             }
-                            else{
+                            else {
                                 swal
                                     ({
                                         title: "Gagal!",
@@ -239,7 +254,9 @@
                         "type": "POST",
                         "datatype": "json",
                         "data": function (d) {
-
+                            d.nama = $("#filterNama").val();
+                            d.calon = $("#filterCalon").val();
+                            d.kelurahan = $("#filterKelurahan").val();
                         },
                     },
                     "searching": false,
@@ -257,7 +274,7 @@
                         { "data": "c6", "name": "C6" },
                         {
                             data: null, render: function (data, type, row) {
-                                return '<a class="btn btn-info btn-sm" href="@Url.Action("Edit", "Answer", new { Area = "Master" })?ID=' + row.id + '">Edit</a>' + '&nbsp' + '<a class="btn btn-danger btn-sm" href="#" onclick=DeleteData("' + row.id + '")>Hapus</a>';;
+                                return '<a class="btn btn-primary btn-sm" href="@Url.Action("Edit", "Answer", new { Area = "Master" })?ID=' + row.id + '">Edit</a>' + '&nbsp' + '<a class="btn btn-danger btn-sm" href="#" onclick=DeleteData("' + row.id + '")>Hapus</a>';;
                             },
                         }
 
@@ -270,7 +287,7 @@
             @Html.Raw(TempData["notification"])
         }
 
-                });
+                                });
     </script>
 
 }
