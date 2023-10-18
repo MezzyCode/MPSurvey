@@ -36,6 +36,15 @@ namespace MainProject.Areas.Master.Controllers
                 return RedirectToAction("LoginForm", "Login", new { area = "" });
             }
 
+            var TaskKelurahan = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.KELURAHANCODE }, User);
+             var TaskCalon = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CALONCODE }, User);
+            
+            List<JsonHelperTable> ListKelurahan = await TaskKelurahan;
+            List<JsonHelperTable> ListCalon = await TaskCalon;
+
+            ViewBag.listKelurahan = ListKelurahan;
+            ViewBag.listCalon = ListCalon;
+
             List<JsonAnswer> page1 = await ServiceAnswer.FindAsync(new JsonAnswer { }, User);
             IndexAnswerVM data = new IndexAnswerVM();
             data.listIndex = page1;
@@ -559,6 +568,12 @@ namespace MainProject.Areas.Master.Controllers
 
 
                 filterJson.Query = Query;
+                filterJson.Nama = Request.Form["nama"];
+                filterJson.Kelurahan = Request.Form["kelurahan"];
+                filterJson.C6 = Request.Form["calon"];
+                filterJson.C8 = Request.Form["c8"];
+                filterJson.C9 = Request.Form["c9"];
+                filterJson.C10 = Request.Form["c10"];
 
 
                 IEnumerable<JsonAnswer> ListDataGrid = await ServiceAnswer.FindAsync(filterJson, User);

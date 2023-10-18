@@ -522,8 +522,12 @@ namespace Service.Services.Master
                 String ClientID = GlobalHelpers.GetClaimValueByType(EnumClaims.ClientID.ToString(), claims);
                 filter.ClientID = ClientID;
                 Expression<Func<Answer, bool>> filterExp = c => true;
+                if (!String.IsNullOrEmpty(filter.Nama)) filterExp = filterExp.And(x => x.Nama.StartsWith(filter.Nama));
                 if (!String.IsNullOrEmpty(filter.Kelurahan)) filterExp = filterExp.And(x => x.Kelurahan == filter.Kelurahan);
                 if (!String.IsNullOrEmpty(filter.Kecamatan)) filterExp = filterExp.And(x => x.Kecamatan == filter.Kecamatan);
+                if (!String.IsNullOrEmpty(filter.C8)) filterExp = filterExp.And(x => x.C8 == filter.C8);
+                if (!String.IsNullOrEmpty(filter.C9)) filterExp = filterExp.And(x => x.C9 == filter.C9);
+                if (!String.IsNullOrEmpty(filter.C10)) filterExp = filterExp.And(x => x.C10 == filter.C10);
                 if (!String.IsNullOrEmpty(filter.C6)) filterExp = filterExp.And(x => x.C6 == filter.C6);
                 filterExp = filterExp.And(x => x.ClientID == filter.ClientID);
 
