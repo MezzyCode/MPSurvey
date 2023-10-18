@@ -723,9 +723,9 @@ a:hover {
   margin: 10px 0 5px 15px;
 }
 
-.sidebar-nav .nav-link {
-  display: flex;
-  align-items: center;
+    .sidebar-nav .nav-link {
+        display: flex;
+        align-items: center;
         font-size: 15px;
         font-weight: 600;
         color: #4154f1;
@@ -739,16 +739,16 @@ a:hover {
             font-size: 16px;
             margin-right: 10px;
             color: #4154f1;
-}
+        }
 
-.sidebar-nav .nav-link.collapsed {
-  color: #012970;
-  background: #fff;
-}
+        .sidebar-nav .nav-link.collapsed {
+            color: #012970;
+            background: #fff;
+        }
 
-.sidebar-nav .nav-link.collapsed i {
-  color: #899bbd;
-}
+            .sidebar-nav .nav-link.collapsed i {
+                color: #899bbd;
+            }
 
 .sidebar-nav .nav-link:hover {
   color: #4154f1;
