@@ -621,8 +621,9 @@ namespace Service.Services.Master
                         NewData.C3B = Save.C3B;
                         NewData.C4 = Save.C4;
                         NewData.C5 = Save.C5;
-                        if (Save.C6 != "Other") NewData.C6 = Save.C6;
-                        else if (!string.IsNullOrEmpty(Save.C6Other)) NewData.C6 = Save.C6Other.ToUpper();
+                        NewData.C6 = Save.C6;
+                        //if (Save.C6 != "Other") NewData.C6 = Save.C6;
+                        //else if (!string.IsNullOrEmpty(Save.C6Other)) NewData.C6 = Save.C6Other.ToUpper();
                         NewData.C7 = Save.C7;
                         NewData.C8 = Save.C8;
                         NewData.C9 = Save.C9;
@@ -658,8 +659,9 @@ namespace Service.Services.Master
                         NewData.C3B = Save.C3B;
                         NewData.C4 = Save.C4;
                         NewData.C5 = Save.C5;
-                        if (Save.C6 != "Other") NewData.C6 = Save.C6;
-                        else if (!string.IsNullOrEmpty(Save.C6Other)) NewData.C6 = Save.C6Other.ToUpper();
+                        NewData.C6 = Save.C6;
+                        //if (Save.C6 != "Other") NewData.C6 = Save.C6;
+                        //else if (!string.IsNullOrEmpty(Save.C6Other)) NewData.C6 = Save.C6Other.ToUpper();
                         NewData.C7 = Save.C7;
                         NewData.C8 = Save.C8;
                         NewData.C9 = Save.C9;
@@ -670,20 +672,20 @@ namespace Service.Services.Master
                     }
 
 
-                    if (Save.C6 == "Other" && !string.IsNullOrEmpty(Save.C6Other))
-                    {
-                        HelperTable newHelper = new HelperTable();
+                    //if (Save.C6 == "Other" && !string.IsNullOrEmpty(Save.C6Other))
+                    //{
+                    //    HelperTable newHelper = new HelperTable();
 
-                        newHelper.Code = "CALON";
-                        newHelper.Name = Save.C6Other.ToUpper();
-                        newHelper.Value = Save.C6Other.ToUpper();
-                        newHelper.Description = Save.C6Other;
+                    //    newHelper.Code = "CALON";
+                    //    newHelper.Name = Save.C6Other.ToUpper();
+                    //    newHelper.Value = Save.C6Other.ToUpper();
+                    //    newHelper.Description = Save.C6Other;
 
-                        newHelper.ID = newHelper.Code + newHelper.Value;
-                        newHelper.ModelState = ObjectState.Added;
+                    //    newHelper.ID = newHelper.Code + newHelper.Value;
+                    //    newHelper.ModelState = ObjectState.Added;
 
-                        UnitOfWork.InsertOrUpdate(claims, newHelper);
-                    }
+                    //    UnitOfWork.InsertOrUpdate(claims, newHelper);
+                    //}
 
                     UnitOfWork.InsertOrUpdate(claims, NewData);
                     UnitOfWork.Commit();
