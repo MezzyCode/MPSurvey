@@ -261,12 +261,12 @@
                                                     <label class="form-check-label" for="@($"C6option{option.Value}")">@option.Value</label>
                                                 </div>
                                             }
-                                            <div class="form-check">
+                                            @*<div class="form-check">
                                                 <input asp-for="C6" class="form-check-input" type="radio" value="Other" id="@($"C6optionOther")" />
                                                 <label class="form-check-label" for="@($"C6optionOther")"><input asp-for="C6Other" type="text" class="form-control"/></label>
-                                            </div>
+                                            </div>*@
                                             <span asp-validation-for="C6" class="text-danger"></span>
-                                            <span asp-validation-for="C6Other" class="text-danger"></span>
+                                            @*<span asp-validation-for="C6Other" class="text-danger"></span>*@
                                         </div>
                                     </div>
                                 </div>

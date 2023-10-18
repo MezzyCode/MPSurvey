@@ -113,6 +113,12 @@ namespace MainProject.Areas.Master.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(JsonAnswer data)
         {
+            var cookiesEmail = GlobalHelpers.GetEmailFromIdentity(User);
+            if (cookiesEmail == null)
+            {
+                return RedirectToAction("LoginForm", "Login", new { area = "" });
+            }
+
             if (ModelState.IsValid)
             {
                 try
@@ -221,6 +227,12 @@ namespace MainProject.Areas.Master.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(JsonAnswer data)
         {
+            var cookiesEmail = GlobalHelpers.GetEmailFromIdentity(User);
+            if (cookiesEmail == null)
+            {
+                return RedirectToAction("LoginForm", "Login", new { area = "" });
+            }
+
             if (ModelState.IsValid)
             {
                 try
