@@ -90,7 +90,8 @@ a:hover {
 # Custom Styling
 --------------------------------------------------------------*/
 :root {
-  --theme-primary: hsl(240, 64%, 62%);
+  --theme-primary: hsl(240, 64%, 62%) !important;
+  
 
   .elevation-1 {
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
