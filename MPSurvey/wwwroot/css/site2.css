@@ -82,3 +82,7 @@ body {*/
     background-color:#007bff !important;
     padding: 5px 10px !important;
 }
+
+.table-opsi {
+  display: flex;
+}

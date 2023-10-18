@@ -4,108 +4,36 @@
     Layout = "~/Views/Shared/AdminLTE/_Layout2.cshtml";
 }
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta http-equiv="x-ua-compatible" content="ie=edge" />
-
-    <title>AdminLTE 3 | Starter</title>
-    <partial name="AdminLTE/_Styles" />
-</head>
 <body>
-    <section class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <!-- left column -->
-                <div class="col-lg-4"></div>
-                <div class="col-lg-4 d-flex justify-content-center  align-items-center" style="padding-top:50px">
-                    <!-- jquery validation -->
-                    <div class="card">
-                        <div class="card-body">
-                            <form class="row g-3" asp-action="LoginForm" method="post" asp-antiforgery="true">
-                                <div class="text-center">
-                                    <br />
-                                    <img src="@Url.Content("~/img/pngwing.com.png")" alt="" height="250">
-                                    <br /><br /><br />
-                                    <h1>Kanvassing Masinton Pasaribu</h1>
-                                </div>
-
-                                @*<div class="text-center">
-                                    <p class="login-box-msg">Masuk untuk mulai</p>
-                                </div>*@
-
-                                <div class="form-group">
-                                    <label class="control-label">Email</label>
-                                    <input type="text" asp-for="Email" class="form-control" />
-                                    <span asp-validation-for="Email" class="text-danger"></span>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="control-label">Password</label>
-                                    <input type="password" asp-for="Password" id="password" class="form-control" />
-                                    <span asp-validation-for="Password" class="text-danger"></span>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <input type="checkbox" onclick="myFunction()" /> Show Password
-                                </div>
-@*
-                                <div class="col-12">
-                                    <label for="inputPassword4" class="form-label" onclick="showresetModal()" style="color:blue">Forgot Password ? </label>
-                                </div>*@
-
-                                @if (ViewBag.ErrorResult != null)
-                                {
-                                    <div class="" style="text-align:center;padding-top:10px;">
-                                        <span class="text-danger" style="font-size:24px; font-weight:bold">@ViewBag.ErrorResult</span>
-                                    </div>
-                                }
-
-                                <div class="text-center">
-                                    <button type="submit" class="btn btn-primary col-md-12">Login</button>
-                                </div>
-
-                            </form>
-                        </div>
-                    </div>
+    <section class="row justify-content-center">
+        <form class="col-md-5 col-lg-8 row align-items-center border elevation-1" style="border-color: var(--theme-primary) !important" asp-action="LoginForm" method="post" asp-antiforgery="true">
+            <img class="col-sm-12 col-lg-4" src="@Url.Content("~/img/masinton.png")" alt="foto-masinton">
+            <div class="col-sm-12 col-lg-8 p-1">
+                <h1 class="card-title text-center">Kanvassing Masinton Pasaribu</h1>
+                <div class="form-group">
+                    <label class="control-label">Email</label>
+                    <input type="text" asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
-                <div class="col-lg-4"></div>
-            </div>
-        
-            <div class="modal fade" id="resetModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content ">
-                        <div class="modal-header bg-info">
-                            <h5 class="modal-title" id="exampleModalLabel">Reset Password</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body message" style="text-align:center;">
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Input your Email address to Reset Password</label>
-                                    <div class="input-group mb-3">
-                                        <input type="email" name="emailForm" class="form-control" required id="emailForm" placeholder="Enter email">
-                                        <div class="input-group-append">
-                                            <div class="input-group-text">
-                                                <span class="fas fa-envelope"></span>
-                                            </div>
-                                        </div>
-                                        <span id="emailError" class="text-danger"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /.card-body -->
-                            <div class="card-footer">
-                                <button onclick="sendReset()" class="btn btn-block btn-success">Request New Password</button>
-                            </div>
-                        </div>
-                      
+                <div class="form-group">
+                    <label class="control-label">Password</label>
+                    <input type="password" asp-for="Password" id="password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" onclick="myFunction()" /> Show Password
+                </div>
+                @if (ViewBag.ErrorResult != null)
+                {
+                    <div class="" style="text-align:center;padding-top:10px;">
+                        <span class="text-danger" style="font-size:24px; font-weight:bold">@ViewBag.ErrorResult</span>
                     </div>
+                }
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary col-md-12">Login</button>
                 </div>
             </div>
-        </div><!-- /.container-fluid -->
+        </form>
     </section>
 </body>
 
