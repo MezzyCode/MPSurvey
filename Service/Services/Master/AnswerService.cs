@@ -71,7 +71,7 @@ namespace Service.Services.Master
                 }
 
 
-                return listChart.OrderBy(x => x.Label).ToList();
+                return listChart.ToList();
             }
             catch (Exception ex)
             {

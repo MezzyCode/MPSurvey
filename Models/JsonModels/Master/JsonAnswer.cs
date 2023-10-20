@@ -30,7 +30,7 @@ namespace Model.JsonModels.Master
 
         [DisplayName("Nomor KK")]
         public string? Nama_Kk { get; set; }
-
+        [Range(1, int.MaxValue, ErrorMessage = "Mohon Masukkan angka positif")]
         public int? Usia { get; set; }
 
         [Required(ErrorMessage = "Mohon isi alamat Responden")]

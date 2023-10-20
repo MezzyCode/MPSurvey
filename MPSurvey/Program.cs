@@ -23,7 +23,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
                 options.LoginPath = new PathString("/Login/LoginForm");
                 options.AccessDeniedPath = new PathString("/User/Denied");
                 //options.AccessDeniedPath = new PathString("/Login/LoginForm");
-                options.ExpireTimeSpan = TimeSpan.FromHours(1);
+                options.Cookie.Expiration = TimeSpan.FromHours(24);
+                options.SlidingExpiration = true;
+                options.ExpireTimeSpan = TimeSpan.FromHours(24);
             });
 
 var mappingConfig = new MapperConfiguration(mc =>
@@ -33,7 +35,10 @@ var mappingConfig = new MapperConfiguration(mc =>
 IMapper mapper = mappingConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 
-
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromHours(24);
+});
 
 var app = builder.Build();
 
@@ -49,6 +54,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();

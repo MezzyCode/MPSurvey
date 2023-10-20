@@ -95,7 +95,7 @@ namespace MainProject.Areas.Master.Controllers
                 data.ListKecamatan = ListKecamatan.OrderBy(x => x.Value).ToList();
                 data.List3Choice = List3Choice.OrderBy(x => x.Description).ToList();
                 data.List2Choice = List2Choice.OrderBy(x => x.Description).ToList();
-                data.ListCalon = ListCalon.OrderBy(x => x.Value).ToList();
+                data.ListCalon = ListCalon.OrderBy(x => x.Description).ToList();
                 data.ListAgama = ListAgama.OrderBy(x => x.Description).ToList();
                 data.ListPendidikan = ListPendidikan.OrderBy(x => x.Description).ToList();
                 data.ListSuku = ListSuku.OrderBy(x => x.Value).ToList();
@@ -165,7 +165,7 @@ namespace MainProject.Areas.Master.Controllers
             data.ListKecamatan = ListKecamatan.OrderBy(x => x.Value).ToList();
             data.List3Choice = List3Choice.OrderBy(x => x.Description).ToList();
             data.List2Choice = List2Choice.OrderBy(x => x.Description).ToList();
-            data.ListCalon = ListCalon.OrderBy(x => x.Value).ToList();
+            data.ListCalon = ListCalon.OrderBy(x => x.Description).ToList();
             data.ListAgama = ListAgama.OrderBy(x => x.Description).ToList();
             data.ListPendidikan = ListPendidikan.OrderBy(x => x.Description).ToList();
             data.ListSuku = ListSuku.OrderBy(x => x.Value).ToList();
@@ -209,7 +209,7 @@ namespace MainProject.Areas.Master.Controllers
                 data.ListKecamatan = ListKecamatan.OrderBy(x => x.Value).ToList();
                 data.List3Choice = List3Choice.OrderBy(x => x.Description).ToList();
                 data.List2Choice = List2Choice.OrderBy(x => x.Description).ToList();
-                data.ListCalon = ListCalon.OrderBy(x => x.Value).ToList();
+                data.ListCalon = ListCalon.OrderBy(x => x.Description).ToList();
                 data.ListAgama = ListAgama.OrderBy(x => x.Description).ToList();
                 data.ListPendidikan = ListPendidikan.OrderBy(x => x.Description).ToList();
                 data.ListSuku = ListSuku.OrderBy(x => x.Value).ToList();
@@ -279,7 +279,7 @@ namespace MainProject.Areas.Master.Controllers
             data.ListKecamatan = ListKecamatan.OrderBy(x => x.Value).ToList();
             data.List3Choice = List3Choice.OrderBy(x => x.Description).ToList();
             data.List2Choice = List2Choice.OrderBy(x => x.Description).ToList();
-            data.ListCalon = ListCalon.OrderBy(x => x.Value).ToList();
+            data.ListCalon = ListCalon.OrderBy(x => x.Description).ToList();
             data.ListAgama = ListAgama.OrderBy(x => x.Description).ToList();
             data.ListPendidikan = ListPendidikan.OrderBy(x => x.Description).ToList();
             data.ListSuku = ListSuku.OrderBy(x => x.Value).ToList();
