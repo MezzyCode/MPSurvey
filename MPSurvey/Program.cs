@@ -2,8 +2,10 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Model.InfrastructurClass;
 using Model.Models;
 using Service.Automapper;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
@@ -28,6 +30,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
                 options.ExpireTimeSpan = TimeSpan.FromHours(24);
             });
 
+builder.Services.ConfigureOptions<ConfigureSecurityStampOptions>();
+
 var mappingConfig = new MapperConfiguration(mc =>
 {
     mc.AddProfile(new MappingProfiles());
@@ -39,6 +43,10 @@ builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromHours(24);
 });
+
+
+
+
 
 var app = builder.Build();
 
@@ -52,6 +60,18 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+app.UseStatusCodePages(async context =>
+{
+    var request = context.HttpContext.Request;
+    var response = context.HttpContext.Response;
+
+    if (response.StatusCode == (int)HttpStatusCode.Unauthorized || response.StatusCode == (int)HttpStatusCode.NotFound)
+    {
+        response.Redirect("/Login/LoginForm?returnUrl=" + request.Path);
+    }
+
+});
 
 app.UseRouting();
 app.UseSession();
