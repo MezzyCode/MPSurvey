@@ -80,7 +80,7 @@ namespace Service.UnitOfWork
                 System.Threading.Thread.CurrentPrincipal = User;
                 foreach (T item in entities)
                 {
-                    if (item.ModelState == ObjectState.SoftDelete)
+                    if (item.ModelState == ObjectState.HardDelete)
                     {
                         _centralizedDbContext.Remove(item);
                     }

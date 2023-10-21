@@ -26,6 +26,10 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
                 options.Cookie.Expiration = TimeSpan.FromHours(24);
                 options.SlidingExpiration = true;
                 options.ExpireTimeSpan = TimeSpan.FromHours(24);
+                options.Events = new CookieAuthenticationEvents
+                {
+                    OnValidatePrincipal = SecurityStampValidator.ValidatePrincipalAsync
+                };
             });
 
 var mappingConfig = new MapperConfiguration(mc =>

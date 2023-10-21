@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Model.InfrastructurClass;
+using Model.JsonModels;
 using Model.JsonModels.Master;
 using Model.JsonModels.Setting;
 using Model.Models;
@@ -39,6 +40,29 @@ namespace MainProject.Areas.Master.Controllers
             var TaskKelurahan = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.KELURAHANCODE }, User);
              var TaskCalon = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CALONCODE }, User);
             
+            List<JsonHelperTable> ListKelurahan = await TaskKelurahan;
+            List<JsonHelperTable> ListCalon = await TaskCalon;
+
+            ViewBag.listKelurahan = ListKelurahan;
+            ViewBag.listCalon = ListCalon;
+
+            List<JsonAnswer> page1 = await ServiceAnswer.FindAsync(new JsonAnswer { }, User);
+            IndexAnswerVM data = new IndexAnswerVM();
+            data.listIndex = page1;
+            return View(data);
+        }
+
+        public async Task<IActionResult> IndexPersonal()
+        {
+            var cookiesEmail = GlobalHelpers.GetEmailFromIdentity(User);
+            if (cookiesEmail == null)
+            {
+                return RedirectToAction("LoginForm", "Login", new { area = "" });
+            }
+
+            var TaskKelurahan = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.KELURAHANCODE }, User);
+            var TaskCalon = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CALONCODE }, User);
+
             List<JsonHelperTable> ListKelurahan = await TaskKelurahan;
             List<JsonHelperTable> ListCalon = await TaskCalon;
 
@@ -187,6 +211,12 @@ namespace MainProject.Areas.Master.Controllers
             {
                 JsonAnswer data = await ServiceAnswer.GetAnswer(ID);
 
+                if (data.CreatedBy != GlobalHelpers.GetClaimValueByType(EnumClaims.Username.ToString(), User))
+                {
+                    Alert("Akses Ditolak!", NotificationType.error);
+                    return RedirectToAction(nameof(Index));
+                }
+
                 var TaskKelurahan = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.KELURAHANCODE }, User);
                 var TaskKecamatan = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.KECAMATANCODE }, User);
                 var Task3Choice = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CHOISE3CODE }, User);
@@ -294,7 +324,8 @@ namespace MainProject.Areas.Master.Controllers
         {
             try
             {
-                bool result = await ServiceAnswer.DeleteAsync(ID);
+                JsonReturn result = await ServiceAnswer.SoftDeleteAsync(ID, User);
+
 
                 //if (result)
                 //{
@@ -597,6 +628,105 @@ namespace MainProject.Areas.Master.Controllers
                 #endregion
 
                 recordsTotal = await ServiceAnswer.FindCountAsync(filterJson, User);
+                //Paging   
+                //var data = ListDataGrid.Skip(skip).Take(pageSize).ToList();
+                //Returning Json Data  
+                return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = ListDataGrid });
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public async Task<IActionResult> LoadDataPersonal()
+        {
+            try
+            {
+                var draw = HttpContext.Request.Form["draw"].FirstOrDefault();
+
+                // Skip number of Rows count  
+                var start = Request.Form["start"].FirstOrDefault();
+
+                // Paging Length 10,20  
+                var length = Request.Form["length"].FirstOrDefault();
+                // Sort Column Name  
+                var sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][name]"].FirstOrDefault();
+
+                // Sort Column Direction (asc, desc)  
+                var sortColumnDirection = Request.Form["order[0][dir]"].FirstOrDefault();
+
+                // Search Value from (Search box)  
+                var searchValue = Request.Form["search[value]"].FirstOrDefault();
+
+                //Paging Size (10, 20, 50,100)  
+                int pageSize = length != null ? Convert.ToInt32(length) : 0;
+
+                if (pageSize <= 0)
+                {
+                    pageSize = 0;
+                }
+                int skip = start != null ? Convert.ToInt32(start) : 0;
+
+                int recordsTotal = 0;
+
+                /// INI KALAU DI PAKE AJA BUAT CONTOH TRANSAKSI LAEN 
+
+
+                JsonAnswer filterJson = new JsonAnswer();
+                filterJson.Skip = skip;
+                filterJson.Take = pageSize;
+                filterJson.OrderBy = !String.IsNullOrEmpty(sortColumn) ? sortColumn : "CreatedTime";
+                filterJson.OrderByDirection = !String.IsNullOrEmpty(sortColumnDirection) ? sortColumnDirection : "desc";
+
+
+                var ListQuery = Request.Form.ToList();
+                string Query = "";
+                try
+                {
+                    foreach (var item in ListQuery.Where(x => x.Key.Contains("[search][value]")).Where(x => !String.IsNullOrEmpty(x.Value)).ToList())
+                    {
+                        string CheckBaris = item.Key.Replace("[search][value]", "");
+                        var ListNamaKolom = ListQuery.Where(x => x.Key.Contains(CheckBaris)).ToList();
+                        var namakolom = ListNamaKolom.FirstOrDefault(x => x.Key.Contains("name"));
+                        var kolom = namakolom.Value;
+                        //Search  
+                        if (!string.IsNullOrEmpty(kolom))
+                        {
+                            Query += (" and " + kolom + " like ''%" + item.Value + "%'' ");
+
+                        }
+
+                    }
+
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+
+
+                filterJson.Query = Query;
+                filterJson.Nama = Request.Form["nama"];
+                filterJson.Kelurahan = Request.Form["kelurahan"];
+                filterJson.C6 = Request.Form["calon"];
+                filterJson.C8 = Request.Form["c8"];
+                filterJson.C9 = Request.Form["c9"];
+                filterJson.C10 = Request.Form["c10"];
+
+
+                IEnumerable<JsonAnswer> ListDataGrid = await ServiceAnswer.FindByUserAsync(filterJson, User);
+                #region Sorting
+
+
+
+
+                #endregion
+
+                recordsTotal = await ServiceAnswer.FindCountByUserAsync(filterJson, User);
                 //Paging   
                 //var data = ListDataGrid.Skip(skip).Take(pageSize).ToList();
                 //Returning Json Data  

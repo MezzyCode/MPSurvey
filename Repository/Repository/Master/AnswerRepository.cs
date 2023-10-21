@@ -45,7 +45,7 @@ namespace Repository.Repository.Master
         {
             try
             {
-                    return _q_QueryData.Count(expression);
+                    return _q_QueryData.Where(x => x.RowStatus == 0).Count(expression);
             }
             catch (Exception ex)
             {

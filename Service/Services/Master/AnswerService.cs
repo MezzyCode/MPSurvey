@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using static Database.Context.HelperFunction;
 using ConstantVariableKey = Model.InfrastructurClass.ConstantVariable;
 using static Service.Helpers.GlobalHelpers;
+using Database.Context;
 
 namespace Service.Services.Master
 {
@@ -566,6 +567,67 @@ namespace Service.Services.Master
             }
         }
 
+        public async Task<List<JsonAnswer>> FindByUserAsync(JsonAnswer filter, ClaimsPrincipal claims)
+        {
+            List<JsonAnswer> answerList = new List<JsonAnswer>();
+
+            try
+            {
+                String ClientID = GlobalHelpers.GetClaimValueByType(EnumClaims.ClientID.ToString(), claims);
+                filter.ClientID = ClientID;
+                Expression<Func<Answer, bool>> filterExp = c => true;
+                if (!String.IsNullOrEmpty(filter.Nama)) filterExp = filterExp.And(x => x.Nama.StartsWith(filter.Nama));
+                if (!String.IsNullOrEmpty(filter.Kelurahan)) filterExp = filterExp.And(x => x.Kelurahan == filter.Kelurahan);
+                if (!String.IsNullOrEmpty(filter.Kecamatan)) filterExp = filterExp.And(x => x.Kecamatan == filter.Kecamatan);
+                if (!String.IsNullOrEmpty(filter.C8)) filterExp = filterExp.And(x => x.C8 == filter.C8);
+                if (!String.IsNullOrEmpty(filter.C9)) filterExp = filterExp.And(x => x.C9 == filter.C9);
+                if (!String.IsNullOrEmpty(filter.C10)) filterExp = filterExp.And(x => x.C10 == filter.C10);
+                if (!String.IsNullOrEmpty(filter.C6)) filterExp = filterExp.And(x => x.C6 == filter.C6);
+                var CreatedBy = GlobalHelpers.GetClaimValueByType(EnumClaims.Username.ToString(), claims);
+                filterExp = filterExp.And(x => x.CreatedBy == CreatedBy);
+                filterExp = filterExp.And(x => x.ClientID == filter.ClientID);
+
+                answerList = _mapper.Map<IEnumerable<Answer>, List<JsonAnswer>>(await Repo.QueryAnswersAsync(filterExp, filter.OrderBy, filter.OrderByDirection, filter.Take.GetValueOrDefault(), filter.Skip.GetValueOrDefault()));
+
+                answerList = answerList.AsQueryable().OrderBy(filter.OrderBy + " " + filter.OrderByDirection).ToList();
+                return answerList;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public async Task<int> FindCountByUserAsync(JsonAnswer filter, ClaimsPrincipal claims)
+        {
+            try
+            {
+                String ClientID = GlobalHelpers.GetClaimValueByType(EnumClaims.ClientID.ToString(), claims);
+                filter.ClientID = ClientID;
+                Expression<Func<Answer, bool>> filterExp = c => true;
+                if (!String.IsNullOrEmpty(filter.Nama)) filterExp = filterExp.And(x => x.Nama.StartsWith(filter.Nama));
+                if (!String.IsNullOrEmpty(filter.Kelurahan)) filterExp = filterExp.And(x => x.Kelurahan == filter.Kelurahan);
+                if (!String.IsNullOrEmpty(filter.Kecamatan)) filterExp = filterExp.And(x => x.Kecamatan == filter.Kecamatan);
+                if (!String.IsNullOrEmpty(filter.C8)) filterExp = filterExp.And(x => x.C8 == filter.C8);
+                if (!String.IsNullOrEmpty(filter.C9)) filterExp = filterExp.And(x => x.C9 == filter.C9);
+                if (!String.IsNullOrEmpty(filter.C10)) filterExp = filterExp.And(x => x.C10 == filter.C10);
+                if (!String.IsNullOrEmpty(filter.C6)) filterExp = filterExp.And(x => x.C6 == filter.C6);
+                var CreatedBy = GlobalHelpers.GetClaimValueByType(EnumClaims.Username.ToString(), claims);
+                filterExp = filterExp.And(x => x.CreatedBy == CreatedBy);
+                filterExp = filterExp.And(x => x.ClientID == filter.ClientID);
+
+                int TotalCount = await Repo.QueryAnswersCountAsync(filterExp);
+
+                return TotalCount;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         public async Task<JsonAnswer> GetAnswer(string ID)
         {
             try
@@ -702,8 +764,9 @@ namespace Service.Services.Master
             return result;
         }
 
-        public async Task<bool> DeleteAsync(string ID)
+        public async Task<JsonReturn> DeleteAsync(string ID)
         {
+            JsonReturn jsonReturn = new JsonReturn(false);
             try
             {
                 Answer data = await Repo.GetAnswerByIDAsync(ID);
@@ -712,15 +775,55 @@ namespace Service.Services.Master
                 {
                     _dbcontext.Answers.Remove(data);
                     _dbcontext.SaveChanges();
-                    return true;
+
+                    jsonReturn = new JsonReturn(true);
+                    jsonReturn.message = "Berhasil Menghapus Data!";
                 }
-                return false;
+                else
+                {
+                    jsonReturn = new JsonReturn(false);
+                    jsonReturn.message = "Data Tidak Ditemukan!";
+                }
             }
             catch (Exception ex)
             {
-
-                throw ex;
+                jsonReturn = new JsonReturn(false);
+                jsonReturn.message = ex.Message;
             }
+            return jsonReturn;
+        }
+
+        public async Task<JsonReturn> SoftDeleteAsync(string ID, ClaimsPrincipal claims)
+        {
+            JsonReturn jsonReturn = new JsonReturn(false);
+            try
+            {
+                Answer data = await Repo.GetAnswerByIDAsync(ID);
+
+                if (data != null)
+                {
+                    data.SetRowStatus(RowStatus.Deleted);
+
+                    data.ModelState = ObjectState.Modified;
+
+                    UnitOfWork.InsertOrUpdate(claims, data);
+                    UnitOfWork.Commit();
+
+                    jsonReturn = new JsonReturn(true);
+                    jsonReturn.message = "Berhasil Menghapus Data!";
+                }
+                else
+                {
+                    jsonReturn = new JsonReturn(false);
+                    jsonReturn.message = "Data Tidak Ditemukan!";
+                }
+            }
+            catch (Exception ex)
+            {
+                jsonReturn = new JsonReturn(false);
+                jsonReturn.message = ex.Message;
+            }
+            return jsonReturn;
         }
 
         public async Task<byte[]> DownloadExcelDocument(JsonAnswer filter, ClaimsPrincipal claims)
