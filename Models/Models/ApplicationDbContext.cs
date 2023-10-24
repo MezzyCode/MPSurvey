@@ -17,10 +17,9 @@ namespace Model.Models
         }
 
         public virtual DbSet<Answer> Answers { get; set; }
-
         public virtual DbSet<HelperTable> HelperTables { get; set; }
-
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<CrudLog> CrudLogs { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -107,6 +106,47 @@ namespace Model.Models
                 entity.Property(e => e.Rw)
                     .HasMaxLength(10)
                     .IsUnicode(false);
+                entity.Property(e => e.TimeStatus)
+                    .IsRowVersion()
+                    .IsConcurrencyToken();
+            });
+
+            modelBuilder.Entity<CrudLog>(entity =>
+            {
+                entity.ToTable("CrudLog");
+
+                entity.Property(e => e.ID)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ClientID)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CreatedBy)
+                    .HasMaxLength(300)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CreatedTime).HasColumnType("datetime");
+
+                entity.Property(e => e.Data).IsUnicode(false);
+
+                entity.Property(e => e.LastModifiedBy)
+                    .HasMaxLength(300)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.LastModifiedTime).HasColumnType("datetime");
+
+                entity.Property(e => e.ProcessName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Remarks).IsUnicode(false);
+
+                entity.Property(e => e.TableName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.TimeStatus)
                     .IsRowVersion()
                     .IsConcurrencyToken();

@@ -146,13 +146,14 @@ namespace MainProject.Areas.Master.Controllers
 
         public async Task<IActionResult> Create()
         {
-            JsonUser data = new JsonUser();
             var cookiesEmail = GlobalHelpers.GetEmailFromIdentity(User);
             if (cookiesEmail == null)
             {
                 return RedirectToAction("LoginForm", "Login", new { area = "" });
 
             }
+
+            JsonUser data = new JsonUser();
 
             return View(data);
         }

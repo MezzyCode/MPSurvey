@@ -23,7 +23,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
             options =>
             {
                 options.LoginPath = new PathString("/Login/LoginForm");
-                options.AccessDeniedPath = new PathString("/User/Denied");
+                options.AccessDeniedPath = new PathString("/Login/LoginForm");
                 //options.AccessDeniedPath = new PathString("/Login/LoginForm");
                 options.Cookie.Expiration = TimeSpan.FromHours(24);
                 options.SlidingExpiration = true;

@@ -63,6 +63,8 @@
                     <th>No. Telefon</th>
                     <th>Alamat</th>
                     <th>Pilihan</th>
+                    <th>Tanggal Input</th>
+                    <th>Callbacker</th>
                     @* <th></th>*@
                 </tr>
             </thead>
@@ -262,6 +264,13 @@
                             }
                         },
                         { "data": "c6", "name": "C6" },
+                        {
+                            "data": "createdTime", "name": "CreatedTime", "render": function (value) {
+                                if (value === null) return "";
+                                return moment(value).format('DD-MMM-YYYY HH:mm');
+                            }
+                        },
+                        { "data": "createdBy", "name": "CreatedBy" },
 
                     ]
 

@@ -19,6 +19,13 @@ namespace Model.JsonModels.Master
 
     public class JsonUser
     {
+        public JsonUser()
+        {
+            // Set default values in the constructor
+            OrderBy = ConstantVariable.OrderByDefault;
+            OrderByDirection = ConstantVariable.OrderByDirectionDefault;
+        }
+
         [Required(ErrorMessage = "Username is Required")]
         public string Username { get; set; }
         [Required(ErrorMessage = "Password is required")]
@@ -31,24 +38,20 @@ namespace Model.JsonModels.Master
         public string Name { get; set; }
         [Required(ErrorMessage = "Password is required")]
         public string Email { get; set; }
-        public string EmailApproval { get; set; }
 
-        public string ErrorCode { get; set; }
-
-
-        public string ClientID { get; set; }
-        public string ID { get; set; }
-        public string CreatedBy { get; set; }
-        public DateTime CreatedTime { get; set; }
-        public string LastModifiedBy { get; set; }
+        public string? ClientID { get; set; }
+        public string? ID { get; set; }
+        public string? CreatedBy { get; set; }
+        public DateTime? CreatedTime { get; set; }
+        public string? LastModifiedBy { get; set; }
         public Nullable<DateTime> LastModifiedTime { get; set; }
 
-        public byte[] TimeStatus { get; set; }
+        public byte[]? TimeStatus { get; set; }
         //public int RowStatus { get; }
-        public int Take { get; set; }
-        public int Skip { get; set; }
+        public int? Take { get; set; }
+        public int? Skip { get; set; }
 
-        private string _OrderBy;
+        private string? _OrderBy;
         public string OrderBy
         {
             get
@@ -68,7 +71,7 @@ namespace Model.JsonModels.Master
                 }
             }
         }
-        private string _OrderByDirection;
+        private string? _OrderByDirection;
         public string OrderByDirection
         {
             get
@@ -88,6 +91,6 @@ namespace Model.JsonModels.Master
                 }
             }
         }
-        public string Query { get; set; }
+        public string? Query { get; set; }
     }
 }

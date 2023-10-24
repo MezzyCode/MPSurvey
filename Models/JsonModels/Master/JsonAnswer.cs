@@ -36,8 +36,10 @@ namespace Model.JsonModels.Master
         [Required(ErrorMessage = "Mohon isi alamat Responden")]
         public string Alamat { get; set; }
 
+        [Range(1, int.MaxValue, ErrorMessage = "Mohon Masukkan angka positif")]
         public string? Rt { get; set; }
 
+        [Range(1, int.MaxValue, ErrorMessage = "Mohon Masukkan angka positif")]
         public string? Rw { get; set; }
 
         public string? Kelurahan { get; set; }
@@ -59,6 +61,7 @@ namespace Model.JsonModels.Master
         [Required(ErrorMessage = "Mohon pilih salah satu")]
         public string C3B { get; set; }
 
+        [Required(ErrorMessage = "Mohon pilih salah satu")]
         public string C4 { get; set; }
 
         public string? C5 { get; set; }

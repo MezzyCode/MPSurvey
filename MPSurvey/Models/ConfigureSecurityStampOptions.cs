@@ -13,7 +13,7 @@ namespace Model.InfrastructurClass
     {
         public void Configure(SecurityStampValidatorOptions options)
         {
-            options.ValidationInterval = TimeSpan.FromMinutes(10); // Default interval is 30 minutes
+            options.ValidationInterval = TimeSpan.FromMinutes(60); // Default interval is 30 minutes
 
             // When refreshing the principal, ensure custom claims that
             // might have been set with an external identity continue

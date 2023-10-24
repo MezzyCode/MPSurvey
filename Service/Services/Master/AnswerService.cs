@@ -22,6 +22,8 @@ using static Database.Context.HelperFunction;
 using ConstantVariableKey = Model.InfrastructurClass.ConstantVariable;
 using static Service.Helpers.GlobalHelpers;
 using Database.Context;
+using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
 
 namespace Service.Services.Master
 {
@@ -644,21 +646,17 @@ namespace Service.Services.Master
         public async Task<JsonReturn> SaveAsync(JsonAnswer Save, ClaimsPrincipal claims)
         {
             JsonReturn result = new JsonReturn(false);
+
+            //CrudLog crudLog = new CrudLog();
+            //crudLog.ID = Guid.NewGuid().ToString();
+            //crudLog.TableName = "Answer";
+            //crudLog.Status = false;
             try
             {
                 String ClientID = GlobalHelpers.GetClaimValueByType(EnumClaims.ClientID.ToString(), claims);
 
-                string Error = "";
-                //if (String.IsNullOrEmpty(Save.ID))
-                //{
-                //    if (await Repo.IsUniqueKeyCodeExist(Save.Nama, Save.Nama_Kk))
-                //    {
-                //        Error = $"{Save.Nama} dengan KK : {Save.Nama_Kk} sudah pernah diinput";
 
-                //        result = new JsonReturn(false);
-                //        result.message = Error;
-                //    }
-                //}
+                string Error = "";
 
                 if (String.IsNullOrEmpty(Error))
                 {
@@ -666,6 +664,8 @@ namespace Service.Services.Master
 
                     if (String.IsNullOrEmpty(Save.ID))
                     {
+                        //crudLog.ProcessName = "Create";
+
                         NewData.ID = Guid.NewGuid().ToString();
                         NewData.Nama = Save.Nama;
                         NewData.Usia = Save.Usia;
@@ -684,18 +684,19 @@ namespace Service.Services.Master
                         NewData.C4 = Save.C4;
                         NewData.C5 = Save.C5;
                         NewData.C6 = Save.C6;
-                        //if (Save.C6 != "Other") NewData.C6 = Save.C6;
-                        //else if (!string.IsNullOrEmpty(Save.C6Other)) NewData.C6 = Save.C6Other.ToUpper();
                         NewData.C7 = Save.C7;
                         NewData.C8 = Save.C8;
                         NewData.C9 = Save.C9;
                         NewData.C10 = Save.C10;
+                        NewData.SetRowStatus(0);
 
                         NewData.ModelState = ObjectState.Added;
 
                     }
                     if (!String.IsNullOrEmpty(Save.ID))
                     {
+                        //crudLog.ProcessName = "Update";
+
                         NewData = await Repo.GetAnswerByIDAsync(Save.ID);
 
                         if (NewData == null)
@@ -722,8 +723,6 @@ namespace Service.Services.Master
                         NewData.C4 = Save.C4;
                         NewData.C5 = Save.C5;
                         NewData.C6 = Save.C6;
-                        //if (Save.C6 != "Other") NewData.C6 = Save.C6;
-                        //else if (!string.IsNullOrEmpty(Save.C6Other)) NewData.C6 = Save.C6Other.ToUpper();
                         NewData.C7 = Save.C7;
                         NewData.C8 = Save.C8;
                         NewData.C9 = Save.C9;
@@ -733,21 +732,8 @@ namespace Service.Services.Master
 
                     }
 
-
-                    //if (Save.C6 == "Other" && !string.IsNullOrEmpty(Save.C6Other))
-                    //{
-                    //    HelperTable newHelper = new HelperTable();
-
-                    //    newHelper.Code = "CALON";
-                    //    newHelper.Name = Save.C6Other.ToUpper();
-                    //    newHelper.Value = Save.C6Other.ToUpper();
-                    //    newHelper.Description = Save.C6Other;
-
-                    //    newHelper.ID = newHelper.Code + newHelper.Value;
-                    //    newHelper.ModelState = ObjectState.Added;
-
-                    //    UnitOfWork.InsertOrUpdate(claims, newHelper);
-                    //}
+                    //crudLog.Data = JsonConvert.SerializeObject(NewData);
+                    //GlobalHelpers.InsertCrudLog(crudLog, _dbcontext.Database.GetConnectionString(), claims);
 
                     UnitOfWork.InsertOrUpdate(claims, NewData);
                     UnitOfWork.Commit();
@@ -761,6 +747,7 @@ namespace Service.Services.Master
                 result = new JsonReturn(false);
                 result.message = ex.Message;
             }
+
             return result;
         }
 

@@ -82,7 +82,7 @@ namespace MainProject.Controllers
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(EnumClaims.Username.ToString(), user.Username),
+                    new Claim(EnumClaims.Username.ToString(), user.UserName),
                     //new Claim(EnumClaims.UserRoleID.ToString(), user.UserRoleID),
                     new Claim(EnumClaims.Email.ToString(), user.Email),
                     new Claim(EnumClaims.ClientID.ToString(), user.ClientID),
@@ -106,6 +106,11 @@ namespace MainProject.Controllers
 
             try
             {
+                if (String.IsNullOrEmpty(loginmodel.Password))
+                {
+                    return View(loginmodel);
+                }
+
                 var result = ServiceUser.GetUserAsync(loginmodel.Email);
                 await _signInManager.SignOutAsync();
 
@@ -130,18 +135,21 @@ namespace MainProject.Controllers
 
                         return RedirectToAction("Home", "Login");
                     }
+                    else
+                    {
+                        ViewBag.ErrorResult = "Username or password wrong !";
+                    }
                 }
                 else
                 {
                     ViewBag.ErrorResult = "Username or password wrong !";
                 }
-
                 return View();
             }
             catch (Exception ex)
             {
-
-                throw ex;
+                Alert(ex.Message, NotificationType.error);
+                return View(loginmodel);
             }
         }
 
@@ -149,7 +157,7 @@ namespace MainProject.Controllers
         //[AllowAnonymous]
         public async Task<IActionResult> LoginForm()
         {
-           
+
             return View();
         }
 

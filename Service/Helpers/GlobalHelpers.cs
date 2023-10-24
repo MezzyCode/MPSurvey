@@ -23,6 +23,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using static Service.Helpers.GlobalHelpers;
 
 namespace Service.Helpers
 {
@@ -1065,5 +1066,88 @@ namespace Service.Helpers
         //}
 
 
+        //public static async Task<bool> InsertCrudLog(CrudLog datas, String ConnString, ClaimsPrincipal claims)
+        //{
+        //    if (String.IsNullOrEmpty(datas.Data)) datas.Data = "";
+        //    if (String.IsNullOrEmpty(datas.Remarks)) datas.Remarks = "";
+
+        //    using (SqlConnection conn = new SqlConnection(ConnString))
+        //    {
+        //        using (SqlCommand cmd = conn.CreateCommand())
+        //        {
+        //            StringBuilder QUERY = new StringBuilder();
+
+        //            QUERY.AppendLine("    INSERT INTO [dbo].[CrudLog] ");
+        //            QUERY.AppendLine("    ([ID]");
+        //            QUERY.AppendLine("    ,[TableName] ");
+        //            QUERY.AppendLine("    ,[ProcessName] ");
+        //            QUERY.AppendLine("    ,[Data] ");
+        //            QUERY.AppendLine("    ,[Status]");
+        //            QUERY.AppendLine("    ,[CreatedBy] ");
+        //            QUERY.AppendLine("    ,[CreatedTime] ");
+        //            QUERY.AppendLine("    ,[LastModifiedBy] ");
+        //            QUERY.AppendLine("    ,[LastModifiedTime] ");
+        //            QUERY.AppendLine("    ,[RowStatus] ");
+        //            QUERY.AppendLine("    ,[Remarks] ");
+        //            QUERY.AppendLine("    ,[ClientID]) ");
+        //            QUERY.AppendLine("    VALUES (@param1 ,@param2 ,@param3 ,@param4 ,@param5 ,@param6 ,@param7 ,@param8 ,@param9 ,@param10, @param11, @param12)"); ;
+
+
+        //            cmd.CommandText = QUERY.ToString();
+
+        //            cmd.Parameters.AddWithValue("@param1", datas.ID);
+        //            cmd.Parameters.AddWithValue("@param2", datas.TableName);
+        //            cmd.Parameters.AddWithValue("@param3", datas.ProcessName);
+        //            cmd.Parameters.AddWithValue("@param4", datas.Data);
+        //            cmd.Parameters.AddWithValue("@param5", datas.Status);
+        //            cmd.Parameters.AddWithValue("@param6", GetClaimValueByType(EnumClaims.Username.ToString(), claims));
+        //            cmd.Parameters.AddWithValue("@param7", DateTime.Now);
+        //            cmd.Parameters.AddWithValue("@param8", GetClaimValueByType(EnumClaims.Username.ToString(), claims));
+        //            cmd.Parameters.AddWithValue("@param9", DateTime.Now);
+        //            cmd.Parameters.AddWithValue("@param10", 0);
+        //            cmd.Parameters.AddWithValue("@param11", datas.Remarks);
+        //            cmd.Parameters.AddWithValue("@param12", "MPS");
+
+        //            try
+        //            {
+        //                conn.Open();
+        //                cmd.ExecuteNonQuery();
+
+        //            }
+        //            catch (SqlException e)
+        //            {
+        //                return false;
+        //            }
+        //        }
+        //    }
+        //    return true;
+        //}
+
+        //public static async Task<bool> UpdateCrudLog(CrudLog datas, String ConnString, ClaimsPrincipal claims)
+        //{
+        //    if (String.IsNullOrEmpty(datas.Data)) datas.Data = "";
+        //    if (String.IsNullOrEmpty(datas.Remarks)) datas.Remarks = "";
+        //    using (SqlConnection conn = new SqlConnection(ConnString))
+        //    {
+        //        using (SqlCommand cmd = conn.CreateCommand())
+        //        {
+        //            StringBuilder QUERY = new StringBuilder();
+
+        //            QUERY.AppendLine($"UPDATE [dbo].[CrudLog] SET Data = '{datas.Data}', Status = '{datas.Status}', Remarks = {datas.Remarks}, LastModifiedTime = {DateTime.Now}, LastModifiedBy = {GetClaimValueByType(EnumClaims.Username.ToString(), claims)} WHERE ID = '{datas.ID}'");
+
+        //            try
+        //            {
+        //                conn.Open();
+        //                cmd.ExecuteNonQuery();
+
+        //            }
+        //            catch (SqlException e)
+        //            {
+        //                return false;
+        //            }
+        //        }
+        //    }
+        //    return true;
+        //}
     }
 }

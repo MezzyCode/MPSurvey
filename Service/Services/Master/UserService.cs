@@ -143,6 +143,7 @@ namespace Service.Services.Master
                         NewData.Email = Save.Email;
                         //NewData.IsAD = Save.IsAD;
                         NewData.ClientID = KlienID;
+                        NewData.Role = "Staff";
 
                         UnitOfWork.InsertOrUpdateUser(NewData, ObjectState.Added, claims);
 
@@ -204,17 +205,60 @@ namespace Service.Services.Master
             return jsonReturn;
         }
 
-        public JsonReturn ChangePassword(JsonUser user, ClaimsPrincipal claims)
+        public JsonReturn ChangePassword(JsonUser Save, ClaimsPrincipal claims)
         {
+            JsonReturn jsonReturn = new JsonReturn(false);
             try
             {
-                throw new NotImplementedException();
+                String Error = "";
+
+                if (String.IsNullOrEmpty(Save.Email))
+                {
+                    Error = "email is required";
+                    jsonReturn = new JsonReturn(false);
+                    jsonReturn.message = Error;
+
+                }
+
+                if (String.IsNullOrEmpty(Error))
+                {
+                    String KlienID = GlobalHelpers.GetClaimValueByType(EnumClaims.ClientID.ToString(), claims);
+                    string UserID = GlobalHelpers.GetClaimValueByType(EnumClaims.ID.ToString(), claims);
+                    User NewData = new User();
+
+                    if (!String.IsNullOrEmpty(Save.ID))
+                    {
+                        NewData = Repo.GetUserByIDData(Save.ID);
+                        if (NewData == null)
+                        {
+                            jsonReturn = new JsonReturn(false);
+                            jsonReturn.message = "data not found";
+                            return jsonReturn;
+                        }
+
+                        NewData.PasswordHash = GlobalHelpers.GetHash(Save.Password);
+
+                        UnitOfWork.InsertOrUpdateUser(NewData, ObjectState.Modified, claims);
+                        UnitOfWork.Commit();
+                    }
+
+                    jsonReturn = new JsonReturn(true);
+                    jsonReturn.message = "Succes Save Data";
+
+
+                }
+
+                return jsonReturn;
+
             }
             catch (Exception ex)
             {
 
                 throw ex;
+
             }
+
+
         }
 
 
