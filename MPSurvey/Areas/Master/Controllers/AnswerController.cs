@@ -10,6 +10,7 @@ using Service.Services.Master;
 using Service.Services.Setting;
 using static Service.Helpers.GlobalHelpers;
 using ConstantVariableKey = Model.InfrastructurClass.ConstantVariable;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace MainProject.Areas.Master.Controllers
 {
@@ -17,13 +18,15 @@ namespace MainProject.Areas.Master.Controllers
     public class AnswerController : Controller
     {
         private readonly ApplicationDbContext _dbcontext;
+        private readonly IHostingEnvironment _hostenv;
         private readonly IMapper _mapper;
         AnswerService ServiceAnswer;
         HelperTableService ServiceHelper;
 
-        public AnswerController(ApplicationDbContext dbcontext, IMapper mapper)
+        public AnswerController(ApplicationDbContext dbcontext, IMapper mapper, IHostingEnvironment hostenv)
         {
             _dbcontext = dbcontext;
+            _hostenv = hostenv;
             _mapper = mapper;
             ServiceAnswer = new AnswerService(_dbcontext, _mapper);
             ServiceHelper = new HelperTableService(_dbcontext, _mapper);
@@ -46,9 +49,9 @@ namespace MainProject.Areas.Master.Controllers
             ViewBag.listKelurahan = ListKelurahan;
             ViewBag.listCalon = ListCalon;
 
-            List<JsonAnswer> page1 = await ServiceAnswer.FindAsync(new JsonAnswer { }, User);
+            //List<JsonAnswer> page1 = await ServiceAnswer.FindAsync(new JsonAnswer { }, User);
             IndexAnswerVM data = new IndexAnswerVM();
-            data.listIndex = page1;
+            //data.listIndex = page1;
             return View(data);
         }
 
@@ -69,10 +72,95 @@ namespace MainProject.Areas.Master.Controllers
             ViewBag.listKelurahan = ListKelurahan;
             ViewBag.listCalon = ListCalon;
 
-            List<JsonAnswer> page1 = await ServiceAnswer.FindAsync(new JsonAnswer { }, User);
+            //List<JsonAnswer> page1 = await ServiceAnswer.FindAsync(new JsonAnswer { }, User);
             IndexAnswerVM data = new IndexAnswerVM();
-            data.listIndex = page1;
+            //data.listIndex = page1;
             return View(data);
+        }
+
+        public async Task<IActionResult> Upload()
+        {
+            var cookiesEmail = GlobalHelpers.GetEmailFromIdentity(User);
+            if (cookiesEmail == null)
+            {
+                return RedirectToAction("LoginForm", "Login", new { area = "" });
+            }
+
+            IndexAnswerVM data = new IndexAnswerVM();
+            var idLog = TempData["idLog"];
+            if (idLog != null)
+            {
+                data.UrlFileLog = idLog.ToString();
+            }
+
+            return View(data);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Upload(IndexAnswerVM file)
+        {
+            try
+            {
+                if (file.Upload == null)
+                {
+                    ModelState.AddModelError("FileURL", "Mohon upload file");
+                    return View();
+                }
+
+                string UrlLog = "";
+                IndexAnswerVM data = new IndexAnswerVM();
+
+                if (file.Upload.FileName != null)
+                {
+                    var filename = GlobalHelpers.CopyFile(file.Upload, _hostenv);
+                    var _path = Path.Combine(_hostenv.WebRootPath, "Upload/" + filename);
+
+                    var baseUrl = $"{this.Request.Scheme}://{this.Request.Host.Value.ToString()}{this.Request.PathBase.Value.ToString()}";
+
+                    string FileNameWithoutEx = Path.GetFileNameWithoutExtension(filename);
+                    String LogName = FileNameWithoutEx + "_LOGEXPORT.xlsx";
+                    string FileLogName = Path.Combine(_hostenv.WebRootPath, "Upload/" + LogName);
+                    UrlLog = baseUrl + "/Upload/" + LogName;
+                    JsonReturn jsonresult = await ServiceAnswer.GenerateData(_path, FileLogName, User);
+
+                    if (System.IO.File.Exists(FileLogName))
+                    {
+                        data.UrlFileLog = UrlLog;
+                    }
+
+
+                    if (jsonresult.result == false)
+                    {
+                        Alert(jsonresult.message, NotificationType.warning);
+                    }
+                    else
+                    {
+                        Alert("Finish process upload data!", NotificationType.success);
+                    }
+                    try
+                    {
+                        if (System.IO.File.Exists(_path))
+                        {
+                            System.IO.File.Delete(_path);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                        throw ex;
+                    }
+                }
+
+                ViewBag.Message = "File Uploaded Successfully!!";
+
+                return View(data);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         public async Task<IActionResult> Create()

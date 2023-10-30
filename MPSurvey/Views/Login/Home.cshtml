@@ -558,13 +558,13 @@
                 showAcademicChart();
                 showTribeChart();
 
-                setTimeout(function () {
-                    repeatFetch();
-                }, 60000);
+                //setTimeout(function () {
+                //    repeatFetch();
+                //}, 60000);
             }
 
             (async () => {
-                await repeatFetch();
+                repeatFetch();
             })();
 
             $("#btnRefreshChart").on("click", async function () {

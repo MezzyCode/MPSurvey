@@ -27,6 +27,11 @@
                 <li class="breadcrumb-item active">Daftar Personal</li>
             </ol>
         </nav>
+        <a asp-action="Upload" class="col-sm-3 btn btn-sm btn-info"
+           style=" display: flex; align-items: center; justify-content: center; gap: 6px;">
+            <span class="material-icons-outlined"> upload </span>
+            <span>Export to Excel</span>
+        </a>
         <a asp-action="DownloadExcelDocument" class="col-sm-3 btn btn-sm btn-success"
            style=" display: flex; align-items: center; justify-content: center; gap: 6px;">
             <span class="material-icons-outlined"> file_download </span>
@@ -53,7 +58,9 @@
                 @class="form-control"
                 })
             </div>
-            <button id="btn-filter" class="col-md-3 btn btn-sm btn-primary" type="button" onclick="FilterData()">Cari</button>
+            <button id="btn-filter" class="col-md-3 btn btn-sm btn-primary" type="button" onclick="FilterData()">
+                <span class="material-icons-outlined"> search </span>Cari
+            </button>
         </div>
         <table id="tblData" class="table table-bordered table-striped">
             <thead>

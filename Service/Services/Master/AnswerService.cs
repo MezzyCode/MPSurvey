@@ -24,6 +24,7 @@ using static Service.Helpers.GlobalHelpers;
 using Database.Context;
 using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace Service.Services.Master
 {
@@ -43,6 +44,192 @@ namespace Service.Services.Master
             UnitOfWork = new UnitOfWork.UnitOfWork(dbcontext);
             ServiceHelper = new HelperTableService(dbcontext, mapper);
             Repo = new AnswerRepository(dbcontext);
+        }
+
+        public async Task<JsonReturn> GenerateData(string filename, string fileLogName, ClaimsPrincipal claims)
+        {
+            JsonReturn Result = new JsonReturn(false);
+            try
+            {
+                GlobalHelpers.ReGenerateThreadClaim(claims);
+
+                Result = await GenerateImport(filename, fileLogName, claims);
+
+            }
+            catch (Exception ex)
+            {
+                Result = new JsonReturn(false);
+                Result.message = ex.Message;
+            }
+            return Result;
+        }
+
+        public async Task<JsonReturn> GenerateImport(String NamaFile, string FileLogName, ClaimsPrincipal claims)
+        {
+            JsonReturn jsonReturn = new JsonReturn(true);
+            try
+            {
+                String ClientID = GlobalHelpers.GetClaimValueByType(EnumClaims.ClientID.ToString(), claims);
+
+                FileInfo fileInfo = new FileInfo(NamaFile);
+
+                bool isError = false;
+
+
+                DataTable DTGENERATE = ExcelHelper.GetRequestsDataFromExcel(NamaFile, 0);
+
+                if (DTGENERATE != null && DTGENERATE.Rows.Count > 0)
+                {
+                    if (ExcelHelper.ContainColumn("Nama", DTGENERATE)
+                        && ExcelHelper.ContainColumn("No. Telp", DTGENERATE)
+                        && ExcelHelper.ContainColumn("Usia", DTGENERATE)
+                        && ExcelHelper.ContainColumn("Alamat", DTGENERATE)
+                        && ExcelHelper.ContainColumn("RT", DTGENERATE)
+                        && ExcelHelper.ContainColumn("RW", DTGENERATE)
+                        && ExcelHelper.ContainColumn("Kecamatan", DTGENERATE)
+                        && ExcelHelper.ContainColumn("Kelurahan", DTGENERATE)
+                        && ExcelHelper.ContainColumn("C1", DTGENERATE)
+                        && ExcelHelper.ContainColumn("C2", DTGENERATE)
+                        && ExcelHelper.ContainColumn("C3A", DTGENERATE)
+                        && ExcelHelper.ContainColumn("C3B", DTGENERATE)
+                        && ExcelHelper.ContainColumn("C4", DTGENERATE)
+                        && ExcelHelper.ContainColumn("C5", DTGENERATE)
+                        && ExcelHelper.ContainColumn("C6", DTGENERATE)
+                        && ExcelHelper.ContainColumn("C7", DTGENERATE)
+                        && ExcelHelper.ContainColumn("C8", DTGENERATE)
+                        && ExcelHelper.ContainColumn("C9", DTGENERATE)
+                        && ExcelHelper.ContainColumn("C10", DTGENERATE))
+                    {
+
+                        List<JsonFileLogDetail> logDetail = new List<JsonFileLogDetail>();
+
+                        for (int i = 0; i < DTGENERATE.Rows.Count; i++)
+                        {
+
+                            JsonFileLogDetail jsonFileLogDetail = new JsonFileLogDetail();
+                            jsonFileLogDetail.Status = true;
+
+                            String? Nama = DTGENERATE.Rows[i]["Nama"].ToString();
+                            String? NoTelp = DTGENERATE.Rows[i]["No. Telp"].ToString();
+                            String? Usia = DTGENERATE.Rows[i]["Usia"].ToString();
+                            String? Alamat = DTGENERATE.Rows[i]["Alamat"].ToString();
+                            String? RT = DTGENERATE.Rows[i]["RT"].ToString();
+                            String? RW = DTGENERATE.Rows[i]["RW"].ToString();
+                            String? Kecamatan = DTGENERATE.Rows[i]["Kecamatan"].ToString();
+                            String? Kelurahan = DTGENERATE.Rows[i]["Kelurahan"].ToString();
+                            String? C1 = DTGENERATE.Rows[i]["C1"].ToString();
+                            String? C2 = DTGENERATE.Rows[i]["C2"].ToString();
+                            String? C3A = DTGENERATE.Rows[i]["C3A"].ToString();
+                            String? C3B = DTGENERATE.Rows[i]["C3B"].ToString();
+                            String? C4 = DTGENERATE.Rows[i]["C4"].ToString();
+                            String? C5 = DTGENERATE.Rows[i]["C5"].ToString();
+                            String? C6 = DTGENERATE.Rows[i]["C6"].ToString();
+                            String? C7 = DTGENERATE.Rows[i]["C7"].ToString();
+                            String? C8 = DTGENERATE.Rows[i]["C8"].ToString();
+                            String? C9 = DTGENERATE.Rows[i]["C9"].ToString();
+                            String? C10 = DTGENERATE.Rows[i]["C10"].ToString();
+
+                            List<JsonAnswer> answer_temp = new List<JsonAnswer>();
+                            String Remarks = "";
+                            if (String.IsNullOrEmpty(Nama))
+                            {
+                                Remarks += "Kolom Nama Harus diisi";
+                            }
+                            if (String.IsNullOrEmpty(Alamat))
+                            {
+                                Remarks += "Kolom Alamat Harus diisi";
+                            }
+                            if (String.IsNullOrEmpty(C1))
+                            {
+                                Remarks += "Kolom C1 Harus diisi";
+                            }
+                            if (String.IsNullOrEmpty(C3A))
+                            {
+                                Remarks += "Kolom C3A Harus diisi";
+                            }
+                            if (String.IsNullOrEmpty(C3B))
+                            {
+                                Remarks += "Kolom C3B Harus diisi";
+                            }
+                            if (String.IsNullOrEmpty(C4))
+                            {
+                                Remarks += "Kolom C4 Harus diisi";
+                            }
+                            if (String.IsNullOrEmpty(C6))
+                            {
+                                Remarks += "Kolom C6 Harus diisi";
+                            }
+                            if (String.IsNullOrEmpty(C7))
+                            {
+                                Remarks += "Kolom C7 Harus diisi";
+                            }
+
+                            if (String.IsNullOrEmpty(Remarks))
+                            {
+                                int? UsiaInt = null;
+                                if (!String.IsNullOrEmpty(Usia)) UsiaInt = int.Parse(Usia);
+
+                                Answer NewData = new Answer();
+                                NewData.ID = Guid.NewGuid().ToString();
+                                NewData.Nama = Nama;
+                                NewData.Usia = UsiaInt;
+                                NewData.Alamat = Alamat;
+                                NewData.Nomor_telp = NoTelp;
+                                NewData.Rt = RT;
+                                NewData.Rw = RW;
+                                NewData.Kecamatan = Kecamatan;
+                                NewData.Kelurahan = Kelurahan;
+                                NewData.C1 = C1;
+                                NewData.C2 = C2;
+                                NewData.C3A = C3A;
+                                NewData.C3B = C3B;
+                                NewData.C4 = C4;
+                                NewData.C5 = C5;
+                                NewData.C6 = C6;
+                                NewData.C7 = C7;
+                                NewData.C8 = C8;
+                                NewData.C9 = C9;
+                                NewData.C10 = C10;
+
+                                NewData.ModelState = ObjectState.Added;
+
+                                UnitOfWork.InsertOrUpdate(claims, NewData);
+                                UnitOfWork.Commit();
+
+                                jsonFileLogDetail.Remarks = "Berhasil Menambahkan Jawaban";
+                                jsonFileLogDetail.Status = true;
+                            }
+                            else
+                            {
+                                jsonFileLogDetail.Remarks = Remarks;
+                                jsonFileLogDetail.Status = false;
+
+                                isError = true;
+                            }
+
+                            logDetail.Add(jsonFileLogDetail);
+
+                        }
+
+                        if (!String.IsNullOrEmpty(FileLogName))
+                            ExcelHelper.GenerateExcelFileFromFileLogDetail(FileLogName, logDetail);
+
+                    }
+                    else
+                    {
+                        var remarks = "Format tidak sesuai";
+                        jsonReturn = new JsonReturn(false);
+                        jsonReturn.message = remarks;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                var remarks = ex.Message;
+                jsonReturn = new JsonReturn(false);
+                jsonReturn.message = remarks;
+            }
+            return jsonReturn;
         }
 
         public async Task<List<JsonChart>> FindChartAsync(JsonAnswer filter, ClaimsPrincipal claims)
@@ -82,57 +269,6 @@ namespace Service.Services.Master
                 throw ex;
             }
         }
-
-        //public async Task<List<JsonChartLabel>> FindChartReligionAsync(JsonAnswer filter, ClaimsPrincipal claims)
-        //{
-        //    try
-        //    {
-        //        List<JsonAnswer> answerList = await FindAsync(filter, claims);
-
-        //        //List<JsonHelperTable> listAgamaHelper = await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.AGAMACODE }, claims);
-        //        List<string> listCalon = (await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CALONCODE }, claims)).OrderBy(x => x.Description).Select(x => x.Value).ToList();
-
-        //        List<string> listAgama = (await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.AGAMACODE }, claims)).OrderBy(x => x.Description).Select(x => x.Value).ToList();
-
-        //        var grouped = answerList.GroupBy(x => new { x.C6, x.C8 }).Select(x => new
-        //        {
-        //            Religion = x.Key.C8,
-        //            Label = x.Key.C6,
-        //            Count = x.Count()
-        //        }).ToList();
-
-        //        List<JsonChartLabel> listChartLabel = new List<JsonChartLabel>();
-
-        //        foreach (var calon in listCalon)
-        //        {
-        //            JsonChartLabel newChartLabel = new JsonChartLabel();
-        //            newChartLabel.XLabel = calon;
-
-        //            var groupedbyCalon = grouped.Where(x => x.Label == calon).OrderBy(x => x.Religion).ToList();
-
-        //            foreach (var agama in listAgama)
-        //            {
-        //                JsonChart newChart = new JsonChart();
-        //                newChart.Label = agama;
-        //                newChart.Count = 0;
-
-        //                var calonAgama = groupedbyCalon.FirstOrDefault(x => x.Religion == agama);
-        //                if (calonAgama != null) newChart.Count = calonAgama.Count;
-
-        //                newChartLabel.Charts.Add(newChart);
-        //            }
-
-        //            listChartLabel.Add(newChartLabel);
-        //        }
-
-        //        return listChartLabel.OrderBy(x => x.XLabel).ToList();
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        throw ex;
-        //    }
-        //}
 
         public async Task<List<JsonChartLabel>> FindC3Async(JsonAnswer filter, ClaimsPrincipal claims)
         {

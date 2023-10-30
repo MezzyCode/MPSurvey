@@ -1,4 +1,5 @@
-﻿using Model.InfrastructurClass;
+﻿using Microsoft.AspNetCore.Http;
+using Model.InfrastructurClass;
 using Model.JsonModels.Setting;
 using Model.Models;
 using System;
@@ -14,6 +15,8 @@ namespace Model.JsonModels.Master
     public class IndexAnswerVM
     {
         public List<JsonAnswer> listIndex { get; set; }
+        public IFormFile Upload { get; set; }
+        public string UrlFileLog { get; set; }
     }
 
     public class JsonAnswer
