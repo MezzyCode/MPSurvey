@@ -136,7 +136,7 @@ namespace MainProject.Areas.Master.Controllers
                     }
                     else
                     {
-                        Alert("Finish process upload data!", NotificationType.success);
+                        Alert(jsonresult.message, NotificationType.success);
                     }
                     try
                     {

@@ -63,7 +63,6 @@ namespace Model.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
                 entity.Property(e => e.C5)
-                    .HasMaxLength(50)
                     .IsUnicode(false);
                 entity.Property(e => e.C6)
                     .HasMaxLength(50)

@@ -75,6 +75,7 @@ namespace Service.Services.Master
 
                 bool isError = false;
 
+                var dataCalon = await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CALONCODE }, claims);
 
                 DataTable DTGENERATE = ExcelHelper.GetRequestsDataFromExcel(NamaFile, 0);
 
@@ -166,38 +167,76 @@ namespace Service.Services.Master
 
                             if (String.IsNullOrEmpty(Remarks))
                             {
-                                int? UsiaInt = null;
-                                if (!String.IsNullOrEmpty(Usia)) UsiaInt = int.Parse(Usia);
+                                try
+                                {
+                                    int? UsiaInt = null;
+                                    if (!String.IsNullOrEmpty(Usia)) UsiaInt = int.Parse(Usia);
 
-                                Answer NewData = new Answer();
-                                NewData.ID = Guid.NewGuid().ToString();
-                                NewData.Nama = Nama;
-                                NewData.Usia = UsiaInt;
-                                NewData.Alamat = Alamat;
-                                NewData.Nomor_telp = NoTelp;
-                                NewData.Rt = RT;
-                                NewData.Rw = RW;
-                                NewData.Kecamatan = Kecamatan;
-                                NewData.Kelurahan = Kelurahan;
-                                NewData.C1 = C1;
-                                NewData.C2 = C2;
-                                NewData.C3A = C3A;
-                                NewData.C3B = C3B;
-                                NewData.C4 = C4;
-                                NewData.C5 = C5;
-                                NewData.C6 = C6;
-                                NewData.C7 = C7;
-                                NewData.C8 = C8;
-                                NewData.C9 = C9;
-                                NewData.C10 = C10;
+                                    if (await Repo.IsUniqueKeyCodeExist(Nama, Alamat, UsiaInt))
+                                    {
+                                        jsonFileLogDetail.Remarks = "Data sudah dimasukkan";
+                                        jsonFileLogDetail.Status = false;
+                                        logDetail.Add(jsonFileLogDetail);
 
-                                NewData.ModelState = ObjectState.Added;
+                                        continue;
+                                    }
 
-                                UnitOfWork.InsertOrUpdate(claims, NewData);
-                                UnitOfWork.Commit();
+                                    if (!dataCalon.Any(x => x.Value == C6))
+                                    {
+                                        jsonFileLogDetail.Remarks = "Nama Calon tidak sesuai dengan pilihan yang ada!";
+                                        jsonFileLogDetail.Status = false;
+                                        logDetail.Add(jsonFileLogDetail);
 
-                                jsonFileLogDetail.Remarks = "Berhasil Menambahkan Jawaban";
-                                jsonFileLogDetail.Status = true;
+                                        isError = true;
+                                        continue;
+                                    }
+
+                                    Answer NewData = new Answer();
+                                    NewData.ID = Guid.NewGuid().ToString();
+                                    NewData.Nama = Nama;
+                                    NewData.Usia = UsiaInt;
+                                    NewData.Alamat = Alamat;
+                                    NewData.Nomor_telp = NoTelp;
+                                    NewData.Rt = RT;
+                                    NewData.Rw = RW;
+                                    NewData.Kecamatan = Kecamatan;
+                                    NewData.Kelurahan = Kelurahan;
+                                    NewData.C1 = C1;
+                                    NewData.C2 = C2;
+                                    NewData.C3A = C3A;
+                                    NewData.C3B = C3B;
+                                    NewData.C4 = C4;
+                                    NewData.C5 = C5;
+                                    NewData.C6 = C6;
+                                    NewData.C7 = C7;
+                                    NewData.C8 = C8;
+                                    NewData.C9 = C9;
+                                    NewData.C10 = C10;
+
+                                    NewData.ModelState = ObjectState.Added;
+
+                                    UnitOfWork.InsertOrUpdate(claims, NewData);
+                                    UnitOfWork.Commit();
+
+                                    jsonFileLogDetail.Remarks = "Berhasil Menambahkan Jawaban";
+                                    jsonFileLogDetail.Status = true;
+                                }
+                                catch (Exception ex)
+                                {
+                                    var Entries = _dbcontext.ChangeTracker.Entries<IEntity>().ToList();
+
+                                    foreach (var entry in Entries)
+                                    {
+                                        entry.State = EntityState.Detached;
+                                    }
+
+                                    jsonFileLogDetail.Remarks = ex.Message;
+                                    jsonFileLogDetail.Status = false;
+                                    logDetail.Add(jsonFileLogDetail);
+
+                                    isError = true;
+                                    continue;
+                                }
                             }
                             else
                             {
@@ -220,6 +259,12 @@ namespace Service.Services.Master
                         var remarks = "Format tidak sesuai";
                         jsonReturn = new JsonReturn(false);
                         jsonReturn.message = remarks;
+                    }
+
+                    if (isError)
+                    {
+                        jsonReturn = new JsonReturn(false);
+                        jsonReturn.message = "Terdapat beberapa error data, mohon cek log!";
                     }
                 }
             }

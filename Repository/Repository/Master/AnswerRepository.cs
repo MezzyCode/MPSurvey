@@ -80,11 +80,11 @@ namespace Repository.Repository.Master
             }
         }
 
-        public async Task<bool> IsUniqueKeyCodeExist(string Nama, string NamaKK)
+        public async Task<bool> IsUniqueKeyCodeExist(string Nama, string Alamat, int? Usia)
         {
             try
             {
-                return _q_QueryData.Any(x => x.Nama == Nama && x.Nama_kk == NamaKK);
+                return _q_QueryData.Any(x => x.Nama == Nama && x.Alamat == Alamat && x.Usia == Usia);
             }
             catch (Exception ex)
             {
