@@ -20,23 +20,25 @@
 <div class="text-sm">
     <div class="row pagetitle">
         <h1>Daftar Jawaban</h1>
-        <nav class="col">
+        <nav class="col-md-6">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">Home</li>
                 <li class="breadcrumb-item">Jawaban</li>
                 <li class="breadcrumb-item active">Daftar Personal</li>
             </ol>
         </nav>
-        <a asp-action="Upload" class="col-sm-3 btn btn-sm btn-info"
-           style=" display: flex; align-items: center; justify-content: center; gap: 6px;">
+        <nav class="col-md-6 d-flex gap-3 justify-content-end">
+        <a asp-action="Upload" class="btn btn-sm btn-info"
+        style=" display: flex; align-items: center; justify-content: center; gap: 6px;">
             <span class="material-icons-outlined"> upload </span>
             <span>Import from Excel</span>
         </a>
-        <a asp-action="DownloadExcelDocument" class="col-sm-3 btn btn-sm btn-success"
-           style=" display: flex; align-items: center; justify-content: center; gap: 6px;">
+        <a asp-action="DownloadExcelDocument" class="btn btn-sm btn-success"
+        style=" display: flex; align-items: center; justify-content: center; gap: 6px;">
             <span class="material-icons-outlined"> file_download </span>
             <span>Export to Excel</span>
         </a>
+        </nav>
     </div>
 
     <section class="section">
@@ -58,8 +60,11 @@
                 @class="form-control"
                 })
             </div>
-            <button id="btn-filter" class="col-md-3 btn btn-sm btn-primary" type="button" onclick="FilterData()">
-                <span class="material-icons-outlined"> search </span>Cari
+            <button id="btn-filter" class="col-md-3 btn btn-sm btn-primary"
+            style=" display: flex; align-items: center; justify-content: center; gap: 6px;"
+            type="button" onclick="FilterData()">
+                <span class="material-icons-outlined"> search </span>
+                <span>Cari</span>
             </button>
         </div>
         <table id="tblData" class="table table-bordered table-striped">
