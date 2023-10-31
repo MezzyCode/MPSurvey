@@ -266,6 +266,11 @@ namespace Service.Services.Master
                         jsonReturn = new JsonReturn(false);
                         jsonReturn.message = "Terdapat beberapa error data, mohon cek log!";
                     }
+                    else
+                    {
+                        jsonReturn = new JsonReturn(true);
+                        jsonReturn.message = "File berhasil ditambahkan, mohon cek log!";
+                    }
                 }
             }
             catch (Exception ex)
