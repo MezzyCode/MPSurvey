@@ -108,6 +108,7 @@ namespace Service.Services.Master
                         {
 
                             JsonFileLogDetail jsonFileLogDetail = new JsonFileLogDetail();
+                            jsonFileLogDetail.OrderNo = i + 2;
                             jsonFileLogDetail.Status = true;
 
                             String? Nama = DTGENERATE.Rows[i]["Nama"].ToString();
