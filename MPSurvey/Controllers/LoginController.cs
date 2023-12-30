@@ -103,47 +103,35 @@ namespace MainProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LoginForm(JsonUser loginmodel)
         {
+            if (String.IsNullOrEmpty(loginmodel.Password))
+            {
+                return View(loginmodel);
+            }
 
             try
             {
-                if (String.IsNullOrEmpty(loginmodel.Password))
-                {
-                    return View(loginmodel);
-                }
-
-                var result = ServiceUser.GetUserAsync(loginmodel.Email);
                 await _signInManager.SignOutAsync();
 
-                if (result != null)
+                var user = await _userManager.FindByEmailAsync(loginmodel.Email);
+
+                if (user == null)
                 {
-                    var user = await _userManager.FindByEmailAsync(loginmodel.Email);
-                    if (user == null)
-                    {
-                        ViewBag.ErrorResult = "No User Found !";
-                        return View();
-                    }
+                    ViewBag.ErrorResult = "No User Found!";
+                    return View();
+                }
 
-                    var logintry = await _signInManager.CheckPasswordSignInAsync(user, loginmodel.Password, false);
-                    if (logintry.Succeeded)
-                    {
+                var logintry = await _signInManager.CheckPasswordSignInAsync(user, loginmodel.Password, false);
 
-                        var resultlogin = ServiceUser.GetUserAsync(loginmodel.Email);
-
-                        await GenerateClaimAsync(user);
-
-
-
-                        return RedirectToAction("Home", "Login");
-                    }
-                    else
-                    {
-                        ViewBag.ErrorResult = "Username or password wrong !";
-                    }
+                if (logintry.Succeeded)
+                {
+                    await GenerateClaimAsync(user);
+                    return RedirectToAction("Home", "Login");
                 }
                 else
                 {
-                    ViewBag.ErrorResult = "Username or password wrong !";
+                    ViewBag.ErrorResult = "Wrong Password!";
                 }
+
                 return View();
             }
             catch (Exception ex)
@@ -152,6 +140,7 @@ namespace MainProject.Controllers
                 return View(loginmodel);
             }
         }
+
 
         // GET: LoginPage
         //[AllowAnonymous]
