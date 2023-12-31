@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Linq.Dynamic.Core;
 using System.Text;
 using System.Threading.Tasks;
+using Database.Context;
 
 namespace Repository.Repository.Master
 {
@@ -84,7 +85,7 @@ namespace Repository.Repository.Master
         {
             try
             {
-                return _q_QueryData.Any(x => x.Nama == Nama && x.Alamat == Alamat && x.Usia == Usia);
+                return _q_QueryData.Any(x => x.Nama == Nama && x.Alamat == Alamat && x.Usia == Usia && x.RowStatus == 0);
             }
             catch (Exception ex)
             {
