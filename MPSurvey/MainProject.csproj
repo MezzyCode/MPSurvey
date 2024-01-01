@@ -10,11 +10,6 @@
 		<None Include="Areas\Master\Views\_ViewImports.cshtml" />
 		<None Include="Areas\Master\Views\Answer\Index.cshtml" />
 		<None Include="Areas\Master\Views\Answer\Create.cshtml" />
-		<None Include="Views\Home\Index.cshtml" />
-		<None Include="Views\Home\Privacy.cshtml" />
-		<None Include="Views\Shared\Error.cshtml" />
-		<None Include="Views\Shared\_Layout.cshtml" />
-		<None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
 		<None Include="Views\_ViewImports.cshtml" />
 		<None Include="Views\_ViewStart.cshtml" />
 		<None Include="wwwroot\js\site.js" />
