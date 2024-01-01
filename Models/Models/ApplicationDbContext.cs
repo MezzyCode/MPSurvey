@@ -17,6 +17,7 @@ namespace Model.Models
         }
 
         public virtual DbSet<Answer> Answers { get; set; }
+        public virtual DbSet<Answer2> Answer2s { get; set; } = null!;
         public virtual DbSet<HelperTable> HelperTables { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<CrudLog> CrudLogs { get; set; } = null!;
@@ -105,6 +106,85 @@ namespace Model.Models
                 entity.Property(e => e.Rw)
                     .HasMaxLength(10)
                     .IsUnicode(false);
+                entity.Property(e => e.TimeStatus)
+                    .IsRowVersion()
+                    .IsConcurrencyToken();
+            });
+
+            modelBuilder.Entity<Answer2>(entity =>
+            {
+                entity.ToTable("Answer2");
+
+                entity.Property(e => e.ID)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Alamat).IsUnicode(false);
+
+                entity.Property(e => e.C1)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.C2)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.C3)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.C4)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ClientID)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CreatedBy)
+                    .HasMaxLength(300)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CreatedTime).HasColumnType("datetime");
+
+                entity.Property(e => e.Kecamatan)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Kelurahan)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.LastModifiedBy)
+                    .HasMaxLength(300)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.LastModifiedTime).HasColumnType("datetime");
+
+                entity.Property(e => e.Nama)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NIK)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NoTelp)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Rt)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Rw)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Simpul)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.TimeStatus)
                     .IsRowVersion()
                     .IsConcurrencyToken();

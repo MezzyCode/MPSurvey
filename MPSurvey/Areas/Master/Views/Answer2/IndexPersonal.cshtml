@@ -1,0 +1,296 @@
+﻿@using Model.JsonModels.Master
+@model Model.JsonModels.Master.IndexAnswer2VM
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+<style>
+    #tblData th {
+        text-align: center;
+        color: #212529;
+        text-wrap: nowrap;
+    }
+
+    .dataTables_length {
+        margin: 1rem;
+    }
+</style>
+
+<div class="text-sm">
+    <div class="row pagetitle">
+        <h1>Daftar Jawaban</h1>
+        <nav class="col">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">Home</li>
+                <li class="breadcrumb-item">Jawaban</li>
+                <li class="breadcrumb-item active">Daftar Personal</li>
+            </ol>
+        </nav>
+        <a asp-action="Upload" class="col-sm-3 btn btn-sm btn-info"
+           style=" display: flex; align-items: center; justify-content: center; gap: 6px;">
+            <span class="material-icons-outlined"> upload </span>
+            <span>Import from Excel</span>
+        </a>
+        <a asp-action="DownloadExcelDocument" class="col-sm-3 btn btn-sm btn-success"
+           style=" display: flex; align-items: center; justify-content: center; gap: 6px;">
+            <span class="material-icons-outlined"> file_download </span>
+            <span>Export to Excel</span>
+        </a>
+    </div>
+
+    <section class="section">
+        <div class="row g-3">
+            <div class="col-md-3">
+                <input type="search" id="filterNama" class="form-control" placeholder="Cari Nama" />
+            </div>
+            <div class="col-md-3">
+                @Html.DropDownList("Kelurahan", new SelectList(ViewBag.listKelurahan, "Name", "Name"), "Cari dari Kelurahan", new
+                {
+                @id="filterKelurahan",
+                @class="form-control"
+                })
+            </div>
+            <div class="col-md-3">
+                @Html.DropDownList("Calon", new SelectList(ViewBag.listCalon, "Name", "Name"), "Cari dari Calon Pilihan", new
+                {
+                @id="filterCalon",
+                @class="form-control"
+                })
+            </div>
+            <button id="btn-filter" class="col-md-3 btn btn-sm btn-primary" type="button" onclick="FilterData()">
+                <span class="material-icons-outlined"> search </span>Cari
+            </button>
+        </div>
+        <table id="tblData" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Nama</th>
+                    <th>Usia</th>
+                    <th>No. Telefon</th>
+                    <th>Alamat</th>
+                    <th>Tanggal Input</th>
+                    <th></th>
+                    @* <th></th>*@
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </section>
+</div>
+
+@section myScripts {
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <script>
+
+
+        function FilterData() {
+            $('#tblData').DataTable().ajax.reload(null, false)
+        }
+
+
+        function DeleteData(itemid) {
+            swal({
+                title: "Are sure want to delete data?",
+                text: "",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes",
+                closeOnConfirm: false
+
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    $.ajax({
+
+                        url: '/Master/Answer2/DeleteData',
+                        type: 'POST',
+                        data: { "id": itemid },
+                        success: function (data) {
+                            if (data.result) {
+                                swal
+                                    ({
+                                        title: "Berhasil!",
+                                        text: data.message,
+                                        type: "success"
+                                    },
+                                        function () {
+                                            location.reload();
+                                        });
+                            }
+                            else {
+
+                                swal
+                                    ({
+                                        title: "Gagal!",
+                                        text: data.message,
+                                        type: "error"
+                                    },
+                                        function () {
+                                            location.reload();
+                                        });
+                            }
+                        }
+
+                    });
+                }
+            });
+        };
+
+        function DeleteData(itemid) {
+            swal({
+                title: "Hapus data?",
+                text: "",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes",
+                closeOnConfirm: true
+
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    ShowLoading();
+                    $.ajax({
+
+                        url: '/Master/Answer2/Delete',
+                        type: 'POST',
+                        data: { "id": itemid },
+                        success: function (data) {
+                            DisableLoading();
+                            if (data) {
+                                swal
+                                    ({
+                                        title: "Berhasil!",
+                                        text: "Data berhasil dihapus",
+                                        type: "success"
+                                    },
+                                        function (isConfirm) {
+                                            if (isConfirm) {
+                                                location.reload();
+                                            }
+                                        });
+
+                            }
+                            else {
+                                swal
+                                    ({
+                                        title: "Gagal!",
+                                        text: "Data gagal dihapus",
+                                        type: "error"
+                                    },
+                                        function (isConfirm) {
+                                            if (isConfirm) {
+                                                location.reload();
+                                            }
+                                        });
+                            }
+                        }
+
+                    });
+                }
+            });
+
+        };
+
+
+        $(document).ready(function () {
+
+        @if (TempData["notification"] != null)
+        {
+            @Html.Raw(TempData["notification"])
+        }
+
+
+                $('#tblData').on("processing.dt", function (e, settings, processing) {
+                    if (processing) {
+                        ShowLoading();
+                    } else {
+                        DisableLoading();
+                    }
+                }).DataTable({
+                    "processing": false, // for show progress bar
+                    "serverSide": true, // for process server side
+                    "filter": true,
+                    "pageLength": 10,
+                    "responsive": true,
+                    "autoWidth": false,
+
+                    "lengthMenu": [10, 50, 100, 500, 1000],
+                    orderCellsTop: true,
+                    fixedHeader: {
+                        header: true,
+                        footer: true
+                    },
+                    dom: 'lfrtip',
+                    initComplete: function () {
+
+                        // Apply the search
+                        this.api()
+                            .columns()
+                            .every(function () {
+                                var that = this;
+
+                                $('input', this.footer()).on('keyup', function (e) {
+
+
+                                    if (e.keyCode === 13) {
+
+
+                                        if (that.search() !== this.value) {
+                                            that.search(this.value).draw();
+                                        }
+
+                                    }
+
+
+                                });
+                            });
+                    },
+
+                    "ajax": {
+                        "url": "@Url.Action("LoadDataPersonal", "Answer2", new { area = "Master" })",
+                        "type": "POST",
+                        "datatype": "json",
+                        "data": function (d) {
+                            d.nama = $("#filterNama").val();
+                            d.calon = $("#filterCalon").val();
+                            d.kelurahan = $("#filterKelurahan").val();
+                        },
+                    },
+                    "searching": false,
+
+
+                    "columns": [
+                        { "data": "nama", "name": "Nama" },
+                        { "data": "usia", "name": "Usia" },
+                        { "data": "noTelp", "name": "NoTelp" },
+                        {
+                            data: null, render: function (data, type, row) {
+                                return '<span>' + row.alamat + ' ' + row.rt + '/' + row.rw + ' ' + row.kelurahan + ', ' + row.kecamatan + '</span>'
+                            }
+                        },
+                        {
+                            "data": "createdTime", "name": "CreatedTime", "render": function (value) {
+                                if (value === null) return "";
+                                return moment(value).format('DD-MMM-YYYY HH:mm');
+                            }
+                        },
+                        {
+                            data: null, render: function (data, type, row) {
+                                return '<div class="table-opsi"><a class="btn btn-info btn-sm" href="@Url.Action("Edit", "Answer2", new { Area = "Master" })?ID=' + row.id + '"><span class="material-icons-outlined">edit</span></a>' + '&nbsp' + '<a class="btn btn-danger btn-sm" href="#" onclick=DeleteData("' + row.id + '")><span class="material-icons-outlined">delete</span></a></div>';
+                            },
+                        }
+
+                    ]
+
+                });
+
+        @if (TempData["notification"] != null)
+        {
+            @Html.Raw(TempData["notification"])
+        }
+
+                                                            });
+    </script>
+
+}

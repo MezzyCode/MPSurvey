@@ -17,21 +17,21 @@
 
 <section class="card col-12">
     <h2 class="card-title text-center">
-        Welcome to Masinton Pasaribu Kanvasser Dashboard 
+        Welcome to Masinton Pasaribu Kanvasser Dashboard
     </h2>
     <div>
         <div class="card-body row gap-3 align-items-end justify-content-center">
             <div class="col-sm-12 col-lg-8">
                 <label class="control-label" for="filterKelurahan">Filter Berdasarkan Kelurahan</label>
                 @Html.DropDownList("Select Kelurahan", new SelectList(ViewBag.listKelurahan, "Name", "Name"), "Semua",
-                         new
-                         {
-                             @id = "filterKelurahan",
-                             @class = "form-control"
-                         })
+                new
+                {
+                @id = "filterKelurahan",
+                @class = "form-control"
+                })
             </div>
             <button class="col-sm-12 col-lg-4 btn btn-primary btn-sm" id="btnRefreshChart" type="button"
-                style="max-width: 250px;">
+                    style="max-width: 250px;">
                 Refresh Chart
             </button>
         </div>
@@ -39,69 +39,38 @@
 </section>
 
 
-<section class="card col-12">
-    <h2 class="card-title text-center">Responden Menjawab, Siapakah Calon Wakil Rakyat yang pantas dari PDIP Perjuangan DAPIL DKI II</h2>
-    <canvas id="mainChart" class="card-body"></canvas>
-</section>
-
 <section class="col-md-6 p-1">
     <div class="card">
-        <h2 class="card-title text-center">Apakah Responden tahu Masinton Pasribu sebagai Anggota DPR DKI II</h2>
-        <canvas id="c3AChart" class="card-body"></canvas>
+        <h2 class="card-title text-center">Apakah Bapak/Ibu/Sdr/i telah terdaftar sebagai pemilih pada Pemilu 14 Februari 2024?</h2>
+        <canvas id="c1Chart" class="card-body"></canvas>
     </div>
 </section>
 
 <section class="col-md-6 p-1">
     <div class="card">
-        <h2 class="card-title text-center">Apakah Responden tahu Masinton Pasribu sebagai Aktivis gerakan tahun 1998
+        <h2 class="card-title text-center">Apakah Bapak/Ibu/Sdr/i mengenal Masinton Pasaribu?</h2>
+        <canvas id="c2Chart" class="card-body"></canvas>
+    </div>
+</section>
+
+<section class="col-md-6 p-1">
+    <div class="card">
+        <h2 class="card-title text-center">
+            Apakah Bapak/Ibu/Sdr/i menegtahui Masinton Pasaribu dicalonkan kembali oleh Partai PDI Perjuangan sebagai Caleg DPR RI?
         </h2>
-        <canvas id="c3BChart" class="card-body"></canvas>
+        <canvas id="c3Chart" class="card-body"></canvas>
     </div>
 </section>
 
 <section class="col-md-6 p-1">
     <div class="card">
-        <h2 class="card-title text-center">Apakah Responden tahu bahwa Masinton Pasribu diinginkan kembali oleh
-            masyarakat untuk menjadi anggota DPR RI Dapil DKI II?
+        <h2 class="card-title text-center">
+            Bersediakah Bapak/Ibu/Sdr/i memilih Caleg DPR RI, nomor 7 Masinton Pasaribu, S.H. dari Partai PDI Perjuangan?
         </h2>
         <canvas id="c4Chart" class="card-body"></canvas>
     </div>
 </section>
 
-<section class="col-md-6 p-1">
-    <div class="card">
-        <h2 class="card-title text-center">Bersediakah Responden Mengkampanyekan Masinton Pasribu sebagai Calon Wakil Rakyat 2024 nanti ?</h2>
-        <canvas id="c7Chart" class="card-body"></canvas>
-    </div>
-</section>
-
-<section class="col-md-6 p-1">
-    <div class="card">
-        <h2 class="card-title text-center">Usia Responden</h2>
-        <canvas id="ageChart" class="card-body"></canvas>
-    </div>
-</section>
-
-<section class="col-md-6 p-1">
-    <div class="card">
-        <h2 class="card-title text-center">Agama Responden</h2>
-        <canvas id="religionChart" class="card-body"></canvas>
-    </div>
-</section>
-
-<section class="col-md-6 p-1">
-    <div class="card">
-        <h2 class="card-title text-center">Pendidikan Responden</h2>
-        <canvas id="academicChart" class="card-body"></canvas>
-    </div>
-</section>
-
-<section class="col-md-6 p-1">
-    <div class="card">
-        <h2 class="card-title text-center">Suku Responden</h2>
-        <canvas id="tribeChart" class="card-body"></canvas>
-    </div>
-</section>
 
 
 
@@ -169,25 +138,25 @@
                 'rgba(64, 192, 64, 0.5)'
             ];
 
-            async function showChart() {
-                var xValues = [];
-                var yValues = [];
+            //async function showChart() {
+            //    var xValues = [];
+            //    var yValues = [];
 
-                var data = await $.ajax({
-                    url: "/Master/Answer/MainChart",
-                    method: "POST",
-                    data: {
-                        Kelurahan: $('#filterKelurahan').val()
-                    }
-                });
+            //    var data = await $.ajax({
+            //        url: "/Master/Answer/MainChart",
+            //        method: "POST",
+            //        data: {
+            //            Kelurahan: $('#filterKelurahan').val()
+            //        }
+            //    });
 
-                $.each(data, function (index, item) {
-                    xValues.push(item.label);
-                    yValues.push(item.count);
-                });
+            //    $.each(data, function (index, item) {
+            //        xValues.push(item.label);
+            //        yValues.push(item.count);
+            //    });
 
-                createMainChart(xValues, yValues);
-            }
+            //    createMainChart(xValues, yValues);
+            //}
 
             //function showReligionChart() {
             //    var labels = [];
@@ -223,207 +192,207 @@
             //    createReligionChart(labels, datasets);
             //}
 
-            async function showC3AChart() {
-                var datasets = [];
+            //async function showC3AChart() {
+            //    var datasets = [];
 
-                var data = await $.ajax({
-                    url: "/Master/Answer/C3AChart",
-                    method: "POST",
-                    data: {
-                        Kelurahan: $('#filterKelurahan').val()
-                    }
-                });
+            //    var data = await $.ajax({
+            //        url: "/Master/Answer/C3AChart",
+            //        method: "POST",
+            //        data: {
+            //            Kelurahan: $('#filterKelurahan').val()
+            //        }
+            //    });
 
-                $.each(data, function (index, item) {
+            //    $.each(data, function (index, item) {
 
-                    var tempdataset = {
-                        data: [item.count],
-                        label: item.label, // contain calon name
-                        backgroundColor: colorPalette1[index],
-                    }
+            //        var tempdataset = {
+            //            data: [item.count],
+            //            label: item.label, // contain calon name
+            //            backgroundColor: colorPalette1[index],
+            //        }
 
-                    datasets.push(tempdataset);
-                });
+            //        datasets.push(tempdataset);
+            //    });
 
-                createCChart(datasets, "c3AChart");
-            }
+            //    createCChart(datasets, "c3AChart");
+            //}
 
-            async function showC3BChart() {
-                var datasets = [];
+            //async function showC3BChart() {
+            //    var datasets = [];
 
-                var data = await $.ajax({
-                    url: "/Master/Answer/C3BChart",
-                    method: "POST",
-                    data: {
-                        Kelurahan: $('#filterKelurahan').val()
-                    }
-                });
+            //    var data = await $.ajax({
+            //        url: "/Master/Answer/C3BChart",
+            //        method: "POST",
+            //        data: {
+            //            Kelurahan: $('#filterKelurahan').val()
+            //        }
+            //    });
 
-                $.each(data, function (index, item) {
+            //    $.each(data, function (index, item) {
 
-                    var tempdataset = {
-                        data: [item.count],
-                        label: item.label, // contain calon name
-                        backgroundColor: colorPalette1[index],
-                    }
+            //        var tempdataset = {
+            //            data: [item.count],
+            //            label: item.label, // contain calon name
+            //            backgroundColor: colorPalette1[index],
+            //        }
 
-                    datasets.push(tempdataset);
-                });
+            //        datasets.push(tempdataset);
+            //    });
 
-                createCChart(datasets, "c3BChart");
-            }
+            //    createCChart(datasets, "c3BChart");
+            //}
 
-            async function showC4Chart() {
-                var datasets = [];
+            //async function showC4Chart() {
+            //    var datasets = [];
 
-                var data = await $.ajax({
-                    url: "/Master/Answer/C4Chart",
-                    method: "POST",
-                    data: {
-                        Kelurahan: $('#filterKelurahan').val()
-                    }
-                });
-
-
-                $.each(data, function (index, item) {
-
-                    var tempdataset = {
-                        data: [item.count],
-                        label: item.label, // contain calon name
-                        backgroundColor: colorPalette1[index],
-                    }
-
-                    datasets.push(tempdataset);
-                });
-
-                createCChart(datasets, "c4Chart");
-            }
-
-            async function showC7Chart() {
-                var datasets = [];
-
-                var data = await $.ajax({
-                    url: "/Master/Answer/C7Chart",
-                    method: "POST",
-                    data: {
-                        Kelurahan: $('#filterKelurahan').val()
-                    }
-                });
+            //    var data = await $.ajax({
+            //        url: "/Master/Answer/C4Chart",
+            //        method: "POST",
+            //        data: {
+            //            Kelurahan: $('#filterKelurahan').val()
+            //        }
+            //    });
 
 
-                $.each(data, function (index, item) {
+            //    $.each(data, function (index, item) {
 
-                    var tempdataset = {
-                        data: [item.count],
-                        label: item.label, // contain calon name
-                        backgroundColor: colorPalette1[index],
-                    }
+            //        var tempdataset = {
+            //            data: [item.count],
+            //            label: item.label, // contain calon name
+            //            backgroundColor: colorPalette1[index],
+            //        }
 
-                    datasets.push(tempdataset);
-                });
+            //        datasets.push(tempdataset);
+            //    });
 
-                createCChart(datasets, "c7Chart");
-            }
+            //    createCChart(datasets, "c4Chart");
+            //}
 
-            async function showAgeChart() {
-                var datasets = [];
+            //async function showC7Chart() {
+            //    var datasets = [];
 
-                var data = await $.ajax({
-                    url: "/Master/Answer/AgeChart",
-                    method: "POST",
-                    data: {
-                        Kelurahan: $('#filterKelurahan').val()
-                    }
-                });
+            //    var data = await $.ajax({
+            //        url: "/Master/Answer/C7Chart",
+            //        method: "POST",
+            //        data: {
+            //            Kelurahan: $('#filterKelurahan').val()
+            //        }
+            //    });
 
-                $.each(data, function (index, item) {
 
-                    var tempdataset = {
-                        data: [item.count],
-                        label: item.label, // contain calon name
-                        backgroundColor: colorPalette1[index],
-                    }
+            //    $.each(data, function (index, item) {
 
-                    datasets.push(tempdataset);
-                });
+            //        var tempdataset = {
+            //            data: [item.count],
+            //            label: item.label, // contain calon name
+            //            backgroundColor: colorPalette1[index],
+            //        }
 
-                createCChart(datasets, "ageChart");
-            }
+            //        datasets.push(tempdataset);
+            //    });
 
-            async function showReligionChart() {
-                var datasets = [];
+            //    createCChart(datasets, "c7Chart");
+            //}
 
-                var data = await $.ajax({
-                    url: "/Master/Answer/ReligionChart",
-                    method: "POST",
-                    data: {
-                        Kelurahan: $('#filterKelurahan').val()
-                    }
-                });
+            //async function showAgeChart() {
+            //    var datasets = [];
 
-                $.each(data, function (index, item) {
+            //    var data = await $.ajax({
+            //        url: "/Master/Answer/AgeChart",
+            //        method: "POST",
+            //        data: {
+            //            Kelurahan: $('#filterKelurahan').val()
+            //        }
+            //    });
 
-                    var tempdataset = {
-                        data: [item.count],
-                        label: item.label, // contain calon name
-                        backgroundColor: colorPalette1[index],
-                    }
+            //    $.each(data, function (index, item) {
 
-                    datasets.push(tempdataset);
-                });
+            //        var tempdataset = {
+            //            data: [item.count],
+            //            label: item.label, // contain calon name
+            //            backgroundColor: colorPalette1[index],
+            //        }
 
-                createCChart(datasets, "religionChart");
-            }
+            //        datasets.push(tempdataset);
+            //    });
 
-            async function showAcademicChart() {
-                var datasets = [];
+            //    createCChart(datasets, "ageChart");
+            //}
 
-                var data = await $.ajax({
-                    url: "/Master/Answer/AcademicChart",
-                    method: "POST",
-                    data: {
-                        Kelurahan: $('#filterKelurahan').val()
-                    }
-                });
+            //async function showReligionChart() {
+            //    var datasets = [];
 
-                $.each(data, function (index, item) {
+            //    var data = await $.ajax({
+            //        url: "/Master/Answer/ReligionChart",
+            //        method: "POST",
+            //        data: {
+            //            Kelurahan: $('#filterKelurahan').val()
+            //        }
+            //    });
 
-                    var tempdataset = {
-                        data: [item.count],
-                        label: item.label, // contain calon name
-                        backgroundColor: colorPalette1[index],
-                    }
+            //    $.each(data, function (index, item) {
 
-                    datasets.push(tempdataset);
-                });
+            //        var tempdataset = {
+            //            data: [item.count],
+            //            label: item.label, // contain calon name
+            //            backgroundColor: colorPalette1[index],
+            //        }
 
-                createCChart(datasets, "academicChart");
-            }
+            //        datasets.push(tempdataset);
+            //    });
 
-            async function showTribeChart() {
-                var datasets = [];
+            //    createCChart(datasets, "religionChart");
+            //}
 
-                var data = await $.ajax({
-                    url: "/Master/Answer/TribeChart",
-                    method: "POST",
-                    data: {
-                        Kelurahan: $('#filterKelurahan').val()
-                    }
-                });
+            //async function showAcademicChart() {
+            //    var datasets = [];
 
-                $.each(data, function (index, item) {
+            //    var data = await $.ajax({
+            //        url: "/Master/Answer/AcademicChart",
+            //        method: "POST",
+            //        data: {
+            //            Kelurahan: $('#filterKelurahan').val()
+            //        }
+            //    });
 
-                    var tempdataset = {
-                        data: [item.count],
-                        label: item.label, // contain calon name
-                        backgroundColor: colorPalette1[index],
-                    }
+            //    $.each(data, function (index, item) {
 
-                    datasets.push(tempdataset);
-                });
+            //        var tempdataset = {
+            //            data: [item.count],
+            //            label: item.label, // contain calon name
+            //            backgroundColor: colorPalette1[index],
+            //        }
 
-                createCChart(datasets, "tribeChart");
-            }
+            //        datasets.push(tempdataset);
+            //    });
+
+            //    createCChart(datasets, "academicChart");
+            //}
+
+            //async function showTribeChart() {
+            //    var datasets = [];
+
+            //    var data = await $.ajax({
+            //        url: "/Master/Answer/TribeChart",
+            //        method: "POST",
+            //        data: {
+            //            Kelurahan: $('#filterKelurahan').val()
+            //        }
+            //    });
+
+            //    $.each(data, function (index, item) {
+
+            //        var tempdataset = {
+            //            data: [item.count],
+            //            label: item.label, // contain calon name
+            //            backgroundColor: colorPalette1[index],
+            //        }
+
+            //        datasets.push(tempdataset);
+            //    });
+
+            //    createCChart(datasets, "tribeChart");
+            //}
 
             //function createReligionChart(labels, datasets) {
 
@@ -456,107 +425,221 @@
             //    });
             //}
 
-            function createMainChart(xValues, yValues) {
+            //function createMainChart(xValues, yValues) {
 
-                const existingChart = Chart.getChart("mainChart"); // Get the previous Chart instance
-                if (existingChart) {
-                    existingChart.destroy(); // Destroy the previous Chart
-                }
+            //    const existingChart = Chart.getChart("mainChart"); // Get the previous Chart instance
+            //    if (existingChart) {
+            //        existingChart.destroy(); // Destroy the previous Chart
+            //    }
 
-                const datasets = xValues.map((label, index) => ({
-                    label: label,
-                    data: [yValues[index]],
-                    backgroundColor: colorPalette1[index],
-                }));
+            //    const datasets = xValues.map((label, index) => ({
+            //        label: label,
+            //        data: [yValues[index]],
+            //        backgroundColor: colorPalette1[index],
+            //    }));
 
-                const myChart = new Chart("mainChart", {
-                    type: "bar",
-                    data: {
-                        labels: [""],
-                        datasets: datasets,
-                    },
-                    options: {
-                        // Chart options
-                        responsive: true,
-                        maintainAspectRatio: true,
-                        height: "auto",
-                        scales: {
-                            x: {
-                                display: false,
-                            },
-                            y: {
-                                suggestedMax: (Math.max(...yValues) * 1.25),
-                            }
-                        }
-                    },
-                });
-            }
+            //    const myChart = new Chart("mainChart", {
+            //        type: "bar",
+            //        data: {
+            //            labels: [""],
+            //            datasets: datasets,
+            //        },
+            //        options: {
+            //            // Chart options
+            //            responsive: true,
+            //            maintainAspectRatio: true,
+            //            height: "auto",
+            //            scales: {
+            //                x: {
+            //                    display: false,
+            //                },
+            //                y: {
+            //                    suggestedMax: (Math.max(...yValues) * 1.25),
+            //                }
+            //            }
+            //        },
+            //    });
+            //}
 
-            function showC1Count() {
-                $.ajax({
-                    url: "/Master/Answer/C1Count",
+            //function showC1Count() {
+            //    $.ajax({
+            //        url: "/Master/Answer/C1Count",
+            //        method: "POST",
+            //        data: {},
+            //        async: false,
+            //        success: function (data) {
+            //            $.each(data, function (index, item) {
+            //                if (item.label == "YA") {
+            //                    $("#c1YesCount").text(item.count);
+            //                }
+            //                else {
+            //                    $("#c1NoCount").text(item.count);
+            //                }
+            //            });
+            //        }
+            //    });
+            //}
+
+            async function showC1Chart() {
+                var chartData = {
+                    datasets: [{
+                        data: [],
+                        backgroundColor: []
+                    }],
+                    labels: [] // Labels for each section
+                };
+
+                // Assume you have some logic to fetch data from the server
+                var data = await $.ajax({
+                    url: "/Master/Answer2/C1Count",
                     method: "POST",
-                    data: {},
-                    async: false,
-                    success: function (data) {
-                        $.each(data, function (index, item) {
-                            if (item.label == "YA") {
-                                $("#c1YesCount").text(item.count);
-                            }
-                            else {
-                                $("#c1NoCount").text(item.count);
-                            }
-                        });
+                    data: {
+                        Kelurahan: $('#filterKelurahan').val()
                     }
                 });
+
+                data.forEach((item, index) => {
+                    chartData.datasets[0].data.push(item.count);
+                    chartData.labels.push(item.label);
+                    chartData.datasets[0].backgroundColor.push(colorPalette1[index] || 'rgba(0, 0, 0, 0.1)');
+                });
+
+                createCChart(chartData, "c1Chart");
             }
 
-            function createCChart(datasets, chartId) {
+            async function showC2Chart() {
+                var chartData = {
+                    datasets: [{
+                        data: [],
+                        backgroundColor: []
+                    }],
+                    labels: [] // Labels for each section
+                };
 
-                const existingChart = Chart.getChart(chartId); // Get the previous Chart instance
+                // Assume you have some logic to fetch data from the server
+                var data = await $.ajax({
+                    url: "/Master/Answer2/C2Count",
+                    method: "POST",
+                    data: {
+                        Kelurahan: $('#filterKelurahan').val()
+                    }
+                });
+
+                data.forEach((item, index) => {
+                    chartData.datasets[0].data.push(item.count);
+                    chartData.labels.push(item.label);
+                    chartData.datasets[0].backgroundColor.push(colorPalette1[index] || 'rgba(0, 0, 0, 0.1)');
+                });
+
+                createCChart(chartData, "c2Chart");
+            }
+
+            async function showC3Chart() {
+                var chartData = {
+                    datasets: [{
+                        data: [],
+                        backgroundColor: []
+                    }],
+                    labels: [] // Labels for each section
+                };
+
+                // Assume you have some logic to fetch data from the server
+                var data = await $.ajax({
+                    url: "/Master/Answer2/C3Count",
+                    method: "POST",
+                    data: {
+                        Kelurahan: $('#filterKelurahan').val()
+                    }
+                });
+
+                data.forEach((item, index) => {
+                    chartData.datasets[0].data.push(item.count);
+                    chartData.labels.push(item.label);
+                    chartData.datasets[0].backgroundColor.push(colorPalette1[index] || 'rgba(0, 0, 0, 0.1)');
+                });
+
+                createCChart(chartData, "c3Chart");
+            }
+
+            async function showC4Chart() {
+                var chartData = {
+                    datasets: [{
+                        data: [],
+                        backgroundColor: []
+                    }],
+                    labels: [] // Labels for each section
+                };
+
+                // Assume you have some logic to fetch data from the server
+                var data = await $.ajax({
+                    url: "/Master/Answer2/C4Count",
+                    method: "POST",
+                    data: {
+                        Kelurahan: $('#filterKelurahan').val()
+                    }
+                });
+
+                data.forEach((item, index) => {
+                    chartData.datasets[0].data.push(item.count);
+                    chartData.labels.push(item.label);
+                    chartData.datasets[0].backgroundColor.push(colorPalette1[index] || 'rgba(0, 0, 0, 0.1)');
+                });
+
+                createCChart(chartData, "c4Chart");
+            }
+
+            function createCChart(chartData, chartId) {
+                const existingChart = Chart.getChart(chartId);
+
                 if (existingChart) {
-                    existingChart.destroy(); // Destroy the previous Chart
+                    existingChart.destroy();
                 }
 
-                const maxDataValue = datasets.reduce((max, obj) => {
-                    const maxInDataArray = Math.max(...obj.data);
-                    return Math.max(max, maxInDataArray);
-                }, -Infinity);
+                // Calculate percentages
+                chartData.datasets[0].data = chartData.datasets[0].data.map(value => (value / getTotalSum(chartData.datasets[0].data)) * 100);
+
+                var options = {
+                    tooltips: {
+                        enabled: false
+                    },
+                    plugins: {
+                        datalabels: {
+                            formatter: (value, ctx) => {
+                                return `${value.toFixed(2)}%`;
+                            },
+                            color: '#fff',
+                        }
+                    },
+                    responsive: true
+                };
 
                 const myChart = new Chart(chartId, {
-                    type: "bar",
-                    data: {
-                        labels: [""],
-                        datasets: datasets,
-                    },
-                    options: {
-                        // Chart options
-                        responsive: true,
-                        maintainAspectRatio: true,
-                        height: "auto",
-                        scales: {
-                            x: {
-                                display: false,
-                            },
-                            y: {
-                                suggestedMax: maxDataValue * 1.25,
-                            }
-                        }
-                    }
+                    type: "pie",
+                    data: chartData,
+                    options: options
                 });
+            }
+
+            // Function to calculate total sum
+            function getTotalSum(data) {
+                return data.reduce((sum, value) => sum + value, 0);
             }
 
             async function repeatFetch() {
-                showChart();
-                showC3AChart();
-                showC3BChart();
+                showC1Chart();
+                showC2Chart();
+                showC3Chart();
                 showC4Chart();
-                showC7Chart();
-                showC1Count();
-                showAgeChart();
-                showReligionChart();
-                showAcademicChart();
-                showTribeChart();
+                //showChart();
+                //showC3AChart();
+                //showC3BChart();
+                //showC4Chart();
+                //showC7Chart();
+                //showC1Count();
+                //showAgeChart();
+                //showReligionChart();
+                //showAcademicChart();
+                //showTribeChart();
 
                 //setTimeout(function () {
                 //    repeatFetch();
@@ -568,16 +651,20 @@
             })();
 
             $("#btnRefreshChart").on("click", async function () {
-                showChart();
-                showC3AChart();
-                showC3BChart();
+                showC1Chart();
+                showC2Chart();
+                showC3Chart();
                 showC4Chart();
-                showC7Chart();
-                showC1Count();
-                showAgeChart();
-                showReligionChart();
-                showAcademicChart();
-                showTribeChart();
+                //showChart();
+                //showC3AChart();
+                //showC3BChart();
+                //showC4Chart();
+                //showC7Chart();
+                //showC1Count();
+                //showAgeChart();
+                //showReligionChart();
+                //showAcademicChart();
+                //showTribeChart();
             })
 
             //function setTargetHeight() {
@@ -593,7 +680,7 @@
             @Html.Raw(TempData["notification"])
         }
 
-                                                                                    });
+                                                                                                    });
 
     </script>
 

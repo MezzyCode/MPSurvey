@@ -1,0 +1,103 @@
+﻿@model Model.JsonModels.Master.IndexAnswer2VM
+
+@{
+    ViewData["Title"] = "Upload";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+<div class="text-sm">
+    <!-- Content Header (Page header) -->
+    <div class="pagetitle">
+        <h1>Detail Shipment</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">Home</li>
+                <li class="breadcrumb-item">Master</li>
+                <li class="breadcrumb-item"><a asp-action="Index">Jawaban</a></li>
+                <li class="breadcrumb-item active">Import</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    <!-- /.content-header -->
+    <!-- Main content -->
+    <section class="section">
+        <div class="">
+            <!-- new vendor form -->
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col-md-8 col-md-offset-3">
+                    <div class="card card-warning">
+
+                        <div class="card-body">
+
+                            <form asp-action="Upload" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label>Pilih file Excel yang sudah Anda input</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        @Html.TextBox("Upload", "", new { type = "file", required = "required", @accept = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group text-center col-md-12">
+                                    <button type="submit" id="upload" class="btn btn-primary">Upload</button>
+                                </div>
+
+                            </form>
+
+                            @if (Model.UrlFileLog != null)
+                            {
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="alert alert-default-info">
+                                            <div class="row ">
+                                                <label class="control-label col-sm-6 col-xs-6">
+                                                    Sukses upload file. Silahkan
+                                                    <a href="@Model.UrlFileLog">Download Log</a>
+                                                </label>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @*<h2> @ViewBag.Message </h2>*@
+
+                        </div>
+                        <div class="card-footer">
+                            <a asp-action="Index" class="btn btn-light btn-outline-secondary">Back</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- new vendor form -->
+
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+
+@section myScripts{
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $("form").submit(function () {
+
+                ShowLoading();
+
+            });
+
+        @if (TempData["notification"] != null)
+        {
+            @Html.Raw(TempData["notification"])
+        }
+
+                                        });
+
+    </script>
+
+}

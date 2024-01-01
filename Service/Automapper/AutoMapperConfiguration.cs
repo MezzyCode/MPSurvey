@@ -21,6 +21,9 @@ namespace Service.Automapper
             CreateMap<Answer, JsonAnswer>(MemberList.None);
             CreateMap<JsonAnswer, Answer>(MemberList.None);
 
+            CreateMap<Answer2, JsonAnswer2>(MemberList.None);
+            CreateMap<JsonAnswer2, Answer2>(MemberList.None);
+
             CreateMap<HelperTable, JsonHelperTable>(MemberList.None);
             CreateMap<JsonHelperTable, HelperTable>(MemberList.None);
         }

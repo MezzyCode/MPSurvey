@@ -15,21 +15,21 @@
         @if (User.Claims.FirstOrDefault(x => x.Type == "RolesCode").Value == "Staff")
         {
             <li class="nav-item">
-                <a asp-area="Master" asp-controller="Answer" asp-action="Index" class="nav-link">
+                <a asp-area="Master" asp-controller="Answer2" asp-action="Index" class="nav-link">
                     <span class="material-icons-outlined">table_rows</span>
                     <span>Daftar Jawaban</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a asp-area="Master" asp-controller="Answer" asp-action="IndexPersonal" class="nav-link">
+                <a asp-area="Master" asp-controller="Answer2" asp-action="IndexPersonal" class="nav-link">
                     <span class="material-icons-outlined">table_rows</span>
                     <span>Daftar Jawaban Personal</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a asp-area="Master" asp-controller="Answer" asp-action="Create" class="nav-link">
+                <a asp-area="Master" asp-controller="Answer2" asp-action="Create" class="nav-link">
                     <span class="material-icons-outlined">post_add</span>
                     <span>Isi Data</span>
                 </a>

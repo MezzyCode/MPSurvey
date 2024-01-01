@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using ClosedXML.Excel;
-using Service.Helpers;
-using Model.JsonModels;
+using Database.Context;
+using Microsoft.EntityFrameworkCore;
 using Model.JsonModels;
 using Model.JsonModels.Master;
 using Model.JsonModels.Setting;
@@ -14,36 +14,32 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Linq.Dynamic.Core;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using static Database.Context.HelperFunction;
 using ConstantVariableKey = Model.InfrastructurClass.ConstantVariable;
 using static Service.Helpers.GlobalHelpers;
-using Database.Context;
-using Newtonsoft.Json;
-using Microsoft.EntityFrameworkCore;
 using System.Data;
 
 namespace Service.Services.Master
 {
-    public class AnswerService
+    public class Answer2Service
     {
-        AnswerRepository Repo;
+        Answer2Repository Repo;
 
         private readonly ApplicationDbContext _dbcontext;
         private UnitOfWork.UnitOfWork UnitOfWork;
         private readonly IMapper _mapper;
         HelperTableService ServiceHelper;
 
-        public AnswerService(ApplicationDbContext dbcontext, IMapper mapper)
+        public Answer2Service(ApplicationDbContext dbcontext, IMapper mapper)
         {
             _dbcontext = dbcontext;
             _mapper = mapper;
             UnitOfWork = new UnitOfWork.UnitOfWork(dbcontext);
             ServiceHelper = new HelperTableService(dbcontext, mapper);
-            Repo = new AnswerRepository(dbcontext);
+            Repo = new Answer2Repository(dbcontext);
         }
 
         public async Task<JsonReturn> GenerateData(string filename, string fileLogName, ClaimsPrincipal claims)
@@ -63,7 +59,6 @@ namespace Service.Services.Master
             }
             return Result;
         }
-
         public async Task<JsonReturn> GenerateImport(String NamaFile, string FileLogName, ClaimsPrincipal claims)
         {
             JsonReturn jsonReturn = new JsonReturn(true);
@@ -84,22 +79,18 @@ namespace Service.Services.Master
                     if (ExcelHelper.ContainColumn("Nama", DTGENERATE)
                         && ExcelHelper.ContainColumn("No. Telp", DTGENERATE)
                         && ExcelHelper.ContainColumn("Usia", DTGENERATE)
+                        && ExcelHelper.ContainColumn("NIK", DTGENERATE)
                         && ExcelHelper.ContainColumn("Alamat", DTGENERATE)
                         && ExcelHelper.ContainColumn("RT", DTGENERATE)
                         && ExcelHelper.ContainColumn("RW", DTGENERATE)
                         && ExcelHelper.ContainColumn("Kecamatan", DTGENERATE)
                         && ExcelHelper.ContainColumn("Kelurahan", DTGENERATE)
+                        && ExcelHelper.ContainColumn("Simpul", DTGENERATE)
                         && ExcelHelper.ContainColumn("C1", DTGENERATE)
                         && ExcelHelper.ContainColumn("C2", DTGENERATE)
-                        && ExcelHelper.ContainColumn("C3A", DTGENERATE)
-                        && ExcelHelper.ContainColumn("C3B", DTGENERATE)
+                        && ExcelHelper.ContainColumn("C3", DTGENERATE)
                         && ExcelHelper.ContainColumn("C4", DTGENERATE)
-                        && ExcelHelper.ContainColumn("C5", DTGENERATE)
-                        && ExcelHelper.ContainColumn("C6", DTGENERATE)
-                        && ExcelHelper.ContainColumn("C7", DTGENERATE)
-                        && ExcelHelper.ContainColumn("C8", DTGENERATE)
-                        && ExcelHelper.ContainColumn("C9", DTGENERATE)
-                        && ExcelHelper.ContainColumn("C10", DTGENERATE))
+                        )
                     {
 
                         List<JsonFileLogDetail> logDetail = new List<JsonFileLogDetail>();
@@ -114,56 +105,63 @@ namespace Service.Services.Master
                             String? Nama = DTGENERATE.Rows[i]["Nama"].ToString();
                             String? NoTelp = DTGENERATE.Rows[i]["No. Telp"].ToString();
                             String? Usia = DTGENERATE.Rows[i]["Usia"].ToString();
+                            String? NIK = DTGENERATE.Rows[i]["NIK"].ToString();
                             String? Alamat = DTGENERATE.Rows[i]["Alamat"].ToString();
                             String? RT = DTGENERATE.Rows[i]["RT"].ToString();
                             String? RW = DTGENERATE.Rows[i]["RW"].ToString();
                             String? Kecamatan = DTGENERATE.Rows[i]["Kecamatan"].ToString();
                             String? Kelurahan = DTGENERATE.Rows[i]["Kelurahan"].ToString();
+                            String? Simpul = DTGENERATE.Rows[i]["Simpul"].ToString();
                             String? C1 = DTGENERATE.Rows[i]["C1"].ToString();
                             String? C2 = DTGENERATE.Rows[i]["C2"].ToString();
-                            String? C3A = DTGENERATE.Rows[i]["C3A"].ToString();
-                            String? C3B = DTGENERATE.Rows[i]["C3B"].ToString();
+                            String? C3 = DTGENERATE.Rows[i]["C3"].ToString();
                             String? C4 = DTGENERATE.Rows[i]["C4"].ToString();
-                            String? C5 = DTGENERATE.Rows[i]["C5"].ToString();
-                            String? C6 = DTGENERATE.Rows[i]["C6"].ToString();
-                            String? C7 = DTGENERATE.Rows[i]["C7"].ToString();
-                            String? C8 = DTGENERATE.Rows[i]["C8"].ToString();
-                            String? C9 = DTGENERATE.Rows[i]["C9"].ToString();
-                            String? C10 = DTGENERATE.Rows[i]["C10"].ToString();
 
-                            List<JsonAnswer> answer_temp = new List<JsonAnswer>();
+                            List<JsonAnswer2> Answer2_temp = new List<JsonAnswer2>();
                             String Remarks = "";
                             if (String.IsNullOrEmpty(Nama))
                             {
                                 Remarks += "Kolom Nama Harus diisi";
                             }
+                            if (String.IsNullOrEmpty(NoTelp))
+                            {
+                                Remarks += "Kolom No. Telp Harus diisi";
+                            }
                             if (String.IsNullOrEmpty(Alamat))
                             {
                                 Remarks += "Kolom Alamat Harus diisi";
+                            }
+                            if (String.IsNullOrEmpty(RW))
+                            {
+                                Remarks += "Kolom RW Harus diisi";
+                            }
+                            if (String.IsNullOrEmpty(Kelurahan))
+                            {
+                                Remarks += "Kolom Kelurahan Harus diisi";
+                            }
+                            if (String.IsNullOrEmpty(Kecamatan))
+                            {
+                                Remarks += "Kolom Kecamatan Harus diisi";
+                            }
+                            if (String.IsNullOrEmpty(Simpul))
+                            {
+                                Remarks += "Kolom Simpul Harus diisi";
                             }
                             if (String.IsNullOrEmpty(C1))
                             {
                                 Remarks += "Kolom C1 Harus diisi";
                             }
-                            if (String.IsNullOrEmpty(C3A))
+                            if (String.IsNullOrEmpty(C2))
                             {
-                                Remarks += "Kolom C3A Harus diisi";
+                                Remarks += "Kolom C2 Harus diisi";
                             }
-                            if (String.IsNullOrEmpty(C3B))
+                            if (String.IsNullOrEmpty(C3))
                             {
-                                Remarks += "Kolom C3B Harus diisi";
+                                Remarks += "Kolom C3 Harus diisi";
                             }
                             if (String.IsNullOrEmpty(C4))
                             {
                                 Remarks += "Kolom C4 Harus diisi";
-                            }
-                            if (String.IsNullOrEmpty(C6))
-                            {
-                                Remarks += "Kolom C6 Harus diisi";
-                            }
-                            if (String.IsNullOrEmpty(C7))
-                            {
-                                Remarks += "Kolom C7 Harus diisi";
                             }
 
                             if (String.IsNullOrEmpty(Remarks))
@@ -182,37 +180,20 @@ namespace Service.Services.Master
                                         continue;
                                     }
 
-                                    if (!dataCalon.Any(x => x.Value == C6))
-                                    {
-                                        jsonFileLogDetail.Remarks = "Nama Calon tidak sesuai dengan pilihan yang ada!";
-                                        jsonFileLogDetail.Status = false;
-                                        logDetail.Add(jsonFileLogDetail);
-
-                                        isError = true;
-                                        continue;
-                                    }
-
-                                    Answer NewData = new Answer();
+                                    Answer2 NewData = new Answer2();
                                     NewData.ID = Guid.NewGuid().ToString();
                                     NewData.Nama = Nama;
                                     NewData.Usia = UsiaInt;
                                     NewData.Alamat = Alamat;
-                                    NewData.Nomor_telp = NoTelp;
+                                    NewData.NoTelp = NoTelp;
                                     NewData.Rt = RT;
                                     NewData.Rw = RW;
                                     NewData.Kecamatan = Kecamatan;
                                     NewData.Kelurahan = Kelurahan;
                                     NewData.C1 = C1;
                                     NewData.C2 = C2;
-                                    NewData.C3A = C3A;
-                                    NewData.C3B = C3B;
+                                    NewData.C3 = C3;
                                     NewData.C4 = C4;
-                                    NewData.C5 = C5;
-                                    NewData.C6 = C6;
-                                    NewData.C7 = C7;
-                                    NewData.C8 = C8;
-                                    NewData.C9 = C9;
-                                    NewData.C10 = C10;
 
                                     NewData.ModelState = ObjectState.Added;
 
@@ -283,98 +264,11 @@ namespace Service.Services.Master
             return jsonReturn;
         }
 
-        public async Task<List<JsonChart>> FindChartAsync(JsonAnswer filter, ClaimsPrincipal claims)
+        public async Task<List<JsonChart>> FindC1Async(JsonAnswer2 filter, ClaimsPrincipal claims)
         {
             try
             {
-                List<JsonAnswer> answerList = await FindAsync(filter, claims);
-
-                List<string> listCalon = (await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CALONCODE }, claims)).OrderBy(x => x.Description).Select(x => x.Value).ToList();
-
-                var grouped = answerList.GroupBy(x => x.C6).Select(x => new JsonChart
-                {
-                    Label = x.Key,
-                    Count = x.Count()
-                }).ToList();
-
-                List<JsonChart> listChart = new List<JsonChart>();
-
-                foreach (var calon in listCalon)
-                {
-                    JsonChart newChart = new JsonChart();
-                    newChart.Label = calon;
-                    newChart.Count = 0;
-
-                    var thisCalon = grouped.FirstOrDefault(x => x.Label == calon);
-                    if (thisCalon != null) newChart.Count = thisCalon.Count;
-
-                    listChart.Add(newChart);
-                }
-
-
-                return listChart.ToList();
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
-
-        public async Task<List<JsonChartLabel>> FindC3Async(JsonAnswer filter, ClaimsPrincipal claims)
-        {
-            try
-            {
-                List<JsonAnswer> answerList = await FindAsync(filter, claims);
-
-                //List<JsonHelperTable> listAgamaHelper = await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.AGAMACODE }, claims);
-                List<string> listChoice = (await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CHOISE3CODE }, claims)).OrderBy(x => x.Description).Select(x => x.Value).ToList();
-
-                List<JsonChart> groupedChart = new List<JsonChart>();
-
-                var groupedC3A = answerList.GroupBy(x => x.C3A).Select(x => new JsonChart
-                {
-                    Label = x.Key,
-                    Count = x.Count()
-                }).ToList();
-
-                var groupedC3B = answerList.GroupBy(x => x.C3B).Select(x => new JsonChart
-                {
-                    Label = x.Key,
-                    Count = x.Count()
-                }).ToList();
-
-                groupedChart.AddRange(groupedC3A);
-                groupedChart.AddRange(groupedC3B);
-
-                List<JsonChartLabel> listChartLabel = new List<JsonChartLabel>();
-
-                foreach (var choice in listChoice)
-                {
-                    JsonChartLabel newChartLabel = new JsonChartLabel();
-                    newChartLabel.XLabel = choice;  // YA, TIDAK, TT/TJ
-
-                    var groupedbyChoice = groupedChart.Where(x => x.Label == choice).ToList();  // 
-
-                    newChartLabel.Charts.AddRange(groupedbyChoice);
-
-                    listChartLabel.Add(newChartLabel);
-                }
-
-                return listChartLabel;
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
-
-        public async Task<List<JsonChart>> FindC1Async(JsonAnswer filter, ClaimsPrincipal claims)
-        {
-            try
-            {
-                List<JsonAnswer> answerList = await FindAsync(filter, claims);
+                List<JsonAnswer2> answerList = await FindAsync(filter, claims);
 
                 var grouped = answerList.GroupBy(x => x.C1).Select(x => new JsonChart
                 {
@@ -384,7 +278,7 @@ namespace Service.Services.Master
 
                 List<JsonChart> listChart = new List<JsonChart>();
 
-                List<string> list2Choice = (await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CHOISE2CODE }, claims)).Select(x => x.Value).ToList();
+                List<string> list2Choice = (await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CHOISE2CODE }, claims)).OrderBy(x => x.Description).Select(x => x.Value).ToList();
 
                 foreach (var choice in list2Choice)
                 {
@@ -407,13 +301,13 @@ namespace Service.Services.Master
             }
         }
 
-        public async Task<List<JsonChart>> FindC3AAsync(JsonAnswer filter, ClaimsPrincipal claims)
+        public async Task<List<JsonChart>> FindC2Async(JsonAnswer2 filter, ClaimsPrincipal claims)
         {
             try
             {
-                List<JsonAnswer> answerList = await FindAsync(filter, claims);
+                List<JsonAnswer2> answerList = await FindAsync(filter, claims);
 
-                var grouped = answerList.GroupBy(x => x.C3A).Select(x => new JsonChart
+                var grouped = answerList.GroupBy(x => x.C2).Select(x => new JsonChart
                 {
                     Label = x.Key,
                     Count = x.Count()
@@ -421,9 +315,9 @@ namespace Service.Services.Master
 
                 List<JsonChart> listChart = new List<JsonChart>();
 
-                List<string> list3Choice = (await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CHOISE3CODE }, claims)).OrderBy(x => x.Description).Select(x => x.Value).ToList();
+                List<string> list2Choice = (await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CHOISE2CODE }, claims)).OrderBy(x => x.Description).Select(x => x.Value).ToList();
 
-                foreach (var choice in list3Choice)
+                foreach (var choice in list2Choice)
                 {
                     JsonChart newChart = new JsonChart();
                     newChart.Label = choice.ToString();
@@ -444,13 +338,13 @@ namespace Service.Services.Master
             }
         }
 
-        public async Task<List<JsonChart>> FindC3BAsync(JsonAnswer filter, ClaimsPrincipal claims)
+        public async Task<List<JsonChart>> FindC3Async(JsonAnswer2 filter, ClaimsPrincipal claims)
         {
             try
             {
-                List<JsonAnswer> answerList = await FindAsync(filter, claims);
+                List<JsonAnswer2> answerList = await FindAsync(filter, claims);
 
-                var grouped = answerList.GroupBy(x => x.C3B).Select(x => new JsonChart
+                var grouped = answerList.GroupBy(x => x.C3).Select(x => new JsonChart
                 {
                     Label = x.Key,
                     Count = x.Count()
@@ -458,9 +352,9 @@ namespace Service.Services.Master
 
                 List<JsonChart> listChart = new List<JsonChart>();
 
-                List<string> list3Choice = (await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CHOISE3CODE }, claims)).OrderBy(x => x.Description).Select(x => x.Value).ToList();
+                List<string> list2Choice = (await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CHOISE2CODE }, claims)).OrderBy(x => x.Description).Select(x => x.Value).ToList();
 
-                foreach (var choice in list3Choice)
+                foreach (var choice in list2Choice)
                 {
                     JsonChart newChart = new JsonChart();
                     newChart.Label = choice.ToString();
@@ -481,12 +375,11 @@ namespace Service.Services.Master
             }
         }
 
-
-        public async Task<List<JsonChart>> FindC4Async(JsonAnswer filter, ClaimsPrincipal claims)
+        public async Task<List<JsonChart>> FindC4Async(JsonAnswer2 filter, ClaimsPrincipal claims)
         {
             try
             {
-                List<JsonAnswer> answerList = await FindAsync(filter, claims);
+                List<JsonAnswer2> answerList = await FindAsync(filter, claims);
 
                 var grouped = answerList.GroupBy(x => x.C4).Select(x => new JsonChart
                 {
@@ -496,9 +389,9 @@ namespace Service.Services.Master
 
                 List<JsonChart> listChart = new List<JsonChart>();
 
-                List<string> list2Choice = (await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CHOISE2CODE }, claims)).OrderBy(x => x.Description).Select(x => x.Value).ToList();
+                List<string> list3Choice = (await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CHOISE3CODE }, claims)).OrderBy(x => x.Description).Select(x => x.Value).ToList();
 
-                foreach (var choice in list2Choice)
+                foreach (var choice in list3Choice)
                 {
                     JsonChart newChart = new JsonChart();
                     newChart.Label = choice.ToString();
@@ -519,214 +412,23 @@ namespace Service.Services.Master
             }
         }
 
-        public async Task<List<JsonChart>> FindC7Async(JsonAnswer filter, ClaimsPrincipal claims)
+        public async Task<List<JsonAnswer2>> FindAsync(JsonAnswer2 filter, ClaimsPrincipal claims)
         {
-            try
-            {
-                List<JsonAnswer> answerList = await FindAsync(filter, claims);
-
-                var grouped = answerList.GroupBy(x => x.C7).Select(x => new JsonChart
-                {
-                    Label = x.Key,
-                    Count = x.Count()
-                }).ToList();
-
-                List<JsonChart> listChart = new List<JsonChart>();
-
-                List<string> list2Choice = (await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CHOISE2CODE }, claims)).OrderBy(x => x.Description).Select(x => x.Value).ToList();
-
-                foreach (var choice in list2Choice)
-                {
-                    JsonChart newChart = new JsonChart();
-                    newChart.Label = choice.ToString();
-                    newChart.Count = 0;
-
-                    var cekList = grouped.FirstOrDefault(x => x.Label == choice);
-                    if (cekList != null) newChart.Count = cekList.Count;
-
-                    listChart.Add(newChart);
-                }
-
-                return listChart;
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
-
-        public async Task<List<JsonChart>> FindAgeAsync(JsonAnswer filter, ClaimsPrincipal claims)
-        {
-            try
-            {
-                List<JsonAnswer> listAnswer = await FindAsync(filter, claims);
-
-                int maxAge = listAnswer.Max(x => x.Usia).GetValueOrDefault();
-                int minAge = listAnswer.Min(x => x.Usia).GetValueOrDefault();
-
-                int minAgeRound = minAge - (minAge % 5);
-                int maxAgeRound = maxAge - (maxAge % 5) + 5;
-
-                var ageGroup = Enumerable
-                    .Range(minAgeRound, maxAgeRound)
-                    .Where(age => age % 5 == 0 && age >= minAgeRound && age < maxAgeRound)
-                    .ToList();
-
-                var groupedData = ageGroup.Select(rangeStart =>
-                {
-                    var rangeEnd = rangeStart + 4;
-                    var label = $"{rangeStart} - {rangeEnd}";
-                    var groupData = listAnswer.Where(x => x.Usia >= rangeStart && x.Usia <= rangeEnd).ToList();
-                    return new JsonChart { Label = label, Count = groupData.Count };
-                }).ToList();
-
-                groupedData.RemoveAll(x => x.Count <= 0);
-
-                return groupedData;
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
-
-        public async Task<List<JsonChart>> FindReligionAsync(JsonAnswer filter, ClaimsPrincipal claims)
-        {
-            try
-            {
-                List<JsonAnswer> answerList = await FindAsync(filter, claims);
-
-                var grouped = answerList.GroupBy(x => x.C8).Select(x => new JsonChart
-                {
-                    Label = x.Key,
-                    Count = x.Count()
-                }).ToList();
-
-                List<JsonChart> listChart = new List<JsonChart>();
-
-                List<string> listAgama = (await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.AGAMACODE }, claims)).OrderBy(x => x.Description).Select(x => x.Value).ToList();
-
-                foreach (var choice in listAgama)
-                {
-                    JsonChart newChart = new JsonChart();
-                    newChart.Label = choice.ToString();
-                    newChart.Count = 0;
-
-                    var cekList = grouped.FirstOrDefault(x => x.Label == choice);
-                    if (cekList != null) newChart.Count = cekList.Count;
-
-                    listChart.Add(newChart);
-                }
-
-                return listChart;
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
-
-        public async Task<List<JsonChart>> FindTribeAsync(JsonAnswer filter, ClaimsPrincipal claims)
-        {
-            try
-            {
-                List<JsonAnswer> answerList = await FindAsync(filter, claims);
-
-                var grouped = answerList.GroupBy(x => x.C10).Select(x => new JsonChart
-                {
-                    Label = x.Key,
-                    Count = x.Count()
-                }).ToList();
-
-                List<JsonChart> listChart = new List<JsonChart>();
-
-                List<string> listSuku = (await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.SUKUCODE }, claims)).Select(x => x.Value).ToList();
-
-                foreach (var choice in listSuku)
-                {
-                    JsonChart newChart = new JsonChart();
-                    newChart.Label = choice.ToString();
-                    newChart.Count = 0;
-
-                    var cekList = grouped.FirstOrDefault(x => x.Label == choice);
-                    if (cekList != null) newChart.Count = cekList.Count;
-
-                    listChart.Add(newChart);
-                }
-
-                listChart.RemoveAll(x => x.Count < 1);
-
-                return listChart;
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
-
-        public async Task<List<JsonChart>> FindAcademicAsync(JsonAnswer filter, ClaimsPrincipal claims)
-        {
-            try
-            {
-                List<JsonAnswer> answerList = await FindAsync(filter, claims);
-
-                var grouped = answerList.GroupBy(x => x.C9).Select(x => new JsonChart
-                {
-                    Label = x.Key,
-                    Count = x.Count()
-                }).ToList();
-
-                List<JsonChart> listChart = new List<JsonChart>();
-
-                List<string> listPendidikan = (await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.PENDIDIKANCODE }, claims)).OrderBy(x => x.Description).Select(x => x.Value).ToList();
-
-                foreach (var choice in listPendidikan)
-                {
-                    JsonChart newChart = new JsonChart();
-                    newChart.Label = choice.ToString();
-                    newChart.Count = 0;
-
-                    var cekList = grouped.FirstOrDefault(x => x.Label == choice);
-                    if (cekList != null) newChart.Count = cekList.Count;
-
-                    listChart.Add(newChart);
-                }
-
-                return listChart;
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
-
-        public async Task<List<JsonAnswer>> FindAsync(JsonAnswer filter, ClaimsPrincipal claims)
-        {
-            List<JsonAnswer> answerList = new List<JsonAnswer>();
+            List<JsonAnswer2> Answer2List = new List<JsonAnswer2>();
 
             try
             {
                 String ClientID = GlobalHelpers.GetClaimValueByType(EnumClaims.ClientID.ToString(), claims);
                 filter.ClientID = ClientID;
-                Expression<Func<Answer, bool>> filterExp = c => true;
+                Expression<Func<Answer2, bool>> filterExp = c => true;
                 if (!String.IsNullOrEmpty(filter.Nama)) filterExp = filterExp.And(x => x.Nama.StartsWith(filter.Nama));
                 if (!String.IsNullOrEmpty(filter.Kelurahan)) filterExp = filterExp.And(x => x.Kelurahan == filter.Kelurahan);
                 if (!String.IsNullOrEmpty(filter.Kecamatan)) filterExp = filterExp.And(x => x.Kecamatan == filter.Kecamatan);
-                if (!String.IsNullOrEmpty(filter.C8)) filterExp = filterExp.And(x => x.C8 == filter.C8);
-                if (!String.IsNullOrEmpty(filter.C9)) filterExp = filterExp.And(x => x.C9 == filter.C9);
-                if (!String.IsNullOrEmpty(filter.C10)) filterExp = filterExp.And(x => x.C10 == filter.C10);
-                if (!String.IsNullOrEmpty(filter.C6)) filterExp = filterExp.And(x => x.C6 == filter.C6);
                 filterExp = filterExp.And(x => x.ClientID == filter.ClientID);
 
-                answerList = _mapper.Map<IEnumerable<Answer>, List<JsonAnswer>>(await Repo.QueryAnswersAsync(filterExp, filter.OrderBy, filter.OrderByDirection, filter.Take.GetValueOrDefault(), filter.Skip.GetValueOrDefault()));
+                Answer2List = _mapper.Map<IEnumerable<Answer2>, List<JsonAnswer2>>(await Repo.QueryAnswer2sAsync(filterExp, filter.OrderBy, filter.OrderByDirection, filter.Take.GetValueOrDefault(), filter.Skip.GetValueOrDefault()));
 
-                answerList = answerList.AsQueryable().OrderBy(filter.OrderBy + " " + filter.OrderByDirection).ToList();
-                return answerList;
+                return Answer2List;
             }
             catch (Exception ex)
             {
@@ -735,19 +437,19 @@ namespace Service.Services.Master
             }
         }
 
-        public async Task<int> FindCountAsync(JsonAnswer filter, ClaimsPrincipal claims)
+        public async Task<int> FindCountAsync(JsonAnswer2 filter, ClaimsPrincipal claims)
         {
             try
             {
                 String ClientID = GlobalHelpers.GetClaimValueByType(EnumClaims.ClientID.ToString(), claims);
                 filter.ClientID = ClientID;
-                Expression<Func<Answer, bool>> filterExp = c => true;
+                Expression<Func<Answer2, bool>> filterExp = c => true;
+                if (!String.IsNullOrEmpty(filter.Nama)) filterExp = filterExp.And(x => x.Nama.StartsWith(filter.Nama));
                 if (!String.IsNullOrEmpty(filter.Kelurahan)) filterExp = filterExp.And(x => x.Kelurahan == filter.Kelurahan);
                 if (!String.IsNullOrEmpty(filter.Kecamatan)) filterExp = filterExp.And(x => x.Kecamatan == filter.Kecamatan);
-                if (!String.IsNullOrEmpty(filter.C6)) filterExp = filterExp.And(x => x.C6 == filter.C6);
                 filterExp = filterExp.And(x => x.ClientID == filter.ClientID);
 
-                int TotalCount = await Repo.QueryAnswersCountAsync(filterExp);
+                int TotalCount = await Repo.QueryAnswer2sCountAsync(filterExp);
 
                 return TotalCount;
             }
@@ -758,30 +460,25 @@ namespace Service.Services.Master
             }
         }
 
-        public async Task<List<JsonAnswer>> FindByUserAsync(JsonAnswer filter, ClaimsPrincipal claims)
+        public async Task<List<JsonAnswer2>> FindByUserAsync(JsonAnswer2 filter, ClaimsPrincipal claims)
         {
-            List<JsonAnswer> answerList = new List<JsonAnswer>();
+            List<JsonAnswer2> Answer2List = new List<JsonAnswer2>();
 
             try
             {
                 String ClientID = GlobalHelpers.GetClaimValueByType(EnumClaims.ClientID.ToString(), claims);
                 filter.ClientID = ClientID;
-                Expression<Func<Answer, bool>> filterExp = c => true;
+                Expression<Func<Answer2, bool>> filterExp = c => true;
                 if (!String.IsNullOrEmpty(filter.Nama)) filterExp = filterExp.And(x => x.Nama.StartsWith(filter.Nama));
                 if (!String.IsNullOrEmpty(filter.Kelurahan)) filterExp = filterExp.And(x => x.Kelurahan == filter.Kelurahan);
                 if (!String.IsNullOrEmpty(filter.Kecamatan)) filterExp = filterExp.And(x => x.Kecamatan == filter.Kecamatan);
-                if (!String.IsNullOrEmpty(filter.C8)) filterExp = filterExp.And(x => x.C8 == filter.C8);
-                if (!String.IsNullOrEmpty(filter.C9)) filterExp = filterExp.And(x => x.C9 == filter.C9);
-                if (!String.IsNullOrEmpty(filter.C10)) filterExp = filterExp.And(x => x.C10 == filter.C10);
-                if (!String.IsNullOrEmpty(filter.C6)) filterExp = filterExp.And(x => x.C6 == filter.C6);
                 var CreatedBy = GlobalHelpers.GetClaimValueByType(EnumClaims.Username.ToString(), claims);
                 filterExp = filterExp.And(x => x.CreatedBy == CreatedBy);
                 filterExp = filterExp.And(x => x.ClientID == filter.ClientID);
 
-                answerList = _mapper.Map<IEnumerable<Answer>, List<JsonAnswer>>(await Repo.QueryAnswersAsync(filterExp, filter.OrderBy, filter.OrderByDirection, filter.Take.GetValueOrDefault(), filter.Skip.GetValueOrDefault()));
+                Answer2List = _mapper.Map<IEnumerable<Answer2>, List<JsonAnswer2>>(await Repo.QueryAnswer2sAsync(filterExp, filter.OrderBy, filter.OrderByDirection, filter.Take.GetValueOrDefault(), filter.Skip.GetValueOrDefault()));
 
-                answerList = answerList.AsQueryable().OrderBy(filter.OrderBy + " " + filter.OrderByDirection).ToList();
-                return answerList;
+                return Answer2List;
             }
             catch (Exception ex)
             {
@@ -790,25 +487,21 @@ namespace Service.Services.Master
             }
         }
 
-        public async Task<int> FindCountByUserAsync(JsonAnswer filter, ClaimsPrincipal claims)
+        public async Task<int> FindCountByUserAsync(JsonAnswer2 filter, ClaimsPrincipal claims)
         {
             try
             {
                 String ClientID = GlobalHelpers.GetClaimValueByType(EnumClaims.ClientID.ToString(), claims);
                 filter.ClientID = ClientID;
-                Expression<Func<Answer, bool>> filterExp = c => true;
+                Expression<Func<Answer2, bool>> filterExp = c => true;
                 if (!String.IsNullOrEmpty(filter.Nama)) filterExp = filterExp.And(x => x.Nama.StartsWith(filter.Nama));
                 if (!String.IsNullOrEmpty(filter.Kelurahan)) filterExp = filterExp.And(x => x.Kelurahan == filter.Kelurahan);
                 if (!String.IsNullOrEmpty(filter.Kecamatan)) filterExp = filterExp.And(x => x.Kecamatan == filter.Kecamatan);
-                if (!String.IsNullOrEmpty(filter.C8)) filterExp = filterExp.And(x => x.C8 == filter.C8);
-                if (!String.IsNullOrEmpty(filter.C9)) filterExp = filterExp.And(x => x.C9 == filter.C9);
-                if (!String.IsNullOrEmpty(filter.C10)) filterExp = filterExp.And(x => x.C10 == filter.C10);
-                if (!String.IsNullOrEmpty(filter.C6)) filterExp = filterExp.And(x => x.C6 == filter.C6);
                 var CreatedBy = GlobalHelpers.GetClaimValueByType(EnumClaims.Username.ToString(), claims);
                 filterExp = filterExp.And(x => x.CreatedBy == CreatedBy);
                 filterExp = filterExp.And(x => x.ClientID == filter.ClientID);
 
-                int TotalCount = await Repo.QueryAnswersCountAsync(filterExp);
+                int TotalCount = await Repo.QueryAnswer2sCountAsync(filterExp);
 
                 return TotalCount;
             }
@@ -819,11 +512,11 @@ namespace Service.Services.Master
             }
         }
 
-        public async Task<JsonAnswer> GetAnswer(string ID)
+        public async Task<JsonAnswer2> GetAnswer2(string ID)
         {
             try
             {
-                return _mapper.Map<Answer, JsonAnswer>(await Repo.GetAnswerByIDAsync(ID));
+                return _mapper.Map<Answer2, JsonAnswer2>(await Repo.GetAnswer2ByIDAsync(ID));
             }
             catch (Exception ex)
             {
@@ -832,14 +525,10 @@ namespace Service.Services.Master
             }
         }
 
-        public async Task<JsonReturn> SaveAsync(JsonAnswer Save, ClaimsPrincipal claims)
+        public async Task<JsonReturn> SaveAsync(JsonAnswer2 Save, ClaimsPrincipal claims)
         {
             JsonReturn result = new JsonReturn(false);
 
-            //CrudLog crudLog = new CrudLog();
-            //crudLog.ID = Guid.NewGuid().ToString();
-            //crudLog.TableName = "Answer";
-            //crudLog.Status = false;
             try
             {
                 String ClientID = GlobalHelpers.GetClaimValueByType(EnumClaims.ClientID.ToString(), claims);
@@ -849,7 +538,7 @@ namespace Service.Services.Master
 
                 if (String.IsNullOrEmpty(Error))
                 {
-                    Answer NewData = new Answer();
+                    Answer2 NewData = new Answer2();
 
                     if (String.IsNullOrEmpty(Save.ID))
                     {
@@ -858,25 +547,22 @@ namespace Service.Services.Master
                         NewData.ID = Guid.NewGuid().ToString();
                         NewData.Nama = Save.Nama;
                         NewData.Usia = Save.Usia;
-                        NewData.Nama_kk = Save.Nama_Kk;
                         NewData.Alamat = Save.Alamat;
+
+                        while (Save.Rw.Length < 3) Save.Rw = "0" + Save.Rw;
+                        while (Save.Rt != null && Save.Rt.Length < 3) Save.Rt = "0" + Save.Rt;
+
                         NewData.Rt = Save.Rt;
                         NewData.Rw = Save.Rw;
                         NewData.Kelurahan = Save.Kelurahan;
                         NewData.Kecamatan = Save.Kecamatan;
                         NewData.NIK = Save.NIK;
-                        NewData.Nomor_telp = Save.Nomor_telp;
+                        NewData.NoTelp = Save.NoTelp;
+                        NewData.Simpul = Save.Simpul;
                         NewData.C1 = Save.C1;
                         NewData.C2 = Save.C2;
-                        NewData.C3A = Save.C3A;
-                        NewData.C3B = Save.C3B;
+                        NewData.C3 = Save.C3;
                         NewData.C4 = Save.C4;
-                        NewData.C5 = Save.C5;
-                        NewData.C6 = Save.C6;
-                        NewData.C7 = Save.C7;
-                        NewData.C8 = Save.C8;
-                        NewData.C9 = Save.C9;
-                        NewData.C10 = Save.C10;
                         NewData.SetRowStatus(0);
 
                         NewData.ModelState = ObjectState.Added;
@@ -886,7 +572,7 @@ namespace Service.Services.Master
                     {
                         //crudLog.ProcessName = "Update";
 
-                        NewData = await Repo.GetAnswerByIDAsync(Save.ID);
+                        NewData = await Repo.GetAnswer2ByIDAsync(Save.ID);
 
                         if (NewData == null)
                         {
@@ -896,26 +582,23 @@ namespace Service.Services.Master
                         }
 
                         NewData.Nama = Save.Nama;
-                        NewData.Nama_kk = Save.Nama_Kk;
                         NewData.Usia = Save.Usia;
                         NewData.Alamat = Save.Alamat;
+
+                        while (Save.Rw.Length < 3) Save.Rw = "0" + Save.Rw;
+                        while (Save.Rt != null && Save.Rt.Length < 3) Save.Rt = "0" + Save.Rt;
+
                         NewData.Rt = Save.Rt;
                         NewData.Rw = Save.Rw;
                         NewData.Kelurahan = Save.Kelurahan;
                         NewData.Kecamatan = Save.Kecamatan;
                         NewData.NIK = Save.NIK;
-                        NewData.Nomor_telp = Save.Nomor_telp;
+                        NewData.NoTelp = Save.NoTelp;
+                        NewData.Simpul = Save.Simpul;
                         NewData.C1 = Save.C1;
                         NewData.C2 = Save.C2;
-                        NewData.C3A = Save.C3A;
-                        NewData.C3B = Save.C3B;
+                        NewData.C3 = Save.C3;
                         NewData.C4 = Save.C4;
-                        NewData.C5 = Save.C5;
-                        NewData.C6 = Save.C6;
-                        NewData.C7 = Save.C7;
-                        NewData.C8 = Save.C8;
-                        NewData.C9 = Save.C9;
-                        NewData.C10 = Save.C10;
 
                         NewData.ModelState = ObjectState.Modified;
 
@@ -945,11 +628,11 @@ namespace Service.Services.Master
             JsonReturn jsonReturn = new JsonReturn(false);
             try
             {
-                Answer data = await Repo.GetAnswerByIDAsync(ID);
+                Answer2 data = await Repo.GetAnswer2ByIDAsync(ID);
 
                 if (data != null)
                 {
-                    _dbcontext.Answers.Remove(data);
+                    _dbcontext.Answer2s.Remove(data);
                     _dbcontext.SaveChanges();
 
                     jsonReturn = new JsonReturn(true);
@@ -974,7 +657,7 @@ namespace Service.Services.Master
             JsonReturn jsonReturn = new JsonReturn(false);
             try
             {
-                Answer data = await Repo.GetAnswerByIDAsync(ID);
+                Answer2 data = await Repo.GetAnswer2ByIDAsync(ID);
 
                 if (data != null)
                 {
@@ -1002,7 +685,7 @@ namespace Service.Services.Master
             return jsonReturn;
         }
 
-        public async Task<byte[]> DownloadExcelDocument(JsonAnswer filter, ClaimsPrincipal claims)
+        public async Task<byte[]> DownloadExcelDocument(JsonAnswer2 filter, ClaimsPrincipal claims)
         {
             try
             {
@@ -1013,41 +696,27 @@ namespace Service.Services.Master
                     worksheet.Cell(1, 2).Value = "Usia";
                     worksheet.Cell(1, 3).Value = "NIK";
                     worksheet.Cell(1, 4).Value = "No. Telp";
-                    worksheet.Cell(1, 5).Value = "Nama KK";
-                    worksheet.Cell(1, 6).Value = "Alamat";
+                    worksheet.Cell(1, 5).Value = "Alamat";
+                    worksheet.Cell(1, 6).Value = "Nama Simpul";
                     worksheet.Cell(1, 7).Value = "C1";
                     worksheet.Cell(1, 8).Value = "C2";
-                    worksheet.Cell(1, 9).Value = "C3A";
-                    worksheet.Cell(1, 10).Value = "C3B";
-                    worksheet.Cell(1, 11).Value = "C4";
-                    worksheet.Cell(1, 12).Value = "C5";
-                    worksheet.Cell(1, 12).Value = "C6";
-                    worksheet.Cell(1, 14).Value = "C7";
-                    worksheet.Cell(1, 15).Value = "C8";
-                    worksheet.Cell(1, 16).Value = "C9";
-                    worksheet.Cell(1, 17).Value = "C10";
+                    worksheet.Cell(1, 9).Value = "C3";
+                    worksheet.Cell(1, 10).Value = "C4";
 
-                    List<JsonAnswer> datas = await FindAsync(filter, claims);
+                    List<JsonAnswer2> datas = await FindAsync(filter, claims);
 
                     for (int index = 1; index < datas.Count; index++)
                     {
                         worksheet.Cell(index + 1, 1).Value = datas[index - 1].Nama;
                         worksheet.Cell(index + 1, 2).Value = datas[index - 1].Usia;
                         worksheet.Cell(index + 1, 3).Value = datas[index - 1].NIK;
-                        worksheet.Cell(index + 1, 4).Value = datas[index - 1].Nomor_telp;
-                        worksheet.Cell(index + 1, 5).Value = datas[index - 1].Nama_Kk;
-                        worksheet.Cell(index + 1, 6).Value = $"{datas[index - 1].Alamat}, RT {datas[index - 1].Rt} RW {datas[index - 1].Rw}, {datas[index - 1].Kelurahan} {datas[index - 1].Kecamatan}";
+                        worksheet.Cell(index + 1, 4).Value = datas[index - 1].NoTelp;
+                        worksheet.Cell(index + 1, 5).Value = $"{datas[index - 1].Alamat}, RT {datas[index - 1].Rt} RW {datas[index - 1].Rw}, {datas[index - 1].Kelurahan} {datas[index - 1].Kecamatan}";
+                        worksheet.Cell(index + 1, 6).Value = datas[index - 1].Simpul;
                         worksheet.Cell(index + 1, 7).Value = datas[index - 1].C1;
                         worksheet.Cell(index + 1, 8).Value = datas[index - 1].C2;
-                        worksheet.Cell(index + 1, 9).Value = datas[index - 1].C3A;
-                        worksheet.Cell(index + 1, 10).Value = datas[index - 1].C3B;
-                        worksheet.Cell(index + 1, 11).Value = datas[index - 1].C4;
-                        worksheet.Cell(index + 1, 12).Value = datas[index - 1].C5;
-                        worksheet.Cell(index + 1, 13).Value = datas[index - 1].C6;
-                        worksheet.Cell(index + 1, 14).Value = datas[index - 1].C7;
-                        worksheet.Cell(index + 1, 15).Value = datas[index - 1].C8;
-                        worksheet.Cell(index + 1, 16).Value = datas[index - 1].C9;
-                        worksheet.Cell(index + 1, 17).Value = datas[index - 1].C10;
+                        worksheet.Cell(index + 1, 9).Value = datas[index - 1].C3;
+                        worksheet.Cell(index + 1, 10).Value = datas[index - 1].C4;
                     }
                     using (var stream = new MemoryStream())
                     {

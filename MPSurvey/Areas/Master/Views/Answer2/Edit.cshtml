@@ -1,7 +1,7 @@
 ﻿@using Model.JsonModels.Setting;
-@model Model.JsonModels.Master.JsonAnswer
+@model Model.JsonModels.Master.JsonAnswer2
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
 }
 
@@ -35,7 +35,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">Home</li>
                 <li class="breadcrumb-item">Jawaban</li>
-                <li class="breadcrumb-item active">Isi Data</li>
+                <li class="breadcrumb-item active">Edit Data</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -44,7 +44,7 @@
     <section class="content">
         <div class="container-fluid">
             <!-- new vendor form -->
-            <form asp-action="Create">
+            <form asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="row center" style="float: none; margin: 0 auto;">
                     <div class="col-md-12">
@@ -67,9 +67,9 @@
 
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label asp-for="Nomor_telp" class="control-label font-weight-bold"></label>
-                                                <input type="number" asp-for="Nomor_telp" class="form-control" />
-                                                <span asp-validation-for="Nomor_telp" class="text-danger"></span>
+                                                <label asp-for="NoTelp" class="control-label font-weight-bold"></label>
+                                                <input type="number" asp-for="NoTelp" class="form-control" />
+                                                <span asp-validation-for="NoTelp" class="text-danger"></span>
                                             </div>
                                         </div>
 
@@ -144,7 +144,7 @@
                                     <div class="col-md-1"><b>C1</b><span class="text-danger">*</span></div>
                                     <div class="col-md-11">
                                         <div class="form-group">
-                                            <label asp-for="C1" class="control-label">Apakah Ibu/Bapak tahun (pernah dengar, baca, lihat) Masinton Pasribu, SH?</label>
+                                            <label asp-for="C1" class="control-label">Apakah Bapak/Ibu/Sdr/i telah terdaftar sebagai pemilih pada Pemilu 14 Februari 2024?</label>
                                             @foreach (var option in Model.List2Choice)
                                             {
                                                 <div class="form-check">
@@ -163,8 +163,8 @@
                                     <div class="col-md-1"><b>C2</b></div>
                                     <div class="col-md-11">
                                         <div class="form-group">
-                                            <label asp-for="C2" class="control-label">Apakah Ibu/Bapak suka kepada Masinton Pasribu, SH?</label>
-                                            @foreach (var option in Model.List3Choice)
+                                            <label asp-for="C2" class="control-label">Apakah Bapak/Ibu/Sdr/i mengenal Masinton Pasaribu?</label>
+                                            @foreach (var option in Model.List2Choice)
                                             {
                                                 <div class="form-check">
                                                     <input asp-for="C2" class="form-check-input" type="radio" value="@option.Value" id="@($"C2option{option.Value}")" />
@@ -182,35 +182,15 @@
                                     <div class="col-md-1"><b>C3</b><span class="text-danger">*</span></div>
                                     <div class="col-md-11">
                                         <div class="form-group">
-                                            <label class="control-label">Apakah Ibu/Bapak tahu (pernah dengar, baca, lihat) Masinton Pasribu sebagai?</label>
-
-                                            <div class="row">
-
-                                                <div class="col-md-6">
-                                                    <label for="C3A" class="control-label"><b>A.</b><span class="text-danger">*</span> Anggota DPR DKI II (Jaksel, Jakpus, dan Luar Negeri)</label>
-                                                    @foreach (var option in Model.List3Choice)
-                                                    {
-                                                        <div class="form-check">
-                                                            <input asp-for="C3A" class="form-check-input" type="radio" value="@option.Value" id="@($"C3Aoption{option.Value}")" />
-                                                            <label class="form-check-label" for="@($"C3Aoption{option.Value}")">@option.Value</label>
-                                                        </div>
-                                                    }
-                                                    <span asp-validation-for="C3A" class="text-danger"></span>
+                                            <label asp-for="C3" class="control-label">Apakah Bapak/Ibu/Sdr/i menegtahui Masinton Pasaribu dicalonkan kembali oleh Partai PDI Perjuangan sebagai Caleg DPR RI?</label>
+                                            @foreach (var option in Model.List2Choice)
+                                            {
+                                                <div class="form-check">
+                                                    <input asp-for="C3" class="form-check-input" type="radio" value="@option.Value" id="@($"C4option{option.Value}")" />
+                                                    <label class="form-check-label" for="@($"C4option{option.Value}")">@option.Value</label>
                                                 </div>
-
-                                                <div class="col-md-6">
-                                                    <label for="C3A" class="control-label"><b>B.</b><span class="text-danger">*</span> Aktivis gerakan tahun 1998</label>
-                                                    @foreach (var option in Model.List3Choice)
-                                                    {
-                                                        <div class="form-check">
-                                                            <input asp-for="C3B" class="form-check-input" type="radio" value="@option.Value" id="@($"C3Boption{option.Value}")" />
-                                                            <label class="form-check-label" for="@($"C3Boption{option.Value}")">@option.Value</label>
-                                                        </div>
-                                                    }
-                                                    <span asp-validation-for="C3B" class="text-danger"></span>
-                                                </div>
-
-                                            </div>
+                                            }
+                                            <span asp-validation-for="C3" class="text-danger"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -221,8 +201,8 @@
                                     <div class="col-md-1"><b>C4</b><span class="text-danger">*</span></div>
                                     <div class="col-md-11">
                                         <div class="form-group">
-                                            <label asp-for="C4" class="control-label">Apakah Ibu/Bapak tahu bahwa <b>Masinton Pasribu</b> diinginkan kembali oleh masyarakat untuk menjadi anggota DPR RI Dapil DKI II (Kota Jakarta Selatan, Jakarta Pusat, dan Luar Negeri)?</label>
-                                            @foreach (var option in Model.List2Choice)
+                                            <label asp-for="C4" class="control-label">Bersediakah Bapak/Ibu/Sdr/i memilih Caleg DPR RI, nomor 7 Masinton Pasaribu, S.H. dari Partai PDI Perjuangan?</label>
+                                            @foreach (var option in Model.List3Choice)
                                             {
                                                 <div class="form-check">
                                                     <input asp-for="C4" class="form-check-input" type="radio" value="@option.Value" id="@($"C4option{option.Value}")" />
@@ -230,107 +210,6 @@
                                                 </div>
                                             }
                                             <span asp-validation-for="C4" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <br />
-
-                                <div class="row">
-                                    <div class="col-md-1"><b>C5</b></div>
-                                    <div class="col-md-11">
-                                        <div class="form-group">
-                                            <label asp-for="C5" class="control-label">Apakah yang harus diperjuangkan oleh Masinton Pasaribu sebagai Calon Wakil Rakyat 2024 nanti?</label>
-                                            <input type="text" asp-for="C5" class="form-control" />
-                                            <span asp-validation-for="C5" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <br />
-
-                                <div class="row">
-                                    <div class="col-md-1"><b>C6</b><span class="text-danger">*</span></div>
-                                    <div class="col-md-11">
-                                        <div class="form-group">
-                                            <label asp-for="C6" class="control-label">Menurut Ibu/Bapak Siapakah Calon Wakil Rakyat yang pantas dari Partai Demokrasi Indonesia Perjuangan Dapil DKI II  (Kota Jakarta Selatan, Jakarta Pusat, dan Luar Negeri)?</label>
-                                            @foreach (var option in Model.ListCalon)
-                                            {
-                                                <div class="form-check">
-                                                    <input asp-for="C6" class="form-check-input" type="radio" value="@option.Value" id="@($"C6option{option.Value}")" />
-                                                    <label class="form-check-label" for="@($"C6option{option.Value}")">@option.Value</label>
-                                                </div>
-                                            }
-                                            @*<div class="form-check">
-                                                <input asp-for="C6" class="form-check-input" type="radio" value="Other" id="@($"C6optionOther")" />
-                                                <label class="form-check-label" for="@($"C6optionOther")"><input asp-for="C6Other" type="text" class="form-control"/></label>
-                                            </div>*@
-                                            <span asp-validation-for="C6" class="text-danger"></span>
-                                            @*<span asp-validation-for="C6Other" class="text-danger"></span>*@
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <br />
-
-                                <div class="row">
-                                    <div class="col-md-1"><b>C7</b><span class="text-danger">*</span></div>
-                                    <div class="col-md-11">
-                                        <div class="form-group">
-                                            <label asp-for="C7" class="control-label">Bersediakah Ibu/Bapak mengkampanyekan Masinton Pasaribu sebagai Calon Wakil Rakyat 2024 nanti?</label>
-                                            @foreach (var option in Model.List2Choice)
-                                            {
-                                                <div class="form-check">
-                                                    <input asp-for="C7" class="form-check-input" type="radio" value="@option.Value" id="@($"C7option{option.Value}")" />
-                                                    <label class="form-check-label" for="@($"C7option{option.Value}")">@option.Value</label>
-                                                </div>
-                                            }
-                                            <span asp-validation-for="C7" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <br />
-
-                                <div class="row">
-                                    <div class="col-md-1"><b>C8</b></div>
-                                    <div class="col-md-11">
-                                        <div class="form-group">
-                                            <label asp-for="C8" class="control-label">Apakah Agama Ibu/Bapak?</label>
-                                            <select asp-for="C8" asp-items="new SelectList(Model.ListAgama, nameof(JsonHelperTable.Name), nameof(JsonHelperTable.Value))" class="form-control">
-                                                <option value="">-- Select --</option>
-                                            </select>
-                                            <span asp-validation-for="C8" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <br />
-
-                                <div class="row">
-                                    <div class="col-md-1"><b>C9</b></div>
-                                    <div class="col-md-11">
-                                        <div class="form-group">
-                                            <label asp-for="C9" class="control-label">Apakah Pendidikan Terakhir Ibu/Bapak?</label>
-                                            <select asp-for="C9" asp-items="new SelectList(Model.ListPendidikan, nameof(JsonHelperTable.Name), nameof(JsonHelperTable.Value))" class="form-control">
-                                                <option value="">-- Select --</option>
-                                            </select>
-                                            <span asp-validation-for="C9" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <br />
-
-                                <div class="row">
-                                    <div class="col-md-1"><b>C10</b></div>
-                                    <div class="col-md-11">
-                                        <div class="form-group">
-                                            <label asp-for="C10" class="control-label">Sebagai Warga Negara Indonesia, Ibu/Bapak sendiri termasuk ke dalam Suku apa?</label>
-                                            <select asp-for="C10" asp-items="new SelectList(Model.ListSuku, nameof(JsonHelperTable.Name), nameof(JsonHelperTable.Value))" class="form-control">
-                                                <option value="">-- Select --</option>
-                                            </select>
-                                            <span asp-validation-for="C10" class="text-danger"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -395,7 +274,7 @@
         {
             @Html.Raw(TempData["notification"])
         }
-                                                                                                });
+                                                                                                                });
 
 
     </script>
