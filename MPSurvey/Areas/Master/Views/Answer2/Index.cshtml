@@ -46,14 +46,7 @@
                 @class="form-control"
                 })
             </div>
-            <div class="col-md-3">
-                @Html.DropDownList("Calon", new SelectList(ViewBag.listCalon, "Name", "Name"), "Cari dari Calon Pilihan", new
-                {
-                @id="filterCalon",
-                @class="form-control"
-                })
-            </div>
-            <button id="btn-filter" class="col-md-3 btn btn-sm btn-primary" type="button" onclick="FilterData()">Cari</button>
+            <button id="btn-filter" class="col-md-3 offset-md-3 btn btn-sm btn-primary" type="button" onclick="FilterData()">Cari</button>
         </div>
         <table id="tblData" class="table table-bordered table-striped">
             <thead>
@@ -260,7 +253,7 @@
                         { "data": "noTelp", "name": "NoTelp" },
                         {
                             data: null, render: function (data, type, row) {
-                                return '<span>' + row.alamat + ' ' + row.rt + '/' + row.rw + ' ' + row.kelurahan + ', ' + row.kecamatan + '</span>'
+                                return '<span>' + row.alamat + ', ' + (row.rt != null ? 'RT-' + row.rt + ' ' : '') + 'RW-' + row.rw + ', ' + row.kelurahan + ', ' + row.kecamatan + '</span>'
                             }
                         },
                         {
