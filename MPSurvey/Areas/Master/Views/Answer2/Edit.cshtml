@@ -76,6 +76,15 @@
                                     </div>
 
                                     <div class="row">
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="NIK" class="control-label font-weight-bold"></label>
+                                                <input type="number" asp-for="NIK" class="form-control" />
+                                                <span asp-validation-for="NIK" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label asp-for="Usia" class="control-label font-weight-bold"></label>
@@ -83,6 +92,7 @@
                                                 <span asp-validation-for="Usia" class="text-danger"></span>
                                             </div>
                                         </div>
+
                                     </div>
 
                                     <div class="row">
@@ -131,6 +141,16 @@
                                                 </select>
                                                 <span asp-validation-for="Kelurahan" class="text-danger"></span>
                                             </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+
+                                        <div class="col-md-6 form-group">
+                                            <label asp-for="Simpul" class="control-label font-weight-bold"></label><span class="text-danger">*</span>
+                                            <input type="text" asp-for="Simpul" class="form-control" />
+                                            <span asp-validation-for="Simpul" class="text-danger"></span>
                                         </div>
 
                                     </div>
