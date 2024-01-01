@@ -1,0 +1,200 @@
+@using Model.JsonModels.Setting;
+@model Model.JsonModels.Master.JsonAnswer2;
+@{
+  Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+<style>
+  .custom-form {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .required-label::after {
+    content: " *";
+    color: red;
+  }
+</style>
+
+<div class="text-sm">
+  <div>
+    <h1>@ViewData["Uhh"]</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">Home</li>
+        <li class="breadcrumb-item">Jawaban</li>
+        <li class="breadcrumb-item active">@ViewData["Uhh"]</li>
+      </ol>
+    </nav>
+  </div>
+  <section class="content">
+    <div>
+      <form asp-action="@ViewData["Action"]" class="custom-form" id="form">
+        <div asp-validation-summary="ModelOnly" class="text-danger" />
+          <input asp-for="ID" type="hidden" />
+        <div>
+          <label asp-for="Simpul" class="form-label required-label">Simpul</label>
+          <input type="text" asp-for="Simpul" class="form-control" required />
+          <div class="invalid-feedback">Nama Responden Dibutuhkan!</div>
+          <span asp-validation-for="Simpul" class="text-danger"></span>
+        </div>
+        <div>
+          <label asp-for="Nama" class="form-label required-label">Nama</label>
+          <input type="text" asp-for="Nama" class="form-control" required />
+          <div class="invalid-feedback">Nama Responden Dibutuhkan!</div>
+          <span asp-validation-for="Nama" class="text-danger" />
+        </div>
+        <div>
+          <label asp-for="NoTelp" class="form-label required-label">No Telepon</label>
+          <input type="number" asp-for="NoTelp" class="form-control" required />
+          <div class="invalid-feedback">No Telepon Dibutuhkan!</div>
+          <span asp-validation-for="NoTelp" class="text-danger"></span>
+        </div>
+        <div>
+          <label asp-for="NIK" class="form-label">Nomor Induk Keluarga</label>
+          <input type="number" asp-for="NIK" class="form-control" />
+          <span asp-validation-for="NIK" class="text-danger"></span>
+        </div>
+        <div>
+          <label asp-for="Usia" class="form-label">Usia</label>
+          <input type="number" asp-for="Usia" class="form-control" />
+          <span asp-validation-for="Usia" class="text-danger"></span>
+        </div>
+        <div>
+          <label asp-for="Alamat" class="form-label required-label">Alamat</label>
+          <input type="text" asp-for="Alamat" class="form-control" required />
+          <div class="invalid-feedback">Alamat Dibutuhkan!</div>
+          <span asp-validation-for="Alamat" class="text-danger"></span>
+        </div>
+        <div>
+          <label asp-for="Rt" class="form-label"></label>
+          <input type="number" asp-for="Rt" class="form-control" />
+          <span asp-validation-for="Rt" class="text-danger"></span>
+        </div>
+        <div>
+          <label asp-for="Rw" class="form-label required-label"></label>
+          <input type="number" asp-for="Rw" class="form-control" required />
+          <div class="invalid-feedback">Rw Dibutuhkan!</div>
+          <span asp-validation-for="Rw" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+          <label asp-for="Kecamatan" class="form-label required-label">Kecamatan</label>
+          <select class="form-select" asp-for="Kecamatan"
+            asp-items="new SelectList(Model.ListKecamatan, nameof(JsonHelperTable.Name), nameof(JsonHelperTable.Name))"
+            id="kecamatanSelect" required>
+            <option value="" selected>Pilih Kecamatan</option>
+          </select>
+          <div class="invalid-feedback">Pilih Kecamatan yang benar</div>
+          <span asp-validation-for="Kecamatan" class="text-danger"></span>
+        </div>
+        <div>
+          <label asp-for="Kelurahan" class="form-label required-label">Kelurahan</label>
+          <select class="form-select" asp-for="Kelurahan"
+            asp-items="new SelectList(Model.ListKelurahan, nameof(JsonHelperTable.Name), nameof(JsonHelperTable.Name))"
+            id="kelurahanSelect" required>
+            <option value="" selected>Pilih Kelurahan</option>
+          </select>
+          <div class="invalid-feedback">Pilih Kelurahan yang benar!</div>
+          <span asp-validation-for="Kelurahan" class="text-danger"></span>
+        </div>
+        <div>
+          <label asp-for="C1" class="form-label required-label">Apakah Bapak/Ibu/Sdr/i telah terdaftar sebagai pemilih
+            pada Pemilu 14 Februari 2024?</label>
+          @foreach (var option in Model.List2Choice)
+          {
+            <div class="form-check">
+              <input asp-for="C1" class="form-check-input" required type="radio" value="@option.Value"
+                id="@($"C1option{option.Value}")" />
+              <label class="form-check-label" for="@($"C1option{option.Value}")">@option.Value</label>
+            </div>
+          }
+          <span asp-validation-for="C1" class="text-danger"></span>
+        </div>
+        <div>
+          <label asp-for="C2" class="form-label">Apakah Bapak/Ibu/Sdr/i mengenal Masinton Pasaribu?</label>
+          @foreach (var option in Model.List2Choice)
+          {
+            <div class="form-check">
+              <input asp-for="C2" class="form-check-input" required type="radio" value="@option.Value"
+                id="@($"C2option{option.Value}")" />
+              <label class="form-check-label" for="@($"C2option{option.Value}")">@option.Value</label>
+            </div>
+          }
+          <span asp-validation-for="C2" class="text-danger"></span>
+        </div>
+        <div>
+          <label asp-for="C3" class="form-label">Apakah Bapak/Ibu/Sdr/i menegtahui Masinton Pasaribu dicalonkan kembali
+            oleh Partai PDI Perjuangan sebagai Caleg DPR RI?</label>
+          @foreach (var option in Model.List2Choice)
+          {
+            <div class="form-check">
+              <input asp-for="C3" class="form-check-input" required type="radio" value="@option.Value"
+                id="@($"C4option{option.Value}")" />
+              <label class="form-check-label" for="@($"C4option{option.Value}")">@option.Value</label>
+            </div>
+          }
+          <span asp-validation-for="C3" class="text-danger"></span>
+        </div>
+        <div>
+          <label asp-for="C4" class="form-label">Bersediakah Bapak/Ibu/Sdr/i memilih Caleg DPR RI, nomor 7 Masinton
+            Pasaribu, S.H. dari Partai PDI Perjuangan?</label>
+          @foreach (var option in Model.List3Choice)
+          {
+            <div class="form-check">
+              <input asp-for="C4" class="form-check-input" required type="radio" value="@option.Value"
+                id="@($"C4option{option.Value}")" />
+              <label class="form-check-label" for="@($"C4option{option.Value}")">@option.Value</label>
+            </div>
+          }
+          <span asp-validation-for="C4" class="text-danger"></span>
+        </div>
+        <div class="row center" style="float: none; margin: 0 auto;">
+          <div class="col-md-12">
+            <div class="card card-warning">
+              <div class="card-footer">
+                <input type="submit" value="Submit" class="btn btn-success" />
+                &nbsp;
+                <a asp-action="Index" class="btn btn-danger">Cancel</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      <!-- new vendor form -->
+
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+
+@section myScripts {
+  <script src="~/plugins/jquery/jquery.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      const form = document.getElementById('form');
+      form.addEventListener('submit', () => {
+        ShowLoading();
+      })
+
+      const kelurahanList = JSON.parse('@Html.Raw(Json.Serialize(Model.ListKelurahan))')
+      console.log(kelurahanList);
+      document.getElementById("kecamatanSelect").addEventListener("change", () => {
+        const selectedKecamatan = document.getElementById("kecamatanSelect").value;
+        const kelurahanSelect = document.getElementById("kelurahanSelect");
+        console.log(selectedKecamatan);
+        kelurahanSelect.innerHTML = '';
+        kelurahanList
+          .filter(item => item.description === selectedKecamatan)
+          .forEach(item => {
+            const option = new Option(item.value, item.value);
+            kelurahanSelect.appendChild(option);
+          });
+      });
+
+    @if (TempData["notification"] != null)
+    {
+      @Html.Raw(TempData["notification"])
+    }
+        });
+  </script>
+}
