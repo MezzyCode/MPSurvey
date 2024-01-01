@@ -138,10 +138,10 @@ namespace Service.UnitOfWork
                     if (entry.State == EntityState.Added)
                     {
                         entry.Entity.CreatedBy = name;
-                        entry.Entity.CreatedTime = DateTime.Now.AddHours(14);
+                        entry.Entity.CreatedTime = DateTime.UtcNow.AddHours(7);
                         entry.Entity.ClientID = ClientID;
                         entry.Entity.LastModifiedBy = name;
-                        entry.Entity.LastModifiedTime = DateTime.Now.AddHours(14);
+                        entry.Entity.LastModifiedTime = DateTime.UtcNow.AddHours(7);
                     }
                     else if (entry.State == EntityState.Modified)
                     {
@@ -150,7 +150,7 @@ namespace Service.UnitOfWork
                         entry.Entity.LastModifiedBy = name;
 
                         entry.Entity.ClientID = ClientID;
-                        entry.Entity.LastModifiedTime = DateTime.Now.AddHours(14);
+                        entry.Entity.LastModifiedTime = DateTime.UtcNow.AddHours(7);
                     }
 
 
