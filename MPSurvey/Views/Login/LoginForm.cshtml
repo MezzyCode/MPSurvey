@@ -1,110 +1,57 @@
 ﻿@model Model.JsonModels.Master.JsonUser
 @{
-    ViewData["Title"] = "Register Page";
-    Layout = "~/Views/Shared/AdminLTE/_Layout2.cshtml";
+  ViewData["Title"] = "Register Page";
+  Layout = "~/Views/Shared/AdminLTE/_Layout2.cshtml";
 }
 
 <body>
-    <section class="row justify-content-center">
-        <form class="col-md-5 col-lg-8 row align-items-center border elevation-1" style="border-color: var(--theme-primary) !important" asp-action="LoginForm" method="post" asp-antiforgery="true">
-            <img class="col-sm-12 col-lg-4" src="@Url.Content("~/img/masinton.png")" alt="foto-masinton">
-            <div class="col-sm-12 col-lg-8 p-1">
-                <h1 class="card-title text-center">Kanvassing Masinton Pasaribu</h1>
-                <div class="form-group">
-                    <label class="control-label">Email</label>
-                    <input type="text" asp-for="Email" class="form-control" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label class="control-label">Password</label>
-                    <input type="password" asp-for="Password" id="password" class="form-control" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <input type="checkbox" onclick="myFunction()" /> Show Password
-                </div>
-                @if (ViewBag.ErrorResult != null)
-                {
-                    <div class="" style="text-align:center;padding-top:10px;">
-                        <span class="text-danger" style="font-size:24px; font-weight:bold">@ViewBag.ErrorResult</span>
-                    </div>
-                }
-                <div class="text-center">
-                    <button type="submit" class="btn btn-primary col-md-12">Login</button>
-                </div>
-            </div>
-        </form>
-    </section>
+  <section class="row justify-content-center">
+    <form class="col-md-5 col-lg-8 row align-items-center border elevation-1"
+      style="border-color: var(--theme-primary) !important" asp-action="LoginForm" method="post" asp-antiforgery="true">
+      <img class="col-sm-12 col-lg-4" src="@Url.Content("~/img/masinton.png")" alt="foto-masinton">
+      <div class="col-sm-12 col-lg-8 p-1">
+        <h1 class="card-title text-center">Kanvassing Masinton Pasaribu Test</h1>
+        <div class="form-group">
+          <label class="control-label">Email</label>
+          <input type="text" asp-for="Email" class="form-control" />
+          <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+          <label class="control-label">Password</label>
+          <input type="password" asp-for="Password" id="password" class="form-control" />
+          <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="showPasswordCheckbox" />
+          <label class="form-check-label" for="showPasswordCheckbox">Show Password</label>
+        </div>
+        @if (ViewBag.ErrorResult != null)
+        {
+          <div class="" style="text-align:center;padding-top:10px;">
+            <span class="text-danger" style="font-size:24px; font-weight:bold">@ViewBag.ErrorResult</span>
+          </div>
+        }
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary col-md-12">Login</button>
+        </div>
+      </div>
+    </form>
+  </section>
 </body>
 
 
 
-@section myScripts{
-    <script src="~/plugins/jquery/jquery.min.js"></script>
-    <script>
-        //reset
-        function myFunction() {
-            var x = document.getElementById("password");
-            if (x.type === "password") {
-                x.type = "text";
-            } else {
-                x.type = "password";
-            }
-        }
-        function showresetModal() {
-            $("#resetModal").modal('show');
-        }
-        function sendReset() {
-            var email = $("#emailForm").val();
-            $.ajax({
+@section myScripts {
+  <script>
+    function showPassword() {
+      const passwordInput = document.getElementById('password');
+      const showPasswordCheckbox = document.getElementById('showPasswordCheckbox');
+      passwordInput.type = showPasswordCheckbox.checked ? "text" : "password";
+    }
 
-                url: '/Login/ResetPass',
-
-                type: 'POST',
-
-                data: { email: email },
-
-                success: function (data) {
-
-                    if (data["errorCode"] == "00") {
-                        $("#resetModal").modal('hide');
-                        swal
-                            ({
-                                title: "Reset!",
-                                text: "User has been reset!",
-                                type: "success"
-                            },
-                                function () {
-                                    window.location.href = '/Login/LoginForm';
-                                });
-                    } else {
-                        swal
-                            ({
-                                title: "Error!",
-                                text: data["errorMsg"],
-                                type: "error"
-                            },
-                                function () {
-
-                                });
-                    }
-                }
-
-            });
-        }
-        $(document).ready(function () {
-            $("form").submit(function () {
-
-                ShowLoading();
-
-            });
-
-        @if (TempData["notification"] != null)
-        {
-            @Html.Raw(TempData["notification"])
-        }
-                });
-
-    </script>
-
+    document.addEventListener("DOMContentLoaded", () => {
+      const showPasswordCheckbox = document.getElementById("showPasswordCheckbox");
+      showPasswordCheckbox.addEventListener("change", showPassword);
+    });
+  </script>
 }
