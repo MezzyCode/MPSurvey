@@ -13,66 +13,71 @@
     .col-chart {
         flex: 1;
     }
+
+    .form-filter {
+        gap: 1rem;
+    }
 </style>
 
 <section class="card col-12">
-    <h2 class="card-title text-center">
-        Welcome to Masinton Pasaribu Kanvasser Dashboard
-    </h2>
-    <div>
-        <div class="card-body row gap-3 align-items-end justify-content-center">
-            <div class="col-sm-12 col-lg-8">
-                <label class="control-label" for="filterKelurahan">Filter Berdasarkan Kelurahan</label>
+    <div class="card-body">
+        <h2 class="card-title text-center fw-bold">Welcome to Masinton Pasaribu Simpul Dashboard</h2>
+        <form class="form-filter">
+            <label class="form-label" for="filterKelurahan">Filter Berdasarkan</label>
+            <div class="input-group">
                 @Html.DropDownList("Select Kelurahan", new SelectList(ViewBag.listKelurahan, "Name", "Name"), "Semua",
-                new
-                {
-                @id = "filterKelurahan",
-                @class = "form-control"
-                })
-            </div>
-            <div class="col-sm-3 col-lg-8">
-                <select class="form-control" id="filterRw">
+                         new { @id = "filterKelurahan", @class = "form-select" })
+                <span class="input-group-text d-none" id="filterRwLabel">RW. </span>
+                <select class="form-select d-none" id="filterRw">
                     <option value="">Semua RW</option>
                 </select>
+                <button class="btn btn-primary" id="btnRefreshChart">Refresh Chart</button>
             </div>
-            <button class="col-sm-12 col-lg-4 btn btn-primary btn-sm" id="btnRefreshChart" type="button"
-                    style="max-width: 250px;">
-                Refresh Chart
-            </button>
-        </div>
+        </form>
     </div>
 </section>
 
 
 <section class="col-md-6 p-1">
     <div class="card">
-        <h2 class="card-title text-center">Apakah Bapak/Ibu/Sdr/i telah terdaftar sebagai pemilih pada Pemilu 14 Februari 2024?</h2>
-        <canvas id="c1Chart" class="card-body"></canvas>
+        <h2 class="card-title text-center">Apakah Bapak/Ibu/Sdr/i telah terdaftar sebagai pemilih pada Pemilu 14
+            Februari 2024?</h2>
+        <div class="card-body" style="max-height: 300px;">
+            <canvas id="c1Chart" />
+        </div>
     </div>
 </section>
 
 <section class="col-md-6 p-1">
     <div class="card">
         <h2 class="card-title text-center">Apakah Bapak/Ibu/Sdr/i mengenal Masinton Pasaribu?</h2>
-        <canvas id="c2Chart" class="card-body"></canvas>
+        <div class="card-body" style="max-height: 300px;">
+            <canvas id="c2Chart" />
+        </div>
     </div>
 </section>
 
 <section class="col-md-6 p-1">
     <div class="card">
         <h2 class="card-title text-center">
-            Apakah Bapak/Ibu/Sdr/i menegtahui Masinton Pasaribu dicalonkan kembali oleh Partai PDI Perjuangan sebagai Caleg DPR RI?
+            Apakah Bapak/Ibu/Sdr/i menegtahui Masinton Pasaribu dicalonkan kembali oleh Partai PDI Perjuangan sebagai
+            Caleg DPR RI?
         </h2>
-        <canvas id="c3Chart" class="card-body"></canvas>
+        <div class="card-body" style="max-height: 300px;">
+            <canvas id="c3Chart" />
+        </div>
     </div>
 </section>
 
 <section class="col-md-6 p-1">
     <div class="card">
         <h2 class="card-title text-center">
-            Bersediakah Bapak/Ibu/Sdr/i memilih Caleg DPR RI, nomor 7 Masinton Pasaribu, S.H. dari Partai PDI Perjuangan?
+            Bersediakah Bapak/Ibu/Sdr/i memilih Caleg DPR RI, nomor 7 Masinton Pasaribu, S.H. dari Partai PDI
+            Perjuangan?
         </h2>
-        <canvas id="c4Chart" class="card-body"></canvas>
+        <div class="card-body" style="max-height: 300px;">
+            <canvas id="c4Chart" />
+        </div>
     </div>
 </section>
 
@@ -82,16 +87,10 @@
 @section myScripts {
     <script src="~/plugins/jquery/jquery.min.js"></script>
     <script>
-
         $(document).ready(function () {
-
             $("form").submit(function () {
-
                 ShowLoading();
-
             });
-
-
             const colorPalette1 = [
                 'rgba(0, 0, 255, 0.5)',
                 'rgba(255, 0, 0, 0.5)',
@@ -142,348 +141,6 @@
                 'rgba(192, 64, 64, 0.5)',
                 'rgba(64, 192, 64, 0.5)'
             ];
-
-            //async function showChart() {
-            //    var xValues = [];
-            //    var yValues = [];
-
-            //    var data = await $.ajax({
-            //        url: "/Master/Answer/MainChart",
-            //        method: "POST",
-            //        data: {
-            //            Kelurahan: $('#filterKelurahan').val()
-            //        }
-            //    });
-
-            //    $.each(data, function (index, item) {
-            //        xValues.push(item.label);
-            //        yValues.push(item.count);
-            //    });
-
-            //    createMainChart(xValues, yValues);
-            //}
-
-            //function showReligionChart() {
-            //    var labels = [];
-            //    var datasets = [];
-
-            //    $.ajax({
-            //        url: "/Master/Answer/ReligionChart",
-            //        method: "POST",
-            //        data: {},
-            //        async: false,
-            //        success: function (data) {
-            //            $.each(data, function (index, item) {
-
-            //                var tempdataset = {
-            //                    data: [],
-            //                    label: item.xLabel, // contain calon name
-            //                    backgroundColor: colorPalette1[index],
-            //                }
-
-            //                $.each(item.charts, function (index, item) {
-            //                    // check whether the labels array already contain the religion
-            //                    if (!labels.includes(item.label)) {
-            //                        labels.push(item.label);
-            //                    }
-            //                    tempdataset.data.push(item.count); // contain each agama vote for current calon
-            //                });
-
-            //                datasets.push(tempdataset);
-            //            });
-            //        }
-            //    });
-
-            //    createReligionChart(labels, datasets);
-            //}
-
-            //async function showC3AChart() {
-            //    var datasets = [];
-
-            //    var data = await $.ajax({
-            //        url: "/Master/Answer/C3AChart",
-            //        method: "POST",
-            //        data: {
-            //            Kelurahan: $('#filterKelurahan').val()
-            //        }
-            //    });
-
-            //    $.each(data, function (index, item) {
-
-            //        var tempdataset = {
-            //            data: [item.count],
-            //            label: item.label, // contain calon name
-            //            backgroundColor: colorPalette1[index],
-            //        }
-
-            //        datasets.push(tempdataset);
-            //    });
-
-            //    createCChart(datasets, "c3AChart");
-            //}
-
-            //async function showC3BChart() {
-            //    var datasets = [];
-
-            //    var data = await $.ajax({
-            //        url: "/Master/Answer/C3BChart",
-            //        method: "POST",
-            //        data: {
-            //            Kelurahan: $('#filterKelurahan').val()
-            //        }
-            //    });
-
-            //    $.each(data, function (index, item) {
-
-            //        var tempdataset = {
-            //            data: [item.count],
-            //            label: item.label, // contain calon name
-            //            backgroundColor: colorPalette1[index],
-            //        }
-
-            //        datasets.push(tempdataset);
-            //    });
-
-            //    createCChart(datasets, "c3BChart");
-            //}
-
-            //async function showC4Chart() {
-            //    var datasets = [];
-
-            //    var data = await $.ajax({
-            //        url: "/Master/Answer/C4Chart",
-            //        method: "POST",
-            //        data: {
-            //            Kelurahan: $('#filterKelurahan').val()
-            //        }
-            //    });
-
-
-            //    $.each(data, function (index, item) {
-
-            //        var tempdataset = {
-            //            data: [item.count],
-            //            label: item.label, // contain calon name
-            //            backgroundColor: colorPalette1[index],
-            //        }
-
-            //        datasets.push(tempdataset);
-            //    });
-
-            //    createCChart(datasets, "c4Chart");
-            //}
-
-            //async function showC7Chart() {
-            //    var datasets = [];
-
-            //    var data = await $.ajax({
-            //        url: "/Master/Answer/C7Chart",
-            //        method: "POST",
-            //        data: {
-            //            Kelurahan: $('#filterKelurahan').val()
-            //        }
-            //    });
-
-
-            //    $.each(data, function (index, item) {
-
-            //        var tempdataset = {
-            //            data: [item.count],
-            //            label: item.label, // contain calon name
-            //            backgroundColor: colorPalette1[index],
-            //        }
-
-            //        datasets.push(tempdataset);
-            //    });
-
-            //    createCChart(datasets, "c7Chart");
-            //}
-
-            //async function showAgeChart() {
-            //    var datasets = [];
-
-            //    var data = await $.ajax({
-            //        url: "/Master/Answer/AgeChart",
-            //        method: "POST",
-            //        data: {
-            //            Kelurahan: $('#filterKelurahan').val()
-            //        }
-            //    });
-
-            //    $.each(data, function (index, item) {
-
-            //        var tempdataset = {
-            //            data: [item.count],
-            //            label: item.label, // contain calon name
-            //            backgroundColor: colorPalette1[index],
-            //        }
-
-            //        datasets.push(tempdataset);
-            //    });
-
-            //    createCChart(datasets, "ageChart");
-            //}
-
-            //async function showReligionChart() {
-            //    var datasets = [];
-
-            //    var data = await $.ajax({
-            //        url: "/Master/Answer/ReligionChart",
-            //        method: "POST",
-            //        data: {
-            //            Kelurahan: $('#filterKelurahan').val()
-            //        }
-            //    });
-
-            //    $.each(data, function (index, item) {
-
-            //        var tempdataset = {
-            //            data: [item.count],
-            //            label: item.label, // contain calon name
-            //            backgroundColor: colorPalette1[index],
-            //        }
-
-            //        datasets.push(tempdataset);
-            //    });
-
-            //    createCChart(datasets, "religionChart");
-            //}
-
-            //async function showAcademicChart() {
-            //    var datasets = [];
-
-            //    var data = await $.ajax({
-            //        url: "/Master/Answer/AcademicChart",
-            //        method: "POST",
-            //        data: {
-            //            Kelurahan: $('#filterKelurahan').val()
-            //        }
-            //    });
-
-            //    $.each(data, function (index, item) {
-
-            //        var tempdataset = {
-            //            data: [item.count],
-            //            label: item.label, // contain calon name
-            //            backgroundColor: colorPalette1[index],
-            //        }
-
-            //        datasets.push(tempdataset);
-            //    });
-
-            //    createCChart(datasets, "academicChart");
-            //}
-
-            //async function showTribeChart() {
-            //    var datasets = [];
-
-            //    var data = await $.ajax({
-            //        url: "/Master/Answer/TribeChart",
-            //        method: "POST",
-            //        data: {
-            //            Kelurahan: $('#filterKelurahan').val()
-            //        }
-            //    });
-
-            //    $.each(data, function (index, item) {
-
-            //        var tempdataset = {
-            //            data: [item.count],
-            //            label: item.label, // contain calon name
-            //            backgroundColor: colorPalette1[index],
-            //        }
-
-            //        datasets.push(tempdataset);
-            //    });
-
-            //    createCChart(datasets, "tribeChart");
-            //}
-
-            //function createReligionChart(labels, datasets) {
-
-            //    const existingChart = Chart.getChart("religionChart"); // Get the previous Chart instance
-            //    if (existingChart) {
-            //        existingChart.destroy(); // Destroy the previous Chart
-            //    }
-
-            //    const religionChart = new Chart("religionChart", {
-            //        type: "bar",
-            //        data: {
-            //            labels: labels,
-            //            datasets: datasets,
-            //        },
-            //        options: {
-            //            // Chart options
-            //            responsive: true,
-            //            maintainAspectRatio: true,
-            //            //plugins: {
-            //            //    legend: {
-            //            //        display: false,
-            //            //    },
-            //            //},
-            //            //scales: {
-            //            //    y: {
-            //            //        suggestedMax: (Math.max(...yValues) * 1.5),
-            //            //    }
-            //            //}
-            //        }
-            //    });
-            //}
-
-            //function createMainChart(xValues, yValues) {
-
-            //    const existingChart = Chart.getChart("mainChart"); // Get the previous Chart instance
-            //    if (existingChart) {
-            //        existingChart.destroy(); // Destroy the previous Chart
-            //    }
-
-            //    const datasets = xValues.map((label, index) => ({
-            //        label: label,
-            //        data: [yValues[index]],
-            //        backgroundColor: colorPalette1[index],
-            //    }));
-
-            //    const myChart = new Chart("mainChart", {
-            //        type: "bar",
-            //        data: {
-            //            labels: [""],
-            //            datasets: datasets,
-            //        },
-            //        options: {
-            //            // Chart options
-            //            responsive: true,
-            //            maintainAspectRatio: true,
-            //            height: "auto",
-            //            scales: {
-            //                x: {
-            //                    display: false,
-            //                },
-            //                y: {
-            //                    suggestedMax: (Math.max(...yValues) * 1.25),
-            //                }
-            //            }
-            //        },
-            //    });
-            //}
-
-            //function showC1Count() {
-            //    $.ajax({
-            //        url: "/Master/Answer/C1Count",
-            //        method: "POST",
-            //        data: {},
-            //        async: false,
-            //        success: function (data) {
-            //            $.each(data, function (index, item) {
-            //                if (item.label == "YA") {
-            //                    $("#c1YesCount").text(item.count);
-            //                }
-            //                else {
-            //                    $("#c1NoCount").text(item.count);
-            //                }
-            //            });
-            //        }
-            //    });
-            //}
 
             async function showC1Chart() {
                 var chartData = {
@@ -619,7 +276,8 @@
                             color: '#fff',
                         }
                     },
-                    responsive: true
+                    responsive: true,
+                    maintainAspectRatio: false
                 };
 
                 const myChart = new Chart(chartId, {
@@ -639,20 +297,6 @@
                 showC2Chart();
                 showC3Chart();
                 showC4Chart();
-                //showChart();
-                //showC3AChart();
-                //showC3BChart();
-                //showC4Chart();
-                //showC7Chart();
-                //showC1Count();
-                //showAgeChart();
-                //showReligionChart();
-                //showAcademicChart();
-                //showTribeChart();
-
-                //setTimeout(function () {
-                //    repeatFetch();
-                //}, 60000);
             }
 
             (async () => {
@@ -664,22 +308,22 @@
                 showC2Chart();
                 showC3Chart();
                 showC4Chart();
-                //showChart();
-                //showC3AChart();
-                //showC3BChart();
-                //showC4Chart();
-                //showC7Chart();
-                //showC1Count();
-                //showAgeChart();
-                //showReligionChart();
-                //showAcademicChart();
-                //showTribeChart();
             })
-
+            // Show and Hide Rw Filter
+            function hideRwFilter() {
+                document.getElementById("filterRw").classList.add('d-none');
+                document.getElementById("filterRwLabel").classList.add('d-none');
+            }
+            function showRwFilter() {
+                document.getElementById("filterRw").classList.remove('d-none');
+                document.getElementById("filterRwLabel").classList.remove('d-none');
+            }
             const rwList = JSON.parse('@Html.Raw(Json.Serialize(ViewBag.listRw))');
             document.getElementById("filterKelurahan").addEventListener("change", () => {
                 const selectedKelurahan = document.getElementById("filterKelurahan").value;
                 const rwSelect = document.getElementById("filterRw");
+                const rwSelectLabel = document.getElementById("filterRwLabel");
+                selectedKelurahan === '' ? hideRwFilter() : showRwFilter();
                 rwSelect.innerHTML = '';
 
                 const filterRw = rwList.filter(item => item.description === selectedKelurahan);
@@ -726,7 +370,7 @@
             @Html.Raw(TempData["notification"])
         }
 
-                                                                                                    });
+                                                                                                                                                });
 
     </script>
 
