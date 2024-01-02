@@ -22,7 +22,6 @@
 <section class="card col-12">
     <div class="card-body">
         <h2 class="card-title text-center fw-bold">Welcome to Masinton Pasaribu Simpul Dashboard</h2>
-        <form class="form-filter">
             <label class="form-label" for="filterKelurahan">Filter Berdasarkan</label>
             <div class="input-group">
                 @Html.DropDownList("Select Kelurahan", new SelectList(ViewBag.listKelurahan, "Name", "Name"), "Semua",
@@ -33,7 +32,6 @@
                 </select>
                 <button class="btn btn-primary" id="btnRefreshChart">Refresh Chart</button>
             </div>
-        </form>
     </div>
 </section>
 
