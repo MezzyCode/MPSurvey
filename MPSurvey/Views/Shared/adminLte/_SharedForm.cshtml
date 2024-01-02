@@ -14,6 +14,11 @@
         content: " *";
         color: red;
     }
+
+    .main-question::before {
+        content: attr(question-number);
+        font-weight: bold;
+    }
 </style>
 
 <div class="text-sm">
@@ -60,105 +65,101 @@
                     <input type="number" asp-for="Usia" class="form-control" />
                     <span asp-validation-for="Usia" class="text-danger"></span>
                 </div>
-                <div>
-                    <label asp-for="Alamat" class="form-label required-label">Alamat</label>
-                    <input type="text" asp-for="Alamat" class="form-control" required />
-                    <div class="invalid-feedback">Alamat Dibutuhkan!</div>
-                    <span asp-validation-for="Alamat" class="text-danger"></span>
+                @* <div>
+                <label asp-for="Alamat" class="form-label required-label">Alamat</label>
+                <input type="text" asp-for="Alamat" class="form-control" required />
+                <div class="invalid-feedback">Alamat Dibutuhkan!</div>
+                <span asp-validation-for="Alamat" class="text-danger"></span>
                 </div>
-                @*<div>
+                <div>
                 <label asp-for="Rt" class="form-label"></label>
                 <input type="number" asp-for="Rt" class="form-control" />
                 <span asp-validation-for="Rt" class="text-danger"></span>
-                </div>*@
-                @*<div>
+                </div>
+                <div>
                 <label asp-for="Rw" class="form-label required-label"></label>
                 <input type="number" asp-for="Rw" class="form-control" required />
                 <div class="invalid-feedback">Rw Dibutuhkan!</div>
                 <span asp-validation-for="Rw" class="text-danger"></span>
-                </div>*@
-                <div class="form-group">
-                    <label asp-for="Kecamatan" class="form-label required-label">Kecamatan</label>
-                    <select class="form-select" asp-for="Kecamatan"
+                </div> *@
+                <div>
+                    <label asp-for="Alamat" class="form-label">Alamat</label>
+                    <div class="input-group mb-2">
+                        <input type="text" asp-for="Alamat" class="form-control" required />
+                        <span class="input-group-text">RT.</span>
+                        <input type="numeric" asp-for="Rt" class="form-control" />
+                        <span asp-validation-for="Rt" class="text-danger"></span>
+                        <span class="input-group-text required-label">RW.</span>
+                        <input type="numeric" asp-for="Rw" class="form-control" required />
+                        <div class="invalid-feedback">Rw Dibutuhkan!</div>
+                        <span asp-validation-for="Rw" class="text-danger"></span>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text required-label">Kecamatan</span>
+                        <select class="form-select" asp-for="Kecamatan"
                             asp-items="new SelectList(Model.ListKecamatan, nameof(JsonHelperTable.Name), nameof(JsonHelperTable.Name))"
                             id="kecamatanSelect" required>
-                        <option value="" selected>Pilih Kecamatan</option>
-                    </select>
-                    <div class="invalid-feedback">Pilih Kecamatan yang benar</div>
-                    <span asp-validation-for="Kecamatan" class="text-danger"></span>
-                </div>
-                <div>
-                    <label asp-for="Kelurahan" class="form-label required-label">Kelurahan</label>
-                    <select class="form-select" asp-for="Kelurahan"
+                            <option value="" selected>-</option>
+                        </select>
+                        <span asp-validation-for="Kecamatan" class="text-danger"></span>
+                        <span class="input-group-text required-label">Kelurahan</span>
+                        <select class="form-select" asp-for="Kelurahan"
                             asp-items="new SelectList(Model.ListKelurahan, nameof(JsonHelperTable.Name), nameof(JsonHelperTable.Name))"
                             id="kelurahanSelect" required>
-                        <option value="" selected>Pilih Kelurahan</option>
-                    </select>
-                    <div class="invalid-feedback">Pilih Kelurahan yang benar!</div>
-                    <span asp-validation-for="Kelurahan" class="text-danger"></span>
+                            <option value="" selected>-</option>
+                        </select>
+                        <span asp-validation-for="Kelurahan" class="text-danger"></span>
+                    </div>
                 </div>
                 <div>
-                    <label asp-for="Rw" class="form-label required-label"></label>
-                    <select class="form-select" asp-for="Rw"
-                            asp-items="new SelectList(Model.ListRw, nameof(JsonHelperTable.Name), nameof(JsonHelperTable.Name))"
-                            id="rwSelect" required>
-                        <option value="" selected>Pilih RW</option>
-                    </select>
-                    <div class="invalid-feedback">Pilih RW yang benar!</div>
-                    <span asp-validation-for="Rw" class="text-danger"></span>
-                </div>
-                <div>
-                    <label asp-for="C1" class="form-label required-label">
-                        Apakah Bapak/Ibu/Sdr/i telah terdaftar sebagai pemilih
-                        pada Pemilu 14 Februari 2024?
+                    <label asp-for="C1" class="form-label required-label main-question">
+                        Apakah Bapak/Ibu/Sdr/i telah terdaftar sebagai pemilih pada Pemilu 14 Februari 2024?
                     </label>
                     @foreach (var option in Model.List2Choice)
                     {
                         <div class="form-check">
                             <input asp-for="C1" class="form-check-input" required type="radio" value="@option.Value"
-                                   id="@($"C1option{option.Value}")" />
+                                id="@($"C1option{option.Value}")" />
                             <label class="form-check-label" for="@($"C1option{option.Value}")">@option.Value</label>
                         </div>
                     }
                     <span asp-validation-for="C1" class="text-danger"></span>
                 </div>
                 <div>
-                    <label asp-for="C2" class="form-label">Apakah Bapak/Ibu/Sdr/i mengenal Masinton Pasaribu?</label>
+                    <label asp-for="C2" class="form-label main-question">Apakah Bapak/Ibu/Sdr/i mengenal Masinton Pasaribu?</label>
                     @foreach (var option in Model.List2Choice)
                     {
                         <div class="form-check">
                             <input asp-for="C2" class="form-check-input" required type="radio" value="@option.Value"
-                                   id="@($"C2option{option.Value}")" />
+                                id="@($"C2option{option.Value}")" />
                             <label class="form-check-label" for="@($"C2option{option.Value}")">@option.Value</label>
                         </div>
                     }
                     <span asp-validation-for="C2" class="text-danger"></span>
                 </div>
                 <div>
-                    <label asp-for="C3" class="form-label">
-                        Apakah Bapak/Ibu/Sdr/i menegtahui Masinton Pasaribu dicalonkan kembali
-                        oleh Partai PDI Perjuangan sebagai Caleg DPR RI?
+                    <label asp-for="C3" class="form-label main-question">
+                        Apakah Bapak/Ibu/Sdr/i menegtahui Masinton Pasaribu dicalonkan kembali oleh Partai PDI Perjuangan sebagai Caleg DPR RI?
                     </label>
                     @foreach (var option in Model.List2Choice)
                     {
                         <div class="form-check">
                             <input asp-for="C3" class="form-check-input" required type="radio" value="@option.Value"
-                                   id="@($"C4option{option.Value}")" />
+                                id="@($"C4option{option.Value}")" />
                             <label class="form-check-label" for="@($"C4option{option.Value}")">@option.Value</label>
                         </div>
                     }
                     <span asp-validation-for="C3" class="text-danger"></span>
                 </div>
                 <div>
-                    <label asp-for="C4" class="form-label">
-                        Bersediakah Bapak/Ibu/Sdr/i memilih Caleg DPR RI, nomor 7 Masinton
-                        Pasaribu, S.H. dari Partai PDI Perjuangan?
+                    <label asp-for="C4" class="form-label main-question">
+                        Bersediakah Bapak/Ibu/Sdr/i memilih Caleg DPR RI, nomor 7 Masinton Pasaribu, S.H. dari Partai PDI Perjuangan?
                     </label>
                     @foreach (var option in Model.List3Choice)
                     {
                         <div class="form-check">
                             <input asp-for="C4" class="form-check-input" required type="radio" value="@option.Value"
-                                   id="@($"C4option{option.Value}")" />
+                                id="@($"C4option{option.Value}")" />
                             <label class="form-check-label" for="@($"C4option{option.Value}")">@option.Value</label>
                         </div>
                     }
@@ -187,13 +188,18 @@
     <script src="~/plugins/jquery/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
+            // jQuery loding animation
             const form = document.getElementById('form');
             form.addEventListener('submit', () => {
                 ShowLoading();
             })
-
+            // Generate Angka untuk pertanyaan
+            const mainQuestion = document.querySelectorAll('.main-question');
+            mainQuestion.forEach(function (mainQuestion, number){
+                mainQuestion.setAttribute('question-number', `C${number+1}. `)
+            })
+            // Generate List Kelurahan
             const kelurahanList = JSON.parse('@Html.Raw(Json.Serialize(Model.ListKelurahan))')
-            console.log(kelurahanList);
             document.getElementById("kecamatanSelect").addEventListener("change", () => {
                 const selectedKecamatan = document.getElementById("kecamatanSelect").value;
                 const kelurahanSelect = document.getElementById("kelurahanSelect");
@@ -206,24 +212,22 @@
                         kelurahanSelect.appendChild(option);
                     });
             });
-
-            const rwList = JSON.parse('@Html.Raw(Json.Serialize(Model.ListRw))')
-            document.getElementById("kelurahanSelect").addEventListener("change", () => {
-                const selectedKelurahan = document.getElementById("kelurahanSelect").value;
-                const rwSelect = document.getElementById("rwSelect");
-                rwSelect.innerHTML = '';
-                rwList
-                    .filter(item => item.description === selectedKelurahan)
-                    .foreach(item => {
-                        const option = new Option(item.value, item.value);
-                        rwSelect.appendChild(option);
-                    });
-            });
+            // RT dan RW
+            function rtrwIdValidation(elementId) {
+                const element = document.getElementById(elementId);
+                element.addEventListener('input', function () {
+                    let inputValue = parseInt(this.value, 10);
+                    inputValue = isNaN(inputValue) || inputValue > 30 ? 0 : inputValue;
+                    this.value = inputValue.toString().padStart(3, '0');
+                });
+            }
+            rtrwIdValidation('Rt');
+            rtrwIdValidation('Rw');
 
         @if (TempData["notification"] != null)
         {
             @Html.Raw(TempData["notification"])
         }
-                });
+                        });
     </script>
 }
