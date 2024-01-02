@@ -103,6 +103,7 @@ namespace Model.JsonModels.Master
         }
         public string? Query { get; set; }
 
+        public List<JsonHelperTable> ListRw { get; set; } = new List<JsonHelperTable>();
         public List<JsonHelperTable> ListKelurahan { get; set; } = new List<JsonHelperTable>();
         public List<JsonHelperTable> ListKecamatan { get; set; } = new List<JsonHelperTable>();
         public List<JsonHelperTable> List3Choice { get; set; } = new List<JsonHelperTable>();
