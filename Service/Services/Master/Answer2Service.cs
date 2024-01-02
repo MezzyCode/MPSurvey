@@ -422,6 +422,7 @@ namespace Service.Services.Master
                 filter.ClientID = ClientID;
                 Expression<Func<Answer2, bool>> filterExp = c => true;
                 if (!String.IsNullOrEmpty(filter.Nama)) filterExp = filterExp.And(x => x.Nama.StartsWith(filter.Nama));
+                if (!String.IsNullOrEmpty(filter.Rw)) filterExp = filterExp.And(x => x.Rw == filter.Rw);
                 if (!String.IsNullOrEmpty(filter.Kelurahan)) filterExp = filterExp.And(x => x.Kelurahan == filter.Kelurahan);
                 if (!String.IsNullOrEmpty(filter.Kecamatan)) filterExp = filterExp.And(x => x.Kecamatan == filter.Kecamatan);
                 filterExp = filterExp.And(x => x.ClientID == filter.ClientID);

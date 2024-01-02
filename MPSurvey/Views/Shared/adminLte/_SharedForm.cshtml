@@ -39,24 +39,21 @@
                 <input asp-for="ID" type="hidden" />
                 <div>
                     <label asp-for="Simpul" class="form-label required-label">Simpul</label>
-                    <input type="text" asp-for="Simpul" class="form-control" required />
-                    <div class="invalid-feedback">Nama Responden Dibutuhkan!</div>
+                    <input type="text" asp-for="Simpul" class="form-control"  />
                     <span asp-validation-for="Simpul" class="text-danger"></span>
                 </div>
                 <div>
                     <label asp-for="Nama" class="form-label required-label">Nama</label>
-                    <input type="text" asp-for="Nama" class="form-control" required />
-                    <div class="invalid-feedback">Nama Responden Dibutuhkan!</div>
-                    <span asp-validation-for="Nama" class="text-danger" />
+                    <input type="text" asp-for="Nama" class="form-control"  />
+                    <span asp-validation-for="Nama" class="text-danger" ></span>
                 </div>
                 <div>
                     <label asp-for="NoTelp" class="form-label required-label">No Telepon</label>
-                    <input type="number" asp-for="NoTelp" class="form-control" required />
-                    <div class="invalid-feedback">No Telepon Dibutuhkan!</div>
+                    <input type="number" asp-for="NoTelp" class="form-control"  />
                     <span asp-validation-for="NoTelp" class="text-danger"></span>
                 </div>
                 <div>
-                    <label asp-for="NIK" class="form-label">Nomor Induk Keluarga</label>
+                    <label asp-for="NIK" class="form-label">Nomor Induk Kependudukan</label>
                     <input type="number" asp-for="NIK" class="form-control" />
                     <span asp-validation-for="NIK" class="text-danger"></span>
                 </div>
@@ -85,32 +82,39 @@
                 <div>
                     <label asp-for="Alamat" class="form-label">Alamat</label>
                     <div class="input-group mb-2">
-                        <input type="text" asp-for="Alamat" class="form-control" required />
+                        <input type="text" asp-for="Alamat" class="form-control"  />
                         <span class="input-group-text">RT.</span>
                         <input type="numeric" asp-for="Rt" class="form-control" />
-                        <span asp-validation-for="Rt" class="text-danger"></span>
-                        <span class="input-group-text required-label">RW.</span>
+                        @*<span class="input-group-text required-label">RW.</span>
                         <input type="numeric" asp-for="Rw" class="form-control" required />
                         <div class="invalid-feedback">Rw Dibutuhkan!</div>
-                        <span asp-validation-for="Rw" class="text-danger"></span>
+                        <span asp-validation-for="Rw" class="text-danger"></span>*@
                     </div>
+                    <span asp-validation-for="Alamat" class="text-danger"></span>
+                    <span asp-validation-for="Rt" class="text-danger"></span>
                     <div class="input-group">
                         <span class="input-group-text required-label">Kecamatan</span>
                         <select class="form-select" asp-for="Kecamatan"
-                            asp-items="new SelectList(Model.ListKecamatan, nameof(JsonHelperTable.Name), nameof(JsonHelperTable.Name))"
-                            id="kecamatanSelect" required>
+                                asp-items="new SelectList(Model.ListKecamatan, nameof(JsonHelperTable.Name), nameof(JsonHelperTable.Name))"
+                                id="kecamatanSelect" >
                             <option value="" selected>-</option>
                         </select>
-                        <span asp-validation-for="Kecamatan" class="text-danger"></span>
                         <span class="input-group-text required-label">Kelurahan</span>
                         <select class="form-select" asp-for="Kelurahan"
-                            asp-items="new SelectList(Model.ListKelurahan, nameof(JsonHelperTable.Name), nameof(JsonHelperTable.Name))"
-                            id="kelurahanSelect" required>
+                                asp-items="new SelectList(Model.ListKelurahan, nameof(JsonHelperTable.Name), nameof(JsonHelperTable.Name))"
+                                id="kelurahanSelect" >
                             <option value="" selected>-</option>
                         </select>
-                        <span asp-validation-for="Kelurahan" class="text-danger"></span>
+                        <span class="input-group-text required-label">RW</span>
+                        <select class="form-select" asp-for="Rw"
+                                id="rwSelect" >
+                            <option value="" selected>-</option>
+                        </select>
                     </div>
                 </div>
+                <span asp-validation-for="Kecamatan" class="text-danger"></span>
+                <span asp-validation-for="Kelurahan" class="text-danger"></span>
+                <span asp-validation-for="Rw" class="text-danger"></span>
                 <div>
                     <label asp-for="C1" class="form-label required-label main-question">
                         Apakah Bapak/Ibu/Sdr/i telah terdaftar sebagai pemilih pada Pemilu 14 Februari 2024?
@@ -118,8 +122,8 @@
                     @foreach (var option in Model.List2Choice)
                     {
                         <div class="form-check">
-                            <input asp-for="C1" class="form-check-input" required type="radio" value="@option.Value"
-                                id="@($"C1option{option.Value}")" />
+                            <input asp-for="C1" class="form-check-input"  type="radio" value="@option.Value"
+                                   id="@($"C1option{option.Value}")" />
                             <label class="form-check-label" for="@($"C1option{option.Value}")">@option.Value</label>
                         </div>
                     }
@@ -130,8 +134,8 @@
                     @foreach (var option in Model.List2Choice)
                     {
                         <div class="form-check">
-                            <input asp-for="C2" class="form-check-input" required type="radio" value="@option.Value"
-                                id="@($"C2option{option.Value}")" />
+                            <input asp-for="C2" class="form-check-input"  type="radio" value="@option.Value"
+                                   id="@($"C2option{option.Value}")" />
                             <label class="form-check-label" for="@($"C2option{option.Value}")">@option.Value</label>
                         </div>
                     }
@@ -144,8 +148,8 @@
                     @foreach (var option in Model.List2Choice)
                     {
                         <div class="form-check">
-                            <input asp-for="C3" class="form-check-input" required type="radio" value="@option.Value"
-                                id="@($"C4option{option.Value}")" />
+                            <input asp-for="C3" class="form-check-input"  type="radio" value="@option.Value"
+                                   id="@($"C4option{option.Value}")" />
                             <label class="form-check-label" for="@($"C4option{option.Value}")">@option.Value</label>
                         </div>
                     }
@@ -158,8 +162,8 @@
                     @foreach (var option in Model.List3Choice)
                     {
                         <div class="form-check">
-                            <input asp-for="C4" class="form-check-input" required type="radio" value="@option.Value"
-                                id="@($"C4option{option.Value}")" />
+                            <input asp-for="C4" class="form-check-input"  type="radio" value="@option.Value"
+                                   id="@($"C4option{option.Value}")" />
                             <label class="form-check-label" for="@($"C4option{option.Value}")">@option.Value</label>
                         </div>
                     }
@@ -195,11 +199,12 @@
             })
             // Generate Angka untuk pertanyaan
             const mainQuestion = document.querySelectorAll('.main-question');
-            mainQuestion.forEach(function (mainQuestion, number){
-                mainQuestion.setAttribute('question-number', `C${number+1}. `)
+            mainQuestion.forEach(function (mainQuestion, number) {
+                mainQuestion.setAttribute('question-number', `C${number + 1}. `)
             })
             // Generate List Kelurahan
             const kelurahanList = JSON.parse('@Html.Raw(Json.Serialize(Model.ListKelurahan))')
+            const rwList = JSON.parse('@Html.Raw(Json.Serialize(Model.ListRw))');
             document.getElementById("kecamatanSelect").addEventListener("change", () => {
                 const selectedKecamatan = document.getElementById("kecamatanSelect").value;
                 const kelurahanSelect = document.getElementById("kelurahanSelect");
@@ -211,23 +216,97 @@
                         const option = new Option(item.value, item.value);
                         kelurahanSelect.appendChild(option);
                     });
+
+                const selectedKelurahan = document.getElementById("kelurahanSelect").value;
+                const rwSelect = document.getElementById("rwSelect");
+                rwSelect.innerHTML = '';
+
+                const filterRw = rwList.filter(item => item.description === selectedKelurahan);
+
+                if (filterRw.length > 0 && filterRw[0].value) {
+                    const maxValue = parseInt(filterRw[0].value, 10);
+
+                    for (let i = 1; i <= maxValue; i++) {
+                        const paddedValue = i.toString().padStart(3, '0'); // Pad with leading zeros
+                        const option = document.createElement("option");
+                        option.value = paddedValue;
+                        option.text = paddedValue;
+                        rwSelect.appendChild(option);
+                    }
+                }
+                else {
+                    for (let i = 1; i <= 20; i++) {
+                        const paddedValue = i.toString().padStart(3, '0'); // Pad with leading zeros
+                        const option = document.createElement("option");
+                        option.value = paddedValue;
+                        option.text = paddedValue;
+                        rwSelect.appendChild(option);
+                    }
+                }
             });
-            // RT dan RW
-            function rtrwIdValidation(elementId) {
-                const element = document.getElementById(elementId);
-                element.addEventListener('input', function () {
-                    let inputValue = parseInt(this.value, 10);
-                    inputValue = isNaN(inputValue) || inputValue > 30 ? 0 : inputValue;
-                    this.value = inputValue.toString().padStart(3, '0');
-                });
+
+            document.getElementById("kelurahanSelect").addEventListener("change", () => {
+                const selectedKelurahan = document.getElementById("kelurahanSelect").value;
+                const rwSelect = document.getElementById("rwSelect");
+                rwSelect.innerHTML = '';
+
+                const filterRw = rwList.filter(item => item.description === selectedKelurahan);
+
+                if (filterRw.length > 0 && filterRw[0].value) {
+                    const maxValue = parseInt(filterRw[0].value, 10);
+
+                    for (let i = 1; i <= maxValue; i++) {
+                        const paddedValue = i.toString().padStart(3, '0'); // Pad with leading zeros
+                        const option = document.createElement("option");
+                        option.value = paddedValue;
+                        option.text = paddedValue;
+                        rwSelect.appendChild(option);
+                    }
+                }
+                else {
+                    for (let i = 1; i <= 20; i++) {
+                        const paddedValue = i.toString().padStart(3, '0'); // Pad with leading zeros
+                        const option = document.createElement("option");
+                        option.value = paddedValue;
+                        option.text = paddedValue;
+                        rwSelect.appendChild(option);
+                    }
+                }
+
+                rwSelect.selectedIndex = 0;
+            });
+
+            if ("@ViewData["Action"]" == "Edit"){
+                const selectedRwValue = "@Model.Rw";
+
+                setTimeout(() => {
+                    // Trigger the change event for Kelurahan dropdown to populate Rw dropdown
+                    document.getElementById("kelurahanSelect").dispatchEvent(new Event("change"));
+
+                    // Wait for a moment (optional) before setting the selected value for Rw dropdown
+                    setTimeout(() => {
+                        // Set the selected value for Rw dropdown
+                        document.getElementById("rwSelect").value = selectedRwValue;
+                    }, 100); // Adjust the timeout value if needed
+                }, 100); // Adjust the timeout value if needed
             }
-            rtrwIdValidation('Rt');
-            rtrwIdValidation('Rw');
+
+            // RT dan RW
+            //function rtrwIdValidation(elementId) {
+            //    const element = document.getElementById(elementId);
+            //    element.addEventListener('input', function () {
+            //        let inputValue = parseInt(this.value, 10);
+            //        inputValue = isNaN(inputValue) || inputValue > 30 ? 0 : inputValue;
+            //        this.value = inputValue.toString().padStart(3, '0');
+            //    });
+            //}
+            //rtrwIdValidation('Rt');
+            //rtrwIdValidation('Rw');
 
         @if (TempData["notification"] != null)
         {
             @Html.Raw(TempData["notification"])
         }
-                        });
+                                });
     </script>
 }

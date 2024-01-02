@@ -30,6 +30,11 @@
                 @class = "form-control"
                 })
             </div>
+            <div class="col-sm-3 col-lg-8">
+                <select class="form-control" id="filterRw">
+                    <option value="">Semua RW</option>
+                </select>
+            </div>
             <button class="col-sm-12 col-lg-4 btn btn-primary btn-sm" id="btnRefreshChart" type="button"
                     style="max-width: 250px;">
                 Refresh Chart
@@ -494,7 +499,8 @@
                     url: "/Master/Answer2/C1Count",
                     method: "POST",
                     data: {
-                        Kelurahan: $('#filterKelurahan').val()
+                        Kelurahan: $('#filterKelurahan').val(),
+                        Rw: $('#filterRw').val()
                     }
                 });
 
@@ -521,7 +527,8 @@
                     url: "/Master/Answer2/C2Count",
                     method: "POST",
                     data: {
-                        Kelurahan: $('#filterKelurahan').val()
+                        Kelurahan: $('#filterKelurahan').val(),
+                        Rw: $('#filterRw').val()
                     }
                 });
 
@@ -548,7 +555,8 @@
                     url: "/Master/Answer2/C3Count",
                     method: "POST",
                     data: {
-                        Kelurahan: $('#filterKelurahan').val()
+                        Kelurahan: $('#filterKelurahan').val(),
+                        Rw: $('#filterRw').val()
                     }
                 });
 
@@ -575,7 +583,8 @@
                     url: "/Master/Answer2/C4Count",
                     method: "POST",
                     data: {
-                        Kelurahan: $('#filterKelurahan').val()
+                        Kelurahan: $('#filterKelurahan').val(),
+                        Rw: $('#filterRw').val()
                     }
                 });
 
@@ -666,6 +675,43 @@
                 //showAcademicChart();
                 //showTribeChart();
             })
+
+            const rwList = JSON.parse('@Html.Raw(Json.Serialize(ViewBag.listRw))');
+            document.getElementById("filterKelurahan").addEventListener("change", () => {
+                const selectedKelurahan = document.getElementById("filterKelurahan").value;
+                const rwSelect = document.getElementById("filterRw");
+                rwSelect.innerHTML = '';
+
+                const filterRw = rwList.filter(item => item.description === selectedKelurahan);
+
+                if (filterRw.length > 0 && filterRw[0].value) {
+                    const maxValue = parseInt(filterRw[0].value, 10);
+
+                    for (let i = 1; i <= maxValue; i++) {
+                        const paddedValue = i.toString().padStart(3, '0'); // Pad with leading zeros
+                        const option = document.createElement("option");
+                        option.value = paddedValue;
+                        option.text = paddedValue;
+                        rwSelect.appendChild(option);
+                    }
+                }
+                else {
+                    for (let i = 1; i <= 20; i++) {
+                        const paddedValue = i.toString().padStart(3, '0'); // Pad with leading zeros
+                        const option = document.createElement("option");
+                        option.value = paddedValue;
+                        option.text = paddedValue;
+                        rwSelect.appendChild(option);
+                    }
+                }
+
+                const defaultOption = document.createElement("option");
+                defaultOption.value = '';
+                defaultOption.text = 'Semua';
+                rwSelect.appendChild(defaultOption);
+
+                rwSelect.value = '';
+            });
 
             //function setTargetHeight() {
             //    $("#c1CountWrapper").height($("#religionChartWrapper").height());

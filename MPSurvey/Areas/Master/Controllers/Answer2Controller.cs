@@ -187,25 +187,20 @@ namespace MainProject.Areas.Master.Controllers
                 var TaskKecamatan = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.KECAMATANCODE }, User);
                 var Task3Choice = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CHOISE3CODE }, User);
                 var Task2Choice = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CHOISE2CODE }, User);
-                var TaskCalon = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CALONCODE }, User);
-                var TaskAgama = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.AGAMACODE }, User);
-                var TaskPendidikan = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.PENDIDIKANCODE }, User);
-                var TaskSuku = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.SUKUCODE }, User);
+                var TaskRw = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.RWCODE }, User);
 
                 List<JsonHelperTable> ListKelurahan = await TaskKelurahan;
                 List<JsonHelperTable> ListKecamatan = await TaskKecamatan;
                 List<JsonHelperTable> List3Choice = await Task3Choice;
                 List<JsonHelperTable> List2Choice = await Task2Choice;
-                List<JsonHelperTable> ListCalon = await TaskCalon;
-                List<JsonHelperTable> ListAgama = await TaskAgama;
-                List<JsonHelperTable> ListPendidikan = await TaskPendidikan;
-                List<JsonHelperTable> ListSuku = await TaskSuku;
+                List<JsonHelperTable> ListRw = await TaskRw;
 
                 JsonAnswer2 data = new JsonAnswer2();
                 data.ListKelurahan = ListKelurahan.OrderBy(x => x.Value).ToList();
                 data.ListKecamatan = ListKecamatan.OrderBy(x => x.Value).ToList();
                 data.List3Choice = List3Choice.OrderBy(x => x.Description).ToList();
                 data.List2Choice = List2Choice.OrderBy(x => x.Description).ToList();
+                data.ListRw = ListRw;
 
                 return View(data);
             }
@@ -254,24 +249,20 @@ namespace MainProject.Areas.Master.Controllers
             var TaskKecamatan = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.KECAMATANCODE }, User);
             var Task3Choice = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CHOISE3CODE }, User);
             var Task2Choice = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CHOISE2CODE }, User);
-            var TaskCalon = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CALONCODE }, User);
-            var TaskAgama = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.AGAMACODE }, User);
-            var TaskPendidikan = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.PENDIDIKANCODE }, User);
-            var TaskSuku = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.SUKUCODE }, User);
+            var TaskRw = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.RWCODE }, User);
 
             List<JsonHelperTable> ListKelurahan = await TaskKelurahan;
             List<JsonHelperTable> ListKecamatan = await TaskKecamatan;
             List<JsonHelperTable> List3Choice = await Task3Choice;
             List<JsonHelperTable> List2Choice = await Task2Choice;
-            List<JsonHelperTable> ListCalon = await TaskCalon;
-            List<JsonHelperTable> ListAgama = await TaskAgama;
-            List<JsonHelperTable> ListPendidikan = await TaskPendidikan;
-            List<JsonHelperTable> ListSuku = await TaskSuku;
+            List<JsonHelperTable> ListRw = await TaskRw;
 
             data.ListKelurahan = ListKelurahan.OrderBy(x => x.Value).ToList();
             data.ListKecamatan = ListKecamatan.OrderBy(x => x.Value).ToList();
             data.List3Choice = List3Choice.OrderBy(x => x.Description).ToList();
             data.List2Choice = List2Choice.OrderBy(x => x.Description).ToList();
+            data.ListRw = ListRw;
+
 
             Alert("Mohon isi semua kolom yang diperlukan!", NotificationType.error);
 
@@ -300,24 +291,19 @@ namespace MainProject.Areas.Master.Controllers
                 var TaskKecamatan = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.KECAMATANCODE }, User);
                 var Task3Choice = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CHOISE3CODE }, User);
                 var Task2Choice = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CHOISE2CODE }, User);
-                var TaskCalon = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CALONCODE }, User);
-                var TaskAgama = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.AGAMACODE }, User);
-                var TaskPendidikan = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.PENDIDIKANCODE }, User);
-                var TaskSuku = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.SUKUCODE }, User);
+                var TaskRw = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.RWCODE }, User);
 
                 List<JsonHelperTable> ListKelurahan = await TaskKelurahan;
                 List<JsonHelperTable> ListKecamatan = await TaskKecamatan;
                 List<JsonHelperTable> List3Choice = await Task3Choice;
                 List<JsonHelperTable> List2Choice = await Task2Choice;
-                List<JsonHelperTable> ListCalon = await TaskCalon;
-                List<JsonHelperTable> ListAgama = await TaskAgama;
-                List<JsonHelperTable> ListPendidikan = await TaskPendidikan;
-                List<JsonHelperTable> ListSuku = await TaskSuku;
+                List<JsonHelperTable> ListRw = await TaskRw;
 
                 data.ListKelurahan = ListKelurahan.OrderBy(x => x.Value).ToList();
                 data.ListKecamatan = ListKecamatan.OrderBy(x => x.Value).ToList();
                 data.List3Choice = List3Choice.OrderBy(x => x.Description).ToList();
                 data.List2Choice = List2Choice.OrderBy(x => x.Description).ToList();
+                data.ListRw = ListRw;
 
                 return View(data);
             }
@@ -366,24 +352,19 @@ namespace MainProject.Areas.Master.Controllers
             var TaskKecamatan = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.KECAMATANCODE }, User);
             var Task3Choice = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CHOISE3CODE }, User);
             var Task2Choice = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CHOISE2CODE }, User);
-            var TaskCalon = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CALONCODE }, User);
-            var TaskAgama = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.AGAMACODE }, User);
-            var TaskPendidikan = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.PENDIDIKANCODE }, User);
-            var TaskSuku = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.SUKUCODE }, User);
+            var TaskRw = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.RWCODE }, User);
 
             List<JsonHelperTable> ListKelurahan = await TaskKelurahan;
             List<JsonHelperTable> ListKecamatan = await TaskKecamatan;
             List<JsonHelperTable> List3Choice = await Task3Choice;
             List<JsonHelperTable> List2Choice = await Task2Choice;
-            List<JsonHelperTable> ListCalon = await TaskCalon;
-            List<JsonHelperTable> ListAgama = await TaskAgama;
-            List<JsonHelperTable> ListPendidikan = await TaskPendidikan;
-            List<JsonHelperTable> ListSuku = await TaskSuku;
+            List<JsonHelperTable> ListRw = await TaskRw;
 
             data.ListKelurahan = ListKelurahan.OrderBy(x => x.Value).ToList();
             data.ListKecamatan = ListKecamatan.OrderBy(x => x.Value).ToList();
             data.List3Choice = List3Choice.OrderBy(x => x.Description).ToList();
             data.List2Choice = List2Choice.OrderBy(x => x.Description).ToList();
+            data.ListRw = ListRw;
 
             Alert("Mohon isi semua kolom!", NotificationType.error);
 
@@ -416,12 +397,13 @@ namespace MainProject.Areas.Master.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> C1Count(string? Kelurahan)
+        public async Task<IActionResult> C1Count(string? Kelurahan, string? Rw)
         {
             try
             {
                 JsonAnswer2 filter = new JsonAnswer2();
                 filter.Kelurahan = Kelurahan;
+                filter.Rw = Rw;
                 List<JsonChart> chartData = await ServiceAnswer2.FindC1Async(filter, User);
 
                 return Json(chartData);
@@ -433,12 +415,13 @@ namespace MainProject.Areas.Master.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> C2Count(string? Kelurahan)
+        public async Task<IActionResult> C2Count(string? Kelurahan, string? Rw)
         {
             try
             {
                 JsonAnswer2 filter = new JsonAnswer2();
                 filter.Kelurahan = Kelurahan;
+                filter.Rw = Rw;
                 List<JsonChart> chartData = await ServiceAnswer2.FindC2Async(filter, User);
 
                 return Json(chartData);
@@ -450,12 +433,13 @@ namespace MainProject.Areas.Master.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> C3Count(string? Kelurahan)
+        public async Task<IActionResult> C3Count(string? Kelurahan, string? Rw)
         {
             try
             {
                 JsonAnswer2 filter = new JsonAnswer2();
                 filter.Kelurahan = Kelurahan;
+                filter.Rw = Rw;
                 List<JsonChart> chartData = await ServiceAnswer2.FindC3Async(filter, User);
 
                 return Json(chartData);
@@ -467,12 +451,13 @@ namespace MainProject.Areas.Master.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> C4Count(string? Kelurahan)
+        public async Task<IActionResult> C4Count(string? Kelurahan, string? Rw)
         {
             try
             {
                 JsonAnswer2 filter = new JsonAnswer2();
                 filter.Kelurahan = Kelurahan;
+                filter.Rw = Rw;
                 List<JsonChart> chartData = await ServiceAnswer2.FindC4Async(filter, User);
 
                 return Json(chartData);

@@ -69,8 +69,10 @@ namespace MainProject.Controllers
             }
 
             List<JsonHelperTable> ListKelurahan = await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.KELURAHANCODE }, User);
+            List<JsonHelperTable> ListRw = await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.RWCODE }, User);
 
             ViewBag.listKelurahan = ListKelurahan;
+            ViewBag.listRw = ListRw;
 
             return View();
         }
