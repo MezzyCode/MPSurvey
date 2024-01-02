@@ -26,8 +26,8 @@ namespace Model.JsonModels.Master
             OrderByDirection = ConstantVariable.OrderByDirectionDefault;
         }
 
-        [Required(ErrorMessage = "Mohon isi nama Responden")]
-        public string Nama { get; set; }
+        [Required(ErrorMessage = "Mohon isi Nama Responden")]
+        public string? Nama { get; set; }
         [Range(1, int.MaxValue, ErrorMessage = "Mohon Masukkan angka positif")]
         public int? Usia { get; set; }
 
