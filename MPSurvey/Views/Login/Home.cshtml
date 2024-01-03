@@ -26,12 +26,12 @@
     </div>
 </section>
 
-<chart-container id="c1Chart"
+<chart-container chartId="c1Chart"
     title="Apakah Bapak/Ibu/Sdr/i telah terdaftar sebagai pemilih pada Pemilu 14 Februari 2024?"></chart-container>
-<chart-container id="c2Chart" title="Apakah Bapak/Ibu/Sdr/i mengenal Masinton Pasaribu?"></chart-container>
-<chart-container id="c3Chart"
+<chart-container chartId="c2Chart" title="Apakah Bapak/Ibu/Sdr/i mengenal Masinton Pasaribu?"></chart-container>
+<chart-container chartId="c3Chart"
     title="Apakah Bapak/Ibu/Sdr/i menegtahui Masinton Pasaribu dicalonkan kembali oleh Partai PDI Perjuangan sebagai Caleg DPR RI?"></chart-container>
-<chart-container id="c4Chart"
+<chart-container chartId="c4Chart"
     title="Bersediakah Bapak/Ibu/Sdr/i memilih Caleg DPR RI, nomor 7 Masinton Pasaribu, S.H. dari Partai PDI Perjuangan?"></chart-container>
 
 @section myScripts {
@@ -99,7 +99,7 @@
                 }
 
                 prepareChartElement() {
-                    const chartId = this.getAttribute('id');
+                    const chartId = this.getAttribute('chartId');
                     return ` <div class="canvas-custom"> <canvas id="${chartId}"></canvas> </div>`;
                 }
 
