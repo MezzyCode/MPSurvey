@@ -23,6 +23,8 @@
             </select>
             <button class="btn btn-primary" id="btnRefreshChart">Refresh Chart</button>
         </div>
+        <h3 class="card-title text-center fw-bold pb-0 mb-0">Jumlah Responden</h3>
+        <h3 class="card-title text-center fw-bold pb-0 mb-0" id="totalCount"></h3>
     </div>
 </section>
 
@@ -92,35 +94,49 @@
                 'rgba(64, 192, 64, 0.5)'
             ];
 
-            class ChartContainer extends HTMLElement {
-                prepareTitle() {
-                    const title = this.getAttribute('title');
-                    return `<h2 class="card-title text-center">${title}</h2>`;
-                }
+        @* async function getC1Data() {
+            try {
+            const response = await fetch("/Master/Answer2/C1Count", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", },
+            body: JSON.stringify({
+            Kelurahan: document.getElementById('filterKelurahan').value,
+            Rw: document.getElementById('filterRw').value
+            }),
+            });
+            if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const data = await response.json();
+            return data;
+            } catch (error) {
+            console.error("Error:", error);
+            }
+            } *@
 
-                prepareChartElement() {
-                    const chartId = this.getAttribute('chartId');
-                    return ` <div class="canvas-custom"> <canvas id="${chartId}"></canvas> </div>`;
-                }
+        @* getC1Data().then(data => console.log(data)); *@
 
-                render() {
-                    this.classList.add('col-md-6', 'p-1');
-                    this.innerHTML = `
-                    <div class="card h-100">
-                        <div class="card-body">
-                        ${this.prepareTitle()}
-                        ${this.prepareChartElement()}
-                        </div>
-                    </div>`;
-                }
+                class ChartContainer extends HTMLElement {
+                    render() {
+                        const title = this.getAttribute('title');
+                        const chartId = this.getAttribute('chartId');
+                        this.classList.add('col-md-6', 'p-1');
+                        this.innerHTML = `
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                    <h2 class="card-title text-center">${title}</h2>
+                                    <div class="canvas-custom"> <canvas id="${chartId}"></canvas></div>
+                                    </div>
+                                </div>`;
+                    }
 
-                connectedCallback() {
-                    if (!this.rendered) {
-                        this.render();
-                        this.rendered = true;
+                    connectedCallback() {
+                        if (!this.rendered) {
+                            this.render();
+                            this.rendered = true;
+                        }
                     }
                 }
-            }
 
             customElements.define('chart-container', ChartContainer);
 
@@ -143,11 +159,15 @@
                     }
                 });
 
+                let totalCount = 0;
                 data.forEach((item, index) => {
                     chartData.datasets[0].data.push(item.count);
                     chartData.labels.push(item.label);
                     chartData.datasets[0].backgroundColor.push(colorPalette1[index] || 'rgba(0, 0, 0, 0.1)');
+                    totalCount += item.count;
                 });
+
+                document.getElementById('totalCount').textContent = totalCount
 
                 createCChart(chartData, "c1Chart");
             }
@@ -351,7 +371,7 @@
             @Html.Raw(TempData["notification"])
         }
 
-                                                                                                                                                            });
+                                                                                                                                                                        });
 
     </script>
 
