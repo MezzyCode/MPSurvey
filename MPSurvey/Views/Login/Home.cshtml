@@ -159,6 +159,8 @@
                     }
                 });
 
+                var totalCount = 0;
+
                 data.forEach((item, index) => {
                     chartData.datasets[0].data.push(item.count);
                     chartData.labels.push(item.label);
@@ -168,7 +170,7 @@
                 document.getElementById("totalCount").textContent = totalCount;
 
 
-                document.getElementById('totalCount').textContent = totalCount
+                //document.getElementById('totalCount').textContent = totalCount
 
                 createCChart(chartData, "c1Chart");
             }
