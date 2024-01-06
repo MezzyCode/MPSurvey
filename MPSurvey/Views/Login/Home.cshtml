@@ -32,6 +32,7 @@
                 </select>
                 <button class="btn btn-primary" id="btnRefreshChart">Refresh Chart</button>
             </div>
+            <b><span>Total Respons : </span><span id="totalCount"></span></b>
     </div>
 </section>
 
@@ -159,11 +160,16 @@
                     }
                 });
 
+                var totalCount = 0;
+
                 data.forEach((item, index) => {
                     chartData.datasets[0].data.push(item.count);
                     chartData.labels.push(item.label);
                     chartData.datasets[0].backgroundColor.push(colorPalette1[index] || 'rgba(0, 0, 0, 0.1)');
+                    totalCount += item.count;
                 });
+                document.getElementById("totalCount").textContent = totalCount;
+
 
                 createCChart(chartData, "c1Chart");
             }

@@ -51,7 +51,13 @@
                 @class="form-control"
                 })
             </div>
-            <button id="btn-filter" class="col-md-3 offset-md-3 btn btn-sm btn-primary" type="button" onclick="FilterData()">
+            <div class="col-md-3">
+                <select class="form-control"
+                        id="filterRw">
+                    <option value="" selected>RW</option>
+                </select>
+            </div>
+            <button id="btn-filter" class="col-md-3 btn btn-sm btn-primary" type="button" onclick="FilterData()">
                 <span class="material-icons-outlined"> search </span>Cari
             </button>
         </div>
@@ -249,6 +255,7 @@
                             d.nama = $("#filterNama").val();
                             d.calon = $("#filterCalon").val();
                             d.kelurahan = $("#filterKelurahan").val();
+                            d.rw = $("#filterRw").val();
                         },
                     },
                     "searching": false,
@@ -279,6 +286,44 @@
                     ]
 
                 });
+
+
+            const rwList = JSON.parse('@Html.Raw(Json.Serialize(ViewBag.listRw))');
+            document.getElementById("filterKelurahan").addEventListener("change", () => {
+                const selectedKelurahan = document.getElementById("filterKelurahan").value;
+                const rwSelect = document.getElementById("filterRw");
+                rwSelect.innerHTML = '';
+
+                const filterRw = rwList.filter(item => item.description === selectedKelurahan);
+
+                if (filterRw.length > 0 && filterRw[0].value) {
+                    const maxValue = parseInt(filterRw[0].value, 10);
+
+                    for (let i = 1; i <= maxValue; i++) {
+                        const paddedValue = i.toString().padStart(3, '0'); // Pad with leading zeros
+                        const option = document.createElement("option");
+                        option.value = paddedValue;
+                        option.text = paddedValue;
+                        rwSelect.appendChild(option);
+                    }
+                }
+                else {
+                    for (let i = 1; i <= 20; i++) {
+                        const paddedValue = i.toString().padStart(3, '0'); // Pad with leading zeros
+                        const option = document.createElement("option");
+                        option.value = paddedValue;
+                        option.text = paddedValue;
+                        rwSelect.appendChild(option);
+                    }
+                }
+
+                const defaultOption = document.createElement("option");
+                defaultOption.value = '';
+                defaultOption.text = 'Semua';
+                rwSelect.appendChild(defaultOption);
+
+                rwSelect.value = '';
+            });
 
         @if (TempData["notification"] != null)
         {

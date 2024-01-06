@@ -41,12 +41,15 @@ namespace MainProject.Areas.Master.Controllers
 
             var TaskKelurahan = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.KELURAHANCODE }, User);
             var TaskCalon = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CALONCODE }, User);
+            var TaskRw = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.RWCODE }, User);
 
             List<JsonHelperTable> ListKelurahan = await TaskKelurahan;
             List<JsonHelperTable> ListCalon = await TaskCalon;
+            List<JsonHelperTable> ListRw = await TaskRw;
 
             ViewBag.listKelurahan = ListKelurahan;
             ViewBag.listCalon = ListCalon;
+            ViewBag.listRw = ListRw;
 
             //List<JsonAnswer2> page1 = await ServiceAnswer2.FindAsync(new JsonAnswer2 { }, User);
             IndexAnswer2VM data = new IndexAnswer2VM();
@@ -64,12 +67,15 @@ namespace MainProject.Areas.Master.Controllers
 
             var TaskKelurahan = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.KELURAHANCODE }, User);
             var TaskCalon = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CALONCODE }, User);
+            var TaskRw = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.RWCODE }, User);
 
             List<JsonHelperTable> ListKelurahan = await TaskKelurahan;
             List<JsonHelperTable> ListCalon = await TaskCalon;
+            List<JsonHelperTable> ListRw = await TaskRw;
 
             ViewBag.listKelurahan = ListKelurahan;
             ViewBag.listCalon = ListCalon;
+            ViewBag.listRw = ListRw;
 
             //List<JsonAnswer2> page1 = await ServiceAnswer2.FindAsync(new JsonAnswer2 { }, User);
             IndexAnswer2VM data = new IndexAnswer2VM();
@@ -539,6 +545,7 @@ namespace MainProject.Areas.Master.Controllers
                 filterJson.Query = Query;
                 filterJson.Nama = Request.Form["nama"];
                 filterJson.Kelurahan = Request.Form["kelurahan"];
+                filterJson.Rw = Request.Form["rw"];
 
 
                 IEnumerable<JsonAnswer2> ListDataGrid = await ServiceAnswer2.FindAsync(filterJson, User);
@@ -634,6 +641,7 @@ namespace MainProject.Areas.Master.Controllers
                 filterJson.Query = Query;
                 filterJson.Nama = Request.Form["nama"];
                 filterJson.Kelurahan = Request.Form["kelurahan"];
+                filterJson.Rw = Request.Form["rw"];
 
 
                 IEnumerable<JsonAnswer2> ListDataGrid = await ServiceAnswer2.FindByUserAsync(filterJson, User);
