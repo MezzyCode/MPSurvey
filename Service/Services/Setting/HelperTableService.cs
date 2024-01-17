@@ -189,6 +189,16 @@ namespace Service.Services.Setting
                     filterExp = filterExp.And(x => x.Code != null);
                     filterExp = filterExp.And(x => x.Code == filter.Code);
                 }
+                if (!String.IsNullOrEmpty(filter.Name))
+                {
+                    filterExp = filterExp.And(x => x.Name != null);
+                    filterExp = filterExp.And(x => x.Name == filter.Name);
+                }
+                if (!String.IsNullOrEmpty(filter.Value))
+                {
+                    filterExp = filterExp.And(x => x.Value != null);
+                    filterExp = filterExp.And(x => x.Value == filter.Value);
+                }
                 if (!String.IsNullOrEmpty(filter.Description))
                 {
                     filterExp = filterExp.And(x => x.Description != null);

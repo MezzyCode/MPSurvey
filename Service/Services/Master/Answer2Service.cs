@@ -425,6 +425,7 @@ namespace Service.Services.Master
                 if (!String.IsNullOrEmpty(filter.Rw)) filterExp = filterExp.And(x => x.Rw == filter.Rw);
                 if (!String.IsNullOrEmpty(filter.Kelurahan)) filterExp = filterExp.And(x => x.Kelurahan == filter.Kelurahan);
                 if (!String.IsNullOrEmpty(filter.Kecamatan)) filterExp = filterExp.And(x => x.Kecamatan == filter.Kecamatan);
+                if (!String.IsNullOrEmpty(filter.Kota)) filterExp = filterExp.And(x => x.Kota == filter.Kota);
                 filterExp = filterExp.And(x => x.ClientID == filter.ClientID);
 
                 Answer2List = _mapper.Map<IEnumerable<Answer2>, List<JsonAnswer2>>(await Repo.QueryAnswer2sAsync(filterExp, filter.OrderBy, filter.OrderByDirection, filter.Take.GetValueOrDefault(), filter.Skip.GetValueOrDefault()));
@@ -449,6 +450,7 @@ namespace Service.Services.Master
                 if (!String.IsNullOrEmpty(filter.Rw)) filterExp = filterExp.And(x => x.Rw == filter.Rw);
                 if (!String.IsNullOrEmpty(filter.Kelurahan)) filterExp = filterExp.And(x => x.Kelurahan == filter.Kelurahan);
                 if (!String.IsNullOrEmpty(filter.Kecamatan)) filterExp = filterExp.And(x => x.Kecamatan == filter.Kecamatan);
+                if (!String.IsNullOrEmpty(filter.Kota)) filterExp = filterExp.And(x => x.Kota == filter.Kota);
                 filterExp = filterExp.And(x => x.ClientID == filter.ClientID);
 
                 int TotalCount = await Repo.QueryAnswer2sCountAsync(filterExp);
@@ -475,6 +477,7 @@ namespace Service.Services.Master
                 if (!String.IsNullOrEmpty(filter.Kelurahan)) filterExp = filterExp.And(x => x.Kelurahan == filter.Kelurahan);
                 if (!String.IsNullOrEmpty(filter.Rw)) filterExp = filterExp.And(x => x.Rw == filter.Rw);
                 if (!String.IsNullOrEmpty(filter.Kecamatan)) filterExp = filterExp.And(x => x.Kecamatan == filter.Kecamatan);
+                if (!String.IsNullOrEmpty(filter.Kota)) filterExp = filterExp.And(x => x.Kota == filter.Kota);
                 var CreatedBy = GlobalHelpers.GetClaimValueByType(EnumClaims.Username.ToString(), claims);
                 filterExp = filterExp.And(x => x.CreatedBy == CreatedBy);
                 filterExp = filterExp.And(x => x.ClientID == filter.ClientID);
@@ -501,6 +504,7 @@ namespace Service.Services.Master
                 if (!String.IsNullOrEmpty(filter.Rw)) filterExp = filterExp.And(x => x.Rw == filter.Rw);
                 if (!String.IsNullOrEmpty(filter.Kelurahan)) filterExp = filterExp.And(x => x.Kelurahan == filter.Kelurahan);
                 if (!String.IsNullOrEmpty(filter.Kecamatan)) filterExp = filterExp.And(x => x.Kecamatan == filter.Kecamatan);
+                if (!String.IsNullOrEmpty(filter.Kota)) filterExp = filterExp.And(x => x.Kota == filter.Kota);
                 var CreatedBy = GlobalHelpers.GetClaimValueByType(EnumClaims.Username.ToString(), claims);
                 filterExp = filterExp.And(x => x.CreatedBy == CreatedBy);
                 filterExp = filterExp.And(x => x.ClientID == filter.ClientID);
@@ -556,6 +560,8 @@ namespace Service.Services.Master
                         while (Save.Rw.Length < 3) Save.Rw = "0" + Save.Rw;
                         while (Save.Rt != null && Save.Rt.Length < 3) Save.Rt = "0" + Save.Rt;
 
+                        var kota = await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.KECAMATANCODE, Value = Save.Kecamatan }, claims);
+
                         NewData.Rt = Save.Rt;
                         NewData.Rw = Save.Rw;
                         NewData.Kelurahan = Save.Kelurahan;
@@ -567,6 +573,8 @@ namespace Service.Services.Master
                         NewData.C2 = Save.C2;
                         NewData.C3 = Save.C3;
                         NewData.C4 = Save.C4;
+                        NewData.Kota = kota.FirstOrDefault()?.Description;
+
                         NewData.SetRowStatus(0);
 
                         NewData.ModelState = ObjectState.Added;
@@ -592,6 +600,8 @@ namespace Service.Services.Master
                         while (Save.Rw.Length < 3) Save.Rw = "0" + Save.Rw;
                         while (Save.Rt != null && Save.Rt.Length < 3) Save.Rt = "0" + Save.Rt;
 
+                        var kota = await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.KECAMATANCODE, Value = Save.Kecamatan }, claims);
+
                         NewData.Rt = Save.Rt;
                         NewData.Rw = Save.Rw;
                         NewData.Kelurahan = Save.Kelurahan;
@@ -603,6 +613,7 @@ namespace Service.Services.Master
                         NewData.C2 = Save.C2;
                         NewData.C3 = Save.C3;
                         NewData.C4 = Save.C4;
+                        NewData.Kota = kota.FirstOrDefault()?.Description;
 
                         NewData.ModelState = ObjectState.Modified;
 

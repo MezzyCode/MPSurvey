@@ -19,5 +19,6 @@ namespace Model.Models
         public string? C3 { get; set; }
         public string? C4 { get; set; }
         public string? Simpul { get; set; }
+        public string? Kota { get; set; }
     }
 }

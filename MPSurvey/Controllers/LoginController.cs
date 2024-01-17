@@ -70,9 +70,11 @@ namespace MainProject.Controllers
 
             List<JsonHelperTable> ListKelurahan = await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.KELURAHANCODE }, User);
             List<JsonHelperTable> ListRw = await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.RWCODE }, User);
+            List<JsonHelperTable> ListKota = await ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.KOTACODE }, User);
 
             ViewBag.listKelurahan = ListKelurahan.OrderBy(x => x.Name).ToList();
             ViewBag.listRw = ListRw;
+            ViewBag.listKota = ListKota;
 
             return View();
         }

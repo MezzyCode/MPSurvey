@@ -63,6 +63,7 @@ namespace Model.JsonModels.Master
 
         [Required(ErrorMessage = "Mohon pilih salah satu")]
         public string C4 { get; set; }
+        public string? Kota { get; set; }
 
 
         public string? ID { get; set; }

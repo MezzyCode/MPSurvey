@@ -40,11 +40,18 @@
                 <input type="search" id="filterNama" class="form-control" placeholder="Cari Nama" />
             </div>
             <div class="col-md-3">
-                @Html.DropDownList("Kelurahan", new SelectList(ViewBag.listKelurahan, "Name", "Name"), "Cari dari Kelurahan", new
+                @Html.DropDownList("Pilih Kota", new SelectList(ViewBag.listKota, "Name", "Name"), "Semua", new { @id = "filterKota", @class="form-select"})
+            </div>
+            <div class="col-md-3">
+                @*@Html.DropDownList("Kelurahan", new SelectList(ViewBag.listKelurahan, "Name", "Name"), "Cari dari Kelurahan", new
                 {
                 @id="filterKelurahan",
                 @class="form-control"
-                })
+                })*@
+                <select class="form-control"
+                        id="filterKelurahan">
+                    <option value="" selected>Kelurahan</option>
+                </select>
             </div>
             <div class="col-md-3">
                 <select class="form-control"
@@ -247,6 +254,7 @@
                         "data": function (d) {
                             d.nama = $("#filterNama").val();
                             d.calon = $("#filterCalon").val();
+                            d.kota = $("#filterKota").val();
                             d.kelurahan = $("#filterKelurahan").val();
                             d.rw = $("#filterRw").val();
                         },
@@ -276,6 +284,48 @@
 
                 });
 
+            const kelurahanList = JSON.parse('@Html.Raw(Json.Serialize(ViewBag.listKelurahan))');
+            for (let i = 0; i < kelurahanList.length; i++) {
+                const defaultOption = document.createElement("option");
+                defaultOption.value = kelurahanList[i].value;
+                defaultOption.text = kelurahanList[i].value;
+                document.getElementById("filterKelurahan").appendChild(defaultOption);
+            }
+            document.getElementById("filterKota").addEventListener("change", () => {
+                const selectedKota = document.getElementById("filterKota").value;
+                const kelurahanSelect = document.getElementById("filterKelurahan");
+                const kelurahanSelectLabel = document.getElementById("filterKelurahanLabel");
+                kelurahanSelect.innerHTML = '';
+
+                const filterKelurahan = kelurahanList.filter(item => item.description2 === selectedKota);
+
+                const defaultOption = document.createElement("option");
+                defaultOption.value = '';
+                defaultOption.text = 'Semua';
+                kelurahanSelect.appendChild(defaultOption);
+
+                if (filterKelurahan.length > 0) {
+                    const maxValue = parseInt(filterKelurahan[0].value, 10);
+
+                    for (let i = 0; i < filterKelurahan.length; i++) {
+                        const defaultOption = document.createElement("option");
+                        defaultOption.value = filterKelurahan[i].value;
+                        defaultOption.text = filterKelurahan[i].value;
+                        kelurahanSelect.appendChild(defaultOption);
+                    }
+                }
+                else {
+                    for (let i = 0; i < kelurahanList.length; i++) {
+                        const defaultOption = document.createElement("option");
+                        defaultOption.value = kelurahanList[i].value;
+                        defaultOption.text = kelurahanList[i].value;
+                        kelurahanSelect.appendChild(defaultOption);
+                    }
+                }
+
+
+                kelurahanSelect.value = '';
+            });
 
             const rwList = JSON.parse('@Html.Raw(Json.Serialize(ViewBag.listRw))');
             document.getElementById("filterKelurahan").addEventListener("change", () => {

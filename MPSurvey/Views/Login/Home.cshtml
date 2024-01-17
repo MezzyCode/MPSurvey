@@ -15,8 +15,13 @@
         <h2 class="card-title text-center fw-bold">Welcome to Masinton Pasaribu Simpul Dashboard</h2>
         <label class="form-label" for="filterKelurahan">Filter Berdasarkan</label>
         <div class="input-group">
-            @Html.DropDownList("Select Kelurahan", new SelectList(ViewBag.listKelurahan, "Name", "Name"), "Semua",
-                     new { @id = "filterKelurahan", @class = "form-select" })
+            @Html.DropDownList("Pilih Kota", new SelectList(ViewBag.listKota, "Name", "Name"), "Semua", new { @id = "filterKota", @class="form-select"})
+            @*@Html.DropDownList("Pilih Kelurahan", new SelectList(ViewBag.listKelurahan, "Name", "Name"), "Semua",
+                     new { @id = "filterKelurahan", @class = "form-select" })*@
+            <span class="input-group-text d-none" id="filterKelurahanLabel">Kelurahan. </span>
+            <select class="form-select d-none" id="filterKelurahan">
+                <option value="">Semua Kelurahan</option>
+            </select>
             <span class="input-group-text d-none" id="filterRwLabel">RW. </span>
             <select class="form-select d-none" id="filterRw">
                 <option value="">Semua RW</option>
@@ -154,6 +159,7 @@
                     url: "/Master/Answer2/C1Count",
                     method: "POST",
                     data: {
+                        Kota: $('#filterKota').val(),
                         Kelurahan: $('#filterKelurahan').val(),
                         Rw: $('#filterRw').val()
                     }
@@ -189,6 +195,7 @@
                     url: "/Master/Answer2/C2Count",
                     method: "POST",
                     data: {
+                        Kota: $('#filterKota').val(),
                         Kelurahan: $('#filterKelurahan').val(),
                         Rw: $('#filterRw').val()
                     }
@@ -217,6 +224,7 @@
                     url: "/Master/Answer2/C3Count",
                     method: "POST",
                     data: {
+                        Kota: $('#filterKota').val(),
                         Kelurahan: $('#filterKelurahan').val(),
                         Rw: $('#filterRw').val()
                     }
@@ -245,6 +253,7 @@
                     url: "/Master/Answer2/C4Count",
                     method: "POST",
                     data: {
+                        Kota: $('#filterKota').val(),
                         Kelurahan: $('#filterKelurahan').val(),
                         Rw: $('#filterRw').val()
                     }
@@ -313,6 +322,17 @@
                 showC3Chart();
                 showC4Chart();
             })
+
+            // Show and Hide Kelurahan Filter
+            function hideKelurahanFilter() {
+                document.getElementById("filterKelurahan").classList.add('d-none');
+                document.getElementById("filterKelurahanLabel").classList.add('d-none');
+            }
+            function showKelurahanFilter() {
+                document.getElementById("filterKelurahan").classList.remove('d-none');
+                document.getElementById("filterKelurahanLabel").classList.remove('d-none');
+            }
+
             // Show and Hide Rw Filter
             function hideRwFilter() {
                 document.getElementById("filterRw").classList.add('d-none');
@@ -322,6 +342,36 @@
                 document.getElementById("filterRw").classList.remove('d-none');
                 document.getElementById("filterRwLabel").classList.remove('d-none');
             }
+
+            const kelurahanList = JSON.parse('@Html.Raw(Json.Serialize(ViewBag.listKelurahan))');
+            document.getElementById("filterKota").addEventListener("change", () => {
+                const selectedKota = document.getElementById("filterKota").value;
+                const kelurahanSelect = document.getElementById("filterKelurahan");
+                const kelurahanSelectLabel = document.getElementById("filterKelurahanLabel");
+                selectedKota === '' ? hideKelurahanFilter() : showKelurahanFilter();
+                kelurahanSelect.innerHTML = '';
+
+                const filterKelurahan = kelurahanList.filter(item => item.description2 === selectedKota);
+
+                if (filterKelurahan.length > 0) {
+                    const maxValue = parseInt(filterKelurahan[0].value, 10);
+
+                    for (let i = 0; i < filterKelurahan.length; i++) {
+                        const defaultOption = document.createElement("option");
+                        defaultOption.value = filterKelurahan[i].value;
+                        defaultOption.text = filterKelurahan[i].value;
+                        kelurahanSelect.appendChild(defaultOption);
+                    }
+                }
+
+                const defaultOption = document.createElement("option");
+                defaultOption.value = '';
+                defaultOption.text = 'Semua';
+                kelurahanSelect.appendChild(defaultOption);
+
+                kelurahanSelect.value = '';
+            });
+
             const rwList = JSON.parse('@Html.Raw(Json.Serialize(ViewBag.listRw))');
             document.getElementById("filterKelurahan").addEventListener("change", () => {
                 const selectedKelurahan = document.getElementById("filterKelurahan").value;

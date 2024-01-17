@@ -19,6 +19,7 @@ namespace Model.InfrastructurClass
         public static string PENDIDIKANCODE = "PENDIDIKAN";
         public static string SUKUCODE = "SUKU";
         public static string RWCODE = "RW";
+        public static string KOTACODE = "Kota";
 
         public static string ANSWEREXPORTFILENAME = "ANSWEREXPORTFILENAME";
 

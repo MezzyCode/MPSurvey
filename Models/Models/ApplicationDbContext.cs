@@ -155,6 +155,10 @@ namespace Model.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Kota)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.LastModifiedBy)
                     .HasMaxLength(300)
                     .IsUnicode(false);
@@ -246,7 +250,11 @@ namespace Model.Models
                     .IsUnicode(false);
                 entity.Property(e => e.CreatedBy).IsUnicode(false);
                 entity.Property(e => e.CreatedTime).HasColumnType("datetime");
-                entity.Property(e => e.Description).HasColumnType("text");
+                entity.Property(e => e.Description)
+                    .IsUnicode(false);
+                entity.Property(e => e.Description2)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
                 entity.Property(e => e.LastModifiedBy)
                     .HasMaxLength(50)
                     .IsUnicode(false);

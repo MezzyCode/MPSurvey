@@ -39,14 +39,17 @@ namespace MainProject.Areas.Master.Controllers
                 return RedirectToAction("LoginForm", "Login", new { area = "" });
             }
 
+            var TaskKota = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.KOTACODE }, User);
             var TaskKelurahan = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.KELURAHANCODE }, User);
             var TaskCalon = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CALONCODE }, User);
             var TaskRw = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.RWCODE }, User);
 
+            List<JsonHelperTable> ListKota = await TaskKota;
             List<JsonHelperTable> ListKelurahan = await TaskKelurahan;
             List<JsonHelperTable> ListCalon = await TaskCalon;
             List<JsonHelperTable> ListRw = await TaskRw;
 
+            ViewBag.listKota = ListKota;
             ViewBag.listKelurahan = ListKelurahan;
             ViewBag.listCalon = ListCalon;
             ViewBag.listRw = ListRw;
@@ -65,14 +68,17 @@ namespace MainProject.Areas.Master.Controllers
                 return RedirectToAction("LoginForm", "Login", new { area = "" });
             }
 
+            var TaskKota = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.KOTACODE }, User);
             var TaskKelurahan = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.KELURAHANCODE }, User);
             var TaskCalon = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.CALONCODE }, User);
             var TaskRw = ServiceHelper.FindAsync(new JsonHelperTable { Code = ConstantVariableKey.RWCODE }, User);
 
+            List<JsonHelperTable> ListKota = await TaskKota;
             List<JsonHelperTable> ListKelurahan = await TaskKelurahan;
             List<JsonHelperTable> ListCalon = await TaskCalon;
             List<JsonHelperTable> ListRw = await TaskRw;
 
+            ViewBag.listKota = ListKota;
             ViewBag.listKelurahan = ListKelurahan;
             ViewBag.listCalon = ListCalon;
             ViewBag.listRw = ListRw;
@@ -403,13 +409,14 @@ namespace MainProject.Areas.Master.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> C1Count(string? Kelurahan, string? Rw)
+        public async Task<IActionResult> C1Count(string? Kota, string? Kelurahan, string? Rw)
         {
             try
             {
                 JsonAnswer2 filter = new JsonAnswer2();
                 filter.Kelurahan = Kelurahan;
                 filter.Rw = Rw;
+                filter.Kota = Kota;
                 List<JsonChart> chartData = await ServiceAnswer2.FindC1Async(filter, User);
 
                 return Json(chartData);
@@ -421,13 +428,14 @@ namespace MainProject.Areas.Master.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> C2Count(string? Kelurahan, string? Rw)
+        public async Task<IActionResult> C2Count(string? Kota, string? Kelurahan, string? Rw)
         {
             try
             {
                 JsonAnswer2 filter = new JsonAnswer2();
                 filter.Kelurahan = Kelurahan;
                 filter.Rw = Rw;
+                filter.Kota = Kota;
                 List<JsonChart> chartData = await ServiceAnswer2.FindC2Async(filter, User);
 
                 return Json(chartData);
@@ -439,13 +447,14 @@ namespace MainProject.Areas.Master.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> C3Count(string? Kelurahan, string? Rw)
+        public async Task<IActionResult> C3Count(string? Kota, string? Kelurahan, string? Rw)
         {
             try
             {
                 JsonAnswer2 filter = new JsonAnswer2();
                 filter.Kelurahan = Kelurahan;
                 filter.Rw = Rw;
+                filter.Kota = Kota;
                 List<JsonChart> chartData = await ServiceAnswer2.FindC3Async(filter, User);
 
                 return Json(chartData);
@@ -457,13 +466,14 @@ namespace MainProject.Areas.Master.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> C4Count(string? Kelurahan, string? Rw)
+        public async Task<IActionResult> C4Count(string? Kota, string? Kelurahan, string? Rw)
         {
             try
             {
                 JsonAnswer2 filter = new JsonAnswer2();
                 filter.Kelurahan = Kelurahan;
                 filter.Rw = Rw;
+                filter.Kota = Kota;
                 List<JsonChart> chartData = await ServiceAnswer2.FindC4Async(filter, User);
 
                 return Json(chartData);
@@ -544,8 +554,10 @@ namespace MainProject.Areas.Master.Controllers
 
                 filterJson.Query = Query;
                 filterJson.Nama = Request.Form["nama"];
+                filterJson.Kota = Request.Form["kota"];
                 filterJson.Kelurahan = Request.Form["kelurahan"];
                 filterJson.Rw = Request.Form["rw"];
+                filterJson.Kota = Request.Form["kota"];
 
 
                 IEnumerable<JsonAnswer2> ListDataGrid = await ServiceAnswer2.FindAsync(filterJson, User);
@@ -640,8 +652,10 @@ namespace MainProject.Areas.Master.Controllers
 
                 filterJson.Query = Query;
                 filterJson.Nama = Request.Form["nama"];
+                filterJson.Kota = Request.Form["kota"];
                 filterJson.Kelurahan = Request.Form["kelurahan"];
                 filterJson.Rw = Request.Form["rw"];
+                filterJson.Kota = Request.Form["kota"];
 
 
                 IEnumerable<JsonAnswer2> ListDataGrid = await ServiceAnswer2.FindByUserAsync(filterJson, User);
